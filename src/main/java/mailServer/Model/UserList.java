@@ -16,9 +16,7 @@ public class UserList implements Serializable {
     users = FXCollections.observableArrayList();
   }
   public void addUser(String user){
-    if(!user.contains(user)){
       users.add(user);
-    }
   }
 
   public boolean userExist(String user){
@@ -41,7 +39,7 @@ public class UserList implements Serializable {
     outbox.add(new Mail());
     outbox.add(new Mail());
     outbox.add(new Mail());
-    return outbox
+    return outbox;
   }
 
 }

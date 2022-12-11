@@ -7,7 +7,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
 import javafx.stage.Stage;
+import mailServer.Controller.MailHandler;
 import mailServer.Model.UserList;
+import mailServer.View.ServerLayout;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -37,18 +39,22 @@ public class ServerMain extends Application {
    userList.addUser("something@javamail.it");
   }
 
-  public void initRootLayout(){
-    FXMLLoader loader= new FXMLLoader();
-    loader.setLocation(ServerMain.class.getResource("View/ServerLayout.fxml"));
-    topStage = loader.load();
-    ServerRootLayoutController controller = loader.getController();
-    controller.setServerMain(this);
+  public void initRootLayout() {
+    try {
+      FXMLLoader loader = new FXMLLoader();
+      loader.setLocation(ServerMain.class.getResource("View/ServerLayout.fxml"));
+      topStage = loader.load();
+      ServerLayout controller = loader.getController();
+      controller.setServerMain();
 
-    Scene scene = new Scene(rootLayout);
-    topStage.setScene(scene);
-    topStage.show();
+      Scene scene = new Scene(rootLayout);
+      topStage.setScene(scene);
+      topStage.show();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
-  public void start(){
+  public void start(Stage topStage){
     this.topStage = topStage;
     this.topStage.setTitle("Server @javamail");
     initRootLayout();
@@ -62,7 +68,7 @@ public class ServerMain extends Application {
       System.out.println("connected to server socket");
       while (true){
         Socket incoming = s.accept();
-        Runnable r = new ServerHandler(this,incoming,new FileManager());
+        Runnable r = new ServerHandler(this,incoming,new MailHandler());
         Thread t = new Thread(r);
       }
     } catch (IOException e){
