@@ -1,7 +1,7 @@
 package mailClient.Controller;
 import javafx.application.Platform;
 import mailClient.ClientMain;
-import mailServer.Model.Mail;
+import mailClient.Model.Mail;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -9,12 +9,12 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 
-public class ClientHandler {
+public class ClientController {
   private ClientMain clientMain;
 
   private static final String host = "192.168.1377.1";
 
-  public ClientHandler(ClientMain clientMain){
+  public ClientController(ClientMain clientMain){
     this.clientMain=clientMain;
   }
 

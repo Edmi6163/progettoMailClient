@@ -6,7 +6,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -15,7 +14,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import mailClient.Controller.ClientHandler;
+import mailClient.Controller.ClientController;
+import mailClient.Controller.LoginController;
+import mailClient.Controller.MailContainerController;
 import mailClient.Model.Mail;
 
 import java.io.IOException;
@@ -37,13 +38,13 @@ public class ClientMain extends Application {
   private ObservableList<Mail> outbox = FXCollections.observableArrayList();
 
   private String userMail = "";
-  private ClientHandler clientHandler;
+  private ClientController clientHandler;
 
-  public ClientHandler getClientHandler() {
+  public ClientController getClientHandler() {
     return clientHandler;
   }
   public ClientMain(){
-    clientHandler = new ClientHandler(this);
+    clientHandler = new ClientController(this);
   }
   public void setUserMail(String userMail){
     this.userMail = userMail;
@@ -107,7 +108,7 @@ public class ClientMain extends Application {
       AnchorPane mailContainer = (AnchorPane) loader.load();
       rootLayout.setCenter(mailContainer);
       MailContainerController controller = loader.getController();
-      controller.setMainApp(this);
+      controller.setClientMain(this);
     } catch (IOException e){
       e.printStackTrace();
     }
@@ -174,7 +175,7 @@ public class ClientMain extends Application {
         }
       });
       LoginController loginController = loader.getController();
-      loginController. ; //TODO finish here
+      loginController.setClientMain(this,dialog); ; //TODO finish here
 
       dialog.showAndWait();
     } catch (IOException e){
