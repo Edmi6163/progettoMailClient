@@ -14,9 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import mailClient.Controller.ClientController;
-import mailClient.Controller.LoginController;
-import mailClient.Controller.MailContainerController;
+import mailClient.Controller.*;
 import mailClient.Model.Mail;
 
 import java.io.IOException;
@@ -92,7 +90,7 @@ public class ClientMain extends Application {
       loader.setLocation(ClientMain.class.getResource("View/RootLayout.fxml"));
       rootLayout = (BorderPane) loader.load();
       RootLayoutController controller = loader.getController();
-      controller.setMainApp(this);
+      controller.setClientMain(this);
       Scene scene = new Scene(rootLayout);
       topStage.setScene(scene);
       topStage.show();
@@ -125,12 +123,12 @@ public class ClientMain extends Application {
     Scene scene = new Scene(page);
     dialog.setScene(scene);
 
-    MessageController controller = loader.getController();
-    controller.setDialogStage(dialog);
+    NewMessageController controller = loader.getController();
+    controller.setDialog(dialog);
     controller.setMail(mail);
 
     dialog.showAndWait();
-    return controller.isClicked; //TODO look at this method REMOVEME
+    return controller.isOkClicked();
     } catch (IOException e){
       e.printStackTrace();
       return false;
@@ -175,7 +173,7 @@ public class ClientMain extends Application {
         }
       });
       LoginController loginController = loader.getController();
-      loginController.setClientMain(this,dialog); ; //TODO finish here
+      loginController.setClientMain(this,dialog);
 
       dialog.showAndWait();
     } catch (IOException e){

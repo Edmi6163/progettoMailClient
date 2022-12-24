@@ -53,7 +53,11 @@ public class ServerHandler implements Runnable{
         boolean wrongReceiver= false;
         for(String receiver: receivers){
           if(!userList.userExist(receiver)) {
-            Mail wrong = new Mail("System", mail.getSender(), 0, "\ncheck mail address, cannot find address" + receiver + mail + "this is an automated message");
+            Mail wrong = new Mail("System",
+              "Wrong email address",mail.getSender(),
+              0,
+              "It wasn't possible to send this email to "+receiver+", wrong email address." +
+                "\n***********************\n"+mail+"\n***********************\nTHIS IS AN AUTOMATED MESSAGE, PLEASE, DO NOT REPLY.");
             mail.getReceivers().remove(receiver);
           }
           if(wrongReceiver)

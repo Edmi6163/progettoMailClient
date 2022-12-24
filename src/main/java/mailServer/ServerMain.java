@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
 import javafx.stage.Stage;
 import mailServer.Controller.MailHandler;
+import mailServer.Controller.ServerHandler;
 import mailServer.Model.UserList;
 import mailServer.View.ServerLayout;
 

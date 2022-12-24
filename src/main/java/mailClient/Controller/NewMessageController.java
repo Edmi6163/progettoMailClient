@@ -71,7 +71,7 @@ public class NewMessageController {
      Alert alert = new Alert(Alert.AlertType.ERROR);
      alert.initOwner(dialog);
      alert.setTitle("Invalid fields");
-     alert.setHeaderText("Errrors detected in the following fields");
+     alert.setHeaderText("Errors detected in the following fields");
      alert.setContentText(error);
      alert.showAndWait();
 

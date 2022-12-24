@@ -95,7 +95,7 @@ public class ClientController {
       Mail m = (Mail)in.readObject();
       if(m!= null){
         clientMain.setMailSent(true);
-        Platform.runLater(()->clientMain.addOutbox(m));
+         Platform.runLater(()->clientMain.addOut(m));
       }
     } catch (Exception e){
       e.printStackTrace();
