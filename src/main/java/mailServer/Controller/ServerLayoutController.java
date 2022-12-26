@@ -1,10 +1,10 @@
-package mailServer.View;
+package mailServer.Controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import mailServer.ServerMain;
 
-public class ServerLayout {
+public class ServerLayoutController {
   private ServerMain serverMain;
   @FXML private ListView<String> userList;
   @FXML private ListView<String> log= new ListView<>();
@@ -16,7 +16,7 @@ public class ServerLayout {
     log.setItems(serverMain.getLogList());
   }
 
-  public ServerLayout(){
+  public ServerLayoutController(){
 
   }
 

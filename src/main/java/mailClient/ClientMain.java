@@ -166,12 +166,7 @@ public class ClientMain extends Application {
       dialog.initOwner(topStage);
       Scene scene = new Scene(page);
       dialog.setScene(scene);
-      dialog.setOnCloseRequest(new EventHandler<WindowEvent>() {
-        @Override
-        public void handle(WindowEvent windowEvent) {
-          Platform.exit();
-        }
-      });
+      dialog.setOnCloseRequest(windowEvent -> Platform.exit());
       LoginController loginController = loader.getController();
       loginController.setClientMain(this,dialog);
 

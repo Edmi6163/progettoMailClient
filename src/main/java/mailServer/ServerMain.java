@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import mailServer.Controller.MailHandler;
 import mailServer.Controller.ServerHandler;
 import mailServer.Model.UserList;
-import mailServer.View.ServerLayout;
+import mailServer.Controller.ServerLayoutController;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -45,7 +45,7 @@ public class ServerMain extends Application {
       FXMLLoader loader = new FXMLLoader();
       loader.setLocation(ServerMain.class.getResource("View/ServerLayout.fxml"));
       topStage = loader.load();
-      ServerLayout controller = loader.getController();
+      ServerLayoutController controller = loader.getController();
       controller.setServerMain();
 
       Scene scene = new Scene(rootLayout);
