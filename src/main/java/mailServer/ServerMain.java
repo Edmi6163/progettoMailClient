@@ -62,7 +62,6 @@ public class ServerMain extends Application {
     Thread t = new Thread(this::setUpServer);
   }
 
-
   private void setUpServer(){
     try {
       ServerSocket s = new ServerSocket(8189);

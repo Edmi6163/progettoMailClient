@@ -53,16 +53,16 @@ public class MailContainerController {
   }
   public void setDate(TableColumn<Mail,LocalDateTime> d){
     d.setCellValueFactory(cellData->cellData.getValue().dateProperty());
-    d.setCellFactory(col->new TableCell<Mail,LocalDateTime>(){
+    d.setCellFactory(col-> new TableCell<>() {
       @Override
-      protected void updateItem(LocalDateTime item,boolean empty) {
+      protected void updateItem(LocalDateTime item, boolean empty) {
         super.updateItem(item, empty);
         if (empty)
           setText(null);
         else
           setText(item.format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH-mm")));
       }
-      });
+    });
     }
   @FXML
   private void initialize(){
@@ -81,7 +81,7 @@ public class MailContainerController {
   @FXML
   private void forward(){
     clientMain.showSendMailDialog(new Mail(clientMain.getUserMail(),
-      "[FWQ] "+selectedMail.getSubject(),
+      "[FWD] "+selectedMail.getSubject(),
       " ",
       0L,
       selectedMail.getMessage()+"\n--forwarded from"+selectedMail.getSender()),
