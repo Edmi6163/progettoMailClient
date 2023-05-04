@@ -59,7 +59,6 @@ public class ServerMain extends Application {
   }
 
 
-
   private void setUpServer(){
     try {
       ServerSocket s = new ServerSocket(8189);

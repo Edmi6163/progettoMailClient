@@ -12,7 +12,7 @@ import java.util.List;
 public class ClientController {
   private ClientMain clientMain;
 
-  private static final String host = "192.168.1377.1";
+  private static final String host = "192.168.1.75";
 
   public ClientController(ClientMain clientMain){
     this.clientMain=clientMain;
