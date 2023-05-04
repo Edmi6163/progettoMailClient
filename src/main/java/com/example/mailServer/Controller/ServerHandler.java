@@ -1,9 +1,9 @@
-package mailServer.Controller;
+package com.example.mailServer.Controller;
 
+import com.example.mailServer.ServerMain;
 import javafx.application.Platform;
-import mailServer.Model.Mail;
-import mailServer.Model.UserList;
-import mailServer.ServerMain;
+import com.example.mailServer.Model.Mail;
+import com.example.mailServer.Model.UserList;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

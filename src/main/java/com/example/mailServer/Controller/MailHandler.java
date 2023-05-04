@@ -1,10 +1,9 @@
-package mailServer.Controller;
+package com.example.mailServer.Controller;
 
-import mailServer.Model.Mail;
+import com.example.mailServer.Model.Mail;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;

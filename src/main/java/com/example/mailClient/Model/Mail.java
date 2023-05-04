@@ -1,4 +1,4 @@
-package mailClient.Model;
+package com.example.mailClient.Model;
 
 
 import javafx.beans.property.*;

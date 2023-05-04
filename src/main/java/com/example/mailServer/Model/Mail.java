@@ -1,4 +1,4 @@
-package mailServer.Model;
+package com.example.mailServer.Model;
 
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;

@@ -1,11 +1,12 @@
-package mailClient;
+package com.example.mailClient;
 
 
+import com.example.mailClient.Controller.*;
+import com.example.mailClient.Model.Mail;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -13,9 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-import mailClient.Controller.*;
-import mailClient.Model.Mail;
+import com.example.mailClient.Controller.*;
 
 import java.io.IOException;
 import java.util.List;

@@ -1,12 +1,12 @@
-package mailClient.Controller;
+package com.example.mailClient.Controller;
 
+import com.example.mailClient.Model.Mail;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import mailClient.ClientMain;
-import mailClient.Model.Mail;
+import com.example.mailClient.ClientMain;
 
 public class NewMessageController {
   @FXML

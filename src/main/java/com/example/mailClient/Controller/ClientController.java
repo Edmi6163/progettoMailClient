@@ -1,7 +1,7 @@
-package mailClient.Controller;
+package com.example.mailClient.Controller;
+import com.example.mailClient.Model.Mail;
 import javafx.application.Platform;
-import mailClient.ClientMain;
-import mailClient.Model.Mail;
+import com.example.mailClient.ClientMain;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

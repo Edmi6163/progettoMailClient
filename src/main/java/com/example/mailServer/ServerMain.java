@@ -1,23 +1,26 @@
-package mailServer;
+package com.example.mailServer;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
 import javafx.stage.Stage;
-import mailServer.Controller.MailHandler;
-import mailServer.Controller.ServerHandler;
-import mailServer.Model.UserList;
-import mailServer.Controller.ServerLayoutController;
+import com.example.mailServer.Controller.MailHandler;
+import com.example.mailServer.Controller.ServerHandler;
+import com.example.mailServer.Model.UserList;
+import com.example.mailServer.Controller.ServerLayoutController;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerMain extends Application {
+  @FXML
   private Stage topStage;
+  @FXML
   private SplitPane rootLayout;
 
   private UserList userList;
@@ -40,10 +43,9 @@ public class ServerMain extends Application {
    userList.addUser("something@javamail.it");
   }
 
-  public void initRootLayout() {
+  public void initRootLayout(Stage topStage) {
     try {
-      FXMLLoader loader = new FXMLLoader();
-      loader.setLocation(ServerMain.class.getResource("View/ServerLayout.fxml"));
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("ServerLayout.fxml"));
       topStage = loader.load();
       ServerLayoutController controller = loader.getController();
       controller.setServerMain();
@@ -55,12 +57,7 @@ public class ServerMain extends Application {
       e.printStackTrace();
     }
   }
-  public void start(Stage topStage){
-    this.topStage = topStage;
-    this.topStage.setTitle("Server @javamail");
-    initRootLayout();
-    Thread t = new Thread(this::setUpServer);
-  }
+
 
 
   private void setUpServer(){
@@ -75,5 +72,15 @@ public class ServerMain extends Application {
     } catch (IOException e){
       e.printStackTrace();
     }
+  }
+
+  public void start(Stage topStage){
+    this.topStage = topStage;
+    this.topStage.setTitle("Server @javamail");
+    initRootLayout(topStage);
+    Thread t = new Thread(this::setUpServer);
+  }
+  public static void main(String[] args) {
+    launch();
   }
 }

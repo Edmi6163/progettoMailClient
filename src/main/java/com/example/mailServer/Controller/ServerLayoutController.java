@@ -1,8 +1,8 @@
-package mailServer.Controller;
+package com.example.mailServer.Controller;
 
+import com.example.mailServer.ServerMain;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
-import mailServer.ServerMain;
 
 public class ServerLayoutController {
   private ServerMain serverMain;

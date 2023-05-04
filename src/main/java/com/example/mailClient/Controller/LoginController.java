@@ -1,4 +1,4 @@
-package mailClient.Controller;
+package com.example.mailClient.Controller;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -6,7 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import mailClient.ClientMain;
+import com.example.mailClient.ClientMain;
 
 public class LoginController {
   @FXML
