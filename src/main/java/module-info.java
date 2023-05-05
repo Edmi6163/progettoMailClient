@@ -5,4 +5,5 @@ module com.example.progettomailclient {
 
   opens com.example.progettomailclient to javafx.fxml;
   exports com.example.progettomailclient;
+  exports com.example.mailServer;
 }

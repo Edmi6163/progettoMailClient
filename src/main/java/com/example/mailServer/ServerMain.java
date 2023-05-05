@@ -44,9 +44,12 @@ public class ServerMain extends Application {
   }
 
   public void initRootLayout(Stage topStage) {
+    System.out.println("initRootLayout function called");
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("ServerLayout.fxml"));
-      topStage = loader.load();
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("View/ServerLayout.fxml"));
+      System.out.println("loader path is "+loader.getClass().getResource("ServerLayout.fxml"));
+      System.out.println("getClass is "+getClass());
+      rootLayout = loader.load();
       ServerLayoutController controller = loader.getController();
       controller.setServerMain();
 
@@ -60,6 +63,7 @@ public class ServerMain extends Application {
 
 
   private void setUpServer(){
+    System.out.println("setUpServer function called"); //TODO debug
     try {
       ServerSocket s = new ServerSocket(8189);
       System.out.println("connected to server socket");
@@ -67,6 +71,7 @@ public class ServerMain extends Application {
         Socket incoming = s.accept();
         Runnable r = new ServerHandler(this,incoming,new MailHandler());
         Thread t = new Thread(r);
+        t.start();
       }
     } catch (IOException e){
       e.printStackTrace();
@@ -78,8 +83,10 @@ public class ServerMain extends Application {
     this.topStage.setTitle("Server @javamail");
     initRootLayout(topStage);
     Thread t = new Thread(this::setUpServer);
+    t.start();
   }
   public static void main(String[] args) {
+    System.out.println("starting serverMain....");
     launch();
   }
 }

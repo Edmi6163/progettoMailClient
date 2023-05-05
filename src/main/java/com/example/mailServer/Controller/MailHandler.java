@@ -120,4 +120,5 @@ public synchronized void delete(Mail mail,String user){
       e.printStackTrace();
     }
 }
+
 }
