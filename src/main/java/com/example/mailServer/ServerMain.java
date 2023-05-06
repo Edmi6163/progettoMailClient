@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
 import javafx.stage.Stage;
@@ -13,9 +14,12 @@ import com.example.mailServer.Controller.ServerHandler;
 import com.example.mailServer.Model.UserList;
 import com.example.mailServer.Controller.ServerLayoutController;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class ServerMain extends Application {
   @FXML
@@ -43,12 +47,13 @@ public class ServerMain extends Application {
    userList.addUser("something@javamail.it");
   }
 
+  // FIXME: loader path is null dunno why
   public void initRootLayout(Stage topStage) {
     System.out.println("initRootLayout function called");
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("View/ServerLayout.fxml"));
+     // FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/ServerLayout.fxml"));
+      FXMLLoader loader = new FXMLLoader(new File("/View/ServerLayout.fxml").toURI().toURL());
       System.out.println("loader path is "+loader.getClass().getResource("ServerLayout.fxml"));
-      System.out.println("getClass is "+getClass());
       rootLayout = loader.load();
       ServerLayoutController controller = loader.getController();
       controller.setServerMain();
@@ -62,13 +67,14 @@ public class ServerMain extends Application {
   }
 
 
-  private void setUpServer(){
+  private void setUpServer() {
     System.out.println("setUpServer function called"); //TODO debug
     try {
       ServerSocket s = new ServerSocket(8189);
-      System.out.println("connected to server socket");
+      System.out.println("connected to server socket,the ip is "+ Inet4Address.getLocalHost().getHostAddress()+" and the port is 8189");
       while (true){
         Socket incoming = s.accept();
+        System.out.println("incoming ip is: "+ Inet4Address.getLocalHost().getHostAddress());
         Runnable r = new ServerHandler(this,incoming,new MailHandler());
         Thread t = new Thread(r);
         t.start();
@@ -85,6 +91,7 @@ public class ServerMain extends Application {
     Thread t = new Thread(this::setUpServer);
     t.start();
   }
+
   public static void main(String[] args) {
     System.out.println("starting serverMain....");
     launch();
