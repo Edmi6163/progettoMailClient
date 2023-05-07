@@ -68,7 +68,7 @@ public class ServerHandler implements Runnable{
          String finalLog=log;
           Platform.runLater(()->serverMain.addLog(finalLog));
           mail.setIsSent(true);
-          Mail toSave = mailHandler.save(mail);
+          Mail toSave = MailHandler.save(mail);
           out.writeObject(toSave);
       }
         in.close();
