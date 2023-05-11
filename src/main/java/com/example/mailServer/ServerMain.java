@@ -18,6 +18,7 @@ import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.example.mailServer.Model.*;
 public class ServerMain extends Application {
   @FXML
   private Stage stage;
@@ -57,7 +58,6 @@ public class ServerMain extends Application {
       System.out.println("connected to server socket,the ip is " + Inet4Address.getLocalHost().getHostAddress() + " and the port is 8189"); //TODO when view will start remove this
       addLog("connected to server socket,the ip is " + Inet4Address.getLocalHost().getHostAddress() + " and the port is 8189");
       while (true) {
-
         Socket incoming = s.accept();
         System.out.println("incoming ip is: " + Inet4Address.getLocalHost().getHostAddress()); //TODO same as the println above
         addLog("incoming ip is: " + Inet4Address.getLocalHost().getHostAddress());
@@ -71,10 +71,11 @@ public class ServerMain extends Application {
     }
   }
 
-  public void start(Stage topStage) {
+  @Override
+  public void start(Stage topStage) throws Exception {
     try {
       System.out.println("method: start"); //TODO debug
-      FXMLLoader loader = new FXMLLoader(ServerMain.class.getResource("server-layout.fxml"));
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("ServerLayout.fxml"));
       Scene scene = new Scene(loader.load(), 300, 500);
       topStage.setTitle("Server log @javamail");
       topStage.setScene(scene);
@@ -86,7 +87,6 @@ public class ServerMain extends Application {
       e.printStackTrace();
     }
   }
-
   public static void main(String[] args) {
     System.out.println("starting serverMain....");
     launch();
