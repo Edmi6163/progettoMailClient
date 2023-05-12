@@ -20,12 +20,12 @@ import java.net.Socket;
 
 import com.example.mailServer.Model.*;
 public class ServerMain extends Application {
-  @FXML
-  private Stage stage;
+//  @FXML
+//  private Stage topStage;
   @FXML
   private SplitPane rootLayout;
 
-  private UserList userList;
+  private final UserList userList;
   private ObservableList<String> logList = FXCollections.observableArrayList();
 
   public ObservableList<String> getLogList() {
@@ -72,14 +72,14 @@ public class ServerMain extends Application {
   }
 
   @Override
-  public void start(Stage topStage) throws Exception {
+  public void start(Stage stage) throws Exception {
     try {
       System.out.println("method: start"); //TODO debug
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("ServerLayout.fxml"));
+      FXMLLoader loader = new FXMLLoader(ServerMain.class.getResource("ServerLayout.fxml"));
       Scene scene = new Scene(loader.load(), 300, 500);
-      topStage.setTitle("Server log @javamail");
-      topStage.setScene(scene);
-      topStage.show();
+      stage.setTitle("Server log @javamail");
+      stage.setScene(scene);
+      stage.show();
       scene.getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, (WindowEvent event) -> System.exit(1));
       Thread t = new Thread(this::setUpServer);
       t.start();
