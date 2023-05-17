@@ -24,12 +24,15 @@ public class LoginController {
 
   @FXML
   private void handleLogin(){
-    if(username.getText().length()>0 && username != null){
-      clientMain.setUserMail(username.getText()+"@mail.it");
+    System.out.println("username is: " + username);
+    if(username != null && username.getText().length()>0 ){
+      System.out.println("username after if is: " + username);
+      clientMain.setUserMail(username.getText()+"@javamail.it");
       boolean loginSuccess=clientMain.getClientHandler().requestAll();
       if(loginSuccess){
         stage.close();
       } else {
+        System.out.println("in else branch: " + username);
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.initOwner(stage);
         alert.setTitle("wrong username");
@@ -39,11 +42,14 @@ public class LoginController {
         Platform.exit();
       }
     }
-
+    System.out.println("end of function :(");
   }
+  /*
   @FXML
   public void closeStage(){
     stage.close();
   }
+
+   */
 
 }

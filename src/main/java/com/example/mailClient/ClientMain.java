@@ -70,23 +70,11 @@ public class ClientMain extends Application {
   public String getUserMail(){
     return userMail;
   }
-  public void start(Stage topStage){
-    this.topStage = topStage;
-    this.topStage.setTitle("Client mail window");
-    showLoginDialog();
-    initRootLayout();
-    showMailContainer();
-
-    Thread refresh = new Thread(this::refresh);
-    refresh.setDaemon(true);
-    refresh.start();
-  }
 
 
   public void initRootLayout(){
     try {
-      FXMLLoader loader = new FXMLLoader();
-      loader.setLocation(ClientMain.class.getResource("View/RootLayout.fxml"));
+      FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("RootLayout.fxml"));
       rootLayout = (BorderPane) loader.load();
       RootLayoutController controller = loader.getController();
       controller.setClientMain(this);
@@ -100,8 +88,7 @@ public class ClientMain extends Application {
 
   public void showMailContainer(){
     try {
-      FXMLLoader loader = new FXMLLoader();
-      loader.setLocation(ClientMain.class.getResource("View/MailContainer.fxml"));
+      FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("MailContainer.fxml"));
       AnchorPane mailContainer = (AnchorPane) loader.load();
       rootLayout.setCenter(mailContainer);
       MailContainerController controller = loader.getController();
@@ -112,8 +99,7 @@ public class ClientMain extends Application {
   }
   public boolean showSendMailDialog(Mail mail,String title){
     try {
-    FXMLLoader loader = new FXMLLoader();
-    loader.setLocation(ClientMain.class.getResource("View/NewMessage.fxml"));
+    FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("NewMessage.fxml"));
     AnchorPane page = (AnchorPane) loader.load();
     Stage dialog = new Stage();
     dialog.setTitle(title);
@@ -155,8 +141,7 @@ public class ClientMain extends Application {
   }
   private void showLoginDialog(){
     try{
-      FXMLLoader loader = new FXMLLoader();
-      loader.setLocation(ClientMain.class.getResource("view/Login.fxml"));
+      FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("Login.fxml"));
       AnchorPane page = (AnchorPane) loader.load();
 
       dialog = new Stage();
@@ -190,6 +175,17 @@ public class ClientMain extends Application {
     return topStage;
   }
 
+  public void start(Stage topStage){
+    this.topStage = topStage;
+    this.topStage.setTitle("Client mail window @javamail");
+    showLoginDialog();
+    initRootLayout();
+    showMailContainer();
+
+    Thread refresh = new Thread(this::refresh);
+    refresh.setDaemon(true);
+    refresh.start();
+  }
 
   public static void main(String[] args){
     launch(args);

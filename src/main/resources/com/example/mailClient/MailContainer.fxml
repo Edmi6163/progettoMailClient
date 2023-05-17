@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane minHeight="430.0" minWidth="720.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mailClient.Controller.MailContainerController">
+	<children>
+		<SplitPane dividerPositions="0.3649025069637883" prefHeight="430.0" prefWidth="720.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<items>
+				<AnchorPane minHeight="0.0" minWidth="200.0" prefHeight="423.0" prefWidth="238.0">
+					<children>
+						<TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+							<tabs>
+								<Tab style="-fx-pref-width: 70;" text="In">
+									<content>
+										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+											<children>
+												<TableView fx:id="inTable" prefHeight="389.0" prefWidth="355.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+													<columns>
+														<TableColumn fx:id="inSenderColumn" prefWidth="75.0" text="Sender" />
+														<TableColumn fx:id="inSubjectColumn" prefWidth="112.0" text="Subject" />
+														<TableColumn fx:id="inDateColumn" prefWidth="68.0" text="Date" />
+													</columns>
+												</TableView>
+											</children>
+										</AnchorPane>
+									</content>
+								</Tab>
+								<Tab style="-fx-pref-width: 80;" text="Out">
+									<content>
+										<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+											<children>
+												<TableView fx:id="outTable" layoutY="54.0" prefHeight="389.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+													<columns>
+														<TableColumn fx:id="outReceiverColumn" prefWidth="75.0" text="Receiver" />
+														<TableColumn fx:id="outSubjectColumn" prefWidth="112.0" text="Subject" />
+														<TableColumn fx:id="outDateColumn" prefWidth="68.0" text="Date" />
+													</columns>
+												</TableView>
+											</children>
+										</AnchorPane>
+									</content>
+								</Tab>
+							</tabs>
+						</TabPane>
+					</children>
+				</AnchorPane>
+				<AnchorPane prefHeight="428.0" prefWidth="434.0">
+					<children>
+						<ButtonBar layoutX="320.0" prefHeight="47.0" prefWidth="308.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="5.0">
+							<buttons>
+								<Button fx:id="buttonReply" disable="true" mnemonicParsing="false" onAction="#handleReply" prefHeight="31.0" prefWidth="107.0" text="Reply" />
+								<Button fx:id="buttonReplyAll" disable="true" layoutX="311.0" layoutY="18.0" mnemonicParsing="false" onAction="#handleReplyAll" prefHeight="31.0" text="Reply all" />
+								<Button fx:id="buttonForward" disable="true" layoutX="300.0" layoutY="15.0" mnemonicParsing="false" onAction="#handleForward" text="Forward" />
+							</buttons>
+						</ButtonBar>
+						<Label fx:id="subjectLabel" layoutX="14.0" layoutY="14.0" text="Subject" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="14.0">
+							<font>
+								<Font name="System Bold" size="16.0" />
+							</font>
+						</Label>
+						<Label fx:id="senderLabel" layoutX="14.0" layoutY="41.0" text="From" AnchorPane.leftAnchor="15.0">
+							<font>
+								<Font size="14.0" />
+							</font>
+						</Label>
+						<Label fx:id="dateLabel" layoutX="14.0" layoutY="68.0" text="Date" AnchorPane.leftAnchor="15.0">
+							<font>
+								<Font size="14.0" />
+							</font>
+						</Label>
+						<Label fx:id="receiversLabel" layoutX="14.0" layoutY="95.0" text="To" AnchorPane.leftAnchor="15.0">
+							<font>
+								<Font size="14.0" />
+							</font>
+						</Label>
+						<TextArea fx:id="bodyTextArea" editable="false" layoutX="14.0" layoutY="126.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="125.0" />
+						<Button fx:id="buttonDelete" disable="true" mnemonicParsing="false" onAction="#handleDelete" text="Delete" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+					</children>
+				</AnchorPane>
+			</items>
+		</SplitPane>
+	</children>
+</AnchorPane>

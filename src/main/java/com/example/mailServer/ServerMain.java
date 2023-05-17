@@ -43,16 +43,15 @@ public class ServerMain extends Application {
 
   public ServerMain() {
     userList = new UserList();
-    userList.addUser("francesco@javamail.it");
-    userList.addUser("mauro@javamail.it");
-    userList.addUser("something@javamail.it");
+    userList.addUser("francesco");
+    userList.addUser("mauro");
+    userList.addUser("something");
   }
 
 
 
 
   private void setUpServer(){
-    System.out.println("setUpServer function called"); //TODO debug
     try {
       int thread_counter = 0;
       ServerSocket s = new ServerSocket(8189);
@@ -75,9 +74,7 @@ public class ServerMain extends Application {
   @Override
   public void start(Stage stage) throws Exception {
     try {
-      System.out.println("method: start"); //TODO debug
       FXMLLoader loader = new FXMLLoader(getClass().getResource("ServerLayout.fxml"));
-      //getResource("ServerLayout.fxml");
       Scene scene = new Scene(loader.load(), 300, 500);
       stage.setTitle("Server log @javamail");
       stage.setScene(scene);
@@ -94,7 +91,6 @@ public class ServerMain extends Application {
     return ServerMain.class.getResource(resource);
   }*/
   public static void main(String[] args) {
-    System.out.println("starting serverMain....");
     launch();
   }
 }
