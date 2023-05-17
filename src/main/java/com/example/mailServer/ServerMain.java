@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URL;
 
 import com.example.mailServer.Model.*;
 public class ServerMain extends Application {
@@ -75,7 +76,8 @@ public class ServerMain extends Application {
   public void start(Stage stage) throws Exception {
     try {
       System.out.println("method: start"); //TODO debug
-      FXMLLoader loader = new FXMLLoader(ServerMain.class.getResource("ServerLayout.fxml"));
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("ServerLayout.fxml"));
+      //getResource("ServerLayout.fxml");
       Scene scene = new Scene(loader.load(), 300, 500);
       stage.setTitle("Server log @javamail");
       stage.setScene(scene);
@@ -87,6 +89,10 @@ public class ServerMain extends Application {
       e.printStackTrace();
     }
   }
+/*
+  public static URL getResource(String resource) {
+    return ServerMain.class.getResource(resource);
+  }*/
   public static void main(String[] args) {
     System.out.println("starting serverMain....");
     launch();
