@@ -1,6 +1,7 @@
 package com.example.mailClient.Controller;
 
 import com.example.mailServer.Controller.ServerLayoutController;
+import com.example.mailServer.Model.LoggerModel;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -15,7 +16,7 @@ public class LoginController {
   @FXML
   private AnchorPane loginPane;
 
-  ServerLayoutController controller = new ServerLayoutController();
+  LoggerModel logger = new LoggerModel();
   private ClientMain clientMain;
   private Stage stage;
 
@@ -34,7 +35,7 @@ public class LoginController {
         stage.close();
       } else {
 //        System.out.println(username.getText() + " tried to login, but wasn't registered");
-        controller.addItemToLogList(username.getText() + " tried to login, but wasn't registered");
+        logger.setLog(username.getText() + " tried to login, but wasn't registered");
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.initOwner(stage);
         alert.setTitle("wrong username");

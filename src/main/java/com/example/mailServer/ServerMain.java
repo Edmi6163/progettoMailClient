@@ -1,5 +1,6 @@
 package com.example.mailServer;
 
+import com.example.mailServer.Model.LoggerModel;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -22,7 +23,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 
-import com.example.mailServer.Controller.ServerLayoutController;
+import com.example.mailServer.Controller.*;
 public class ServerMain extends Application {
 //  @FXML
 //  private Stage topStage;
@@ -55,14 +56,16 @@ public class ServerMain extends Application {
 
 
 
-  private void setUpServer(){ controller.initialize(); try {
+  private void setUpServer(){
+    LoggerModel logger = new LoggerModel();
+    try {
       int thread_counter = 0;
       ServerSocket s = new ServerSocket(8189);
-      controller.addItemToLogList("connected to server socket,the ip is " + Inet4Address.getLocalHost().getHostAddress() + " and the port is 8189"); //TODO when view will start remove this
+      logger.setLog("connected to server socket,the ip is " + Inet4Address.getLocalHost().getHostAddress() + " and the port is 8189"); //TODO when view will start remove this
       System.out.println("connected to server socket,the ip is " + Inet4Address.getLocalHost().getHostAddress() + " and the port is 8189");
       while (true) {
         Socket incoming = s.accept();
-        controller.addItemToLogList("incoming ip is: " + Inet4Address.getLocalHost().getHostAddress()); //TODO same as the println above
+        logger.setLog("incoming ip is: " + Inet4Address.getLocalHost().getHostAddress()); //TODO same as the println above
         System.out.println("incoming ip is: " + Inet4Address.getLocalHost().getHostAddress()); //TODO same as the println above
         addLog("thread: " + thread_counter);
         Runnable r = new ServerHandler(this, incoming, new MailHandler());
@@ -78,7 +81,7 @@ public class ServerMain extends Application {
   public void start(Stage stage) throws Exception {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("ServerLayout.fxml"));
-      Scene scene = new Scene(loader.load(), 300, 500);
+      Scene scene = new Scene(loader.load(), 770, 500);
       stage.setTitle("Server log @javamail");
       stage.setScene(scene);
       stage.show();
