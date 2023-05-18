@@ -27,7 +27,8 @@ public class LoginController {
 
   @FXML
   private void handleLogin(){
-    System.out.println("username is: " + username.getText());
+    System.out.println("username is: " + username.getText());// TODO debug
+    logger.setLog("username is: " + username.getText());
     if(username != null){
       clientMain.setUserMail(username.getText()+"@javamail.it");
       boolean loginSuccess=clientMain.getClientHandler().requestAll();

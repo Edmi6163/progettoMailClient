@@ -29,10 +29,10 @@ public class ServerLayoutController {
   }
 
   public void initialize() {
-    loggerModel.setLog("Server start");
+    loggerModel.setLog("Server started");
   }
     public void setLog(String log){
-      Text fullLog = new Text("[" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "]\t -- " + "  " + log + "\n");
+      Text fullLog = new Text("[" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "]\t" + "  " + log + "\n");
       fullLog.setFill(Color.web("#000000"));
       logFlow.getChildren().add(fullLog);
     }
