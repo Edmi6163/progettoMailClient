@@ -58,9 +58,9 @@
 					<children>
 						<ButtonBar layoutX="320.0" prefHeight="47.0" prefWidth="308.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="5.0">
 							<buttons>
-								<Button fx:id="buttonReply" disable="true" mnemonicParsing="false" onAction="#handleReply" prefHeight="31.0" prefWidth="107.0" text="Reply" />
-								<Button fx:id="buttonReplyAll" disable="true" layoutX="311.0" layoutY="18.0" mnemonicParsing="false" onAction="#handleReplyAll" prefHeight="31.0" text="Reply all" />
-								<Button fx:id="buttonForward" disable="true" layoutX="300.0" layoutY="15.0" mnemonicParsing="false" onAction="#handleForward" text="Forward" />
+								<Button fx:id="buttonReply" disable="true" mnemonicParsing="false" onAction="#reply" prefHeight="31.0" prefWidth="107.0" text="Reply" />
+								<Button fx:id="buttonReplyAll" disable="true" layoutX="311.0" layoutY="18.0" mnemonicParsing="false" onAction="#replyAll" prefHeight="31.0" text="Reply all" />
+								<Button fx:id="buttonForward" disable="true" layoutX="300.0" layoutY="15.0" mnemonicParsing="false" onAction="#forward" text="Forward" />
 							</buttons>
 						</ButtonBar>
 						<Label fx:id="subjectLabel" layoutX="14.0" layoutY="14.0" text="Subject" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="14.0">
@@ -78,13 +78,13 @@
 								<Font size="14.0" />
 							</font>
 						</Label>
-						<Label fx:id="receiversLabel" layoutX="14.0" layoutY="95.0" text="To" AnchorPane.leftAnchor="15.0">
+						<Label fx:id="receiverLabel" layoutX="14.0" layoutY="95.0" text="To" AnchorPane.leftAnchor="15.0">
 							<font>
 								<Font size="14.0" />
 							</font>
 						</Label>
 						<TextArea fx:id="bodyTextArea" editable="false" layoutX="14.0" layoutY="126.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="125.0" />
-						<Button fx:id="buttonDelete" disable="true" mnemonicParsing="false" onAction="#handleDelete" text="Delete" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+						<Button fx:id="buttonDelete" disable="true" mnemonicParsing="false" onAction="#delete" text="Delete" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
 					</children>
 				</AnchorPane>
 			</items>

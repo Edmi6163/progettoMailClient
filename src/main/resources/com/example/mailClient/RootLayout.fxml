@@ -11,7 +11,7 @@
 		<AnchorPane prefHeight="50.0" prefWidth="600.0" BorderPane.alignment="CENTER">
 			<children>
 				<Button layoutX="29.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleNew" text="+ New" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
-				<Label fx:id="addressLabel" layoutX="503.0" layoutY="15.0" text="address" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+				<Label fx:id="addressLable" layoutX="503.0" layoutY="15.0" text="address" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
 					<font>
 						<Font name="System Bold" size="18.0" />
 					</font>

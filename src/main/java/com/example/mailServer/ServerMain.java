@@ -1,11 +1,14 @@
 package com.example.mailServer;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.stage.Stage;
 import com.example.mailServer.Controller.MailHandler;
@@ -19,7 +22,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 
-import com.example.mailServer.Model.*;
+import com.example.mailServer.Controller.ServerLayoutController;
 public class ServerMain extends Application {
 //  @FXML
 //  private Stage topStage;
@@ -29,6 +32,7 @@ public class ServerMain extends Application {
   private final UserList userList;
   private ObservableList<String> logList = FXCollections.observableArrayList();
 
+  ServerLayoutController controller = new ServerLayoutController();
   public ObservableList<String> getLogList() {
     return logList;
   }
@@ -51,16 +55,15 @@ public class ServerMain extends Application {
 
 
 
-  private void setUpServer(){
-    try {
+  private void setUpServer(){ controller.initialize(); try {
       int thread_counter = 0;
       ServerSocket s = new ServerSocket(8189);
-      System.out.println("connected to server socket,the ip is " + Inet4Address.getLocalHost().getHostAddress() + " and the port is 8189"); //TODO when view will start remove this
-      addLog("connected to server socket,the ip is " + Inet4Address.getLocalHost().getHostAddress() + " and the port is 8189");
+      controller.addItemToLogList("connected to server socket,the ip is " + Inet4Address.getLocalHost().getHostAddress() + " and the port is 8189"); //TODO when view will start remove this
+      System.out.println("connected to server socket,the ip is " + Inet4Address.getLocalHost().getHostAddress() + " and the port is 8189");
       while (true) {
         Socket incoming = s.accept();
+        controller.addItemToLogList("incoming ip is: " + Inet4Address.getLocalHost().getHostAddress()); //TODO same as the println above
         System.out.println("incoming ip is: " + Inet4Address.getLocalHost().getHostAddress()); //TODO same as the println above
-        addLog("incoming ip is: " + Inet4Address.getLocalHost().getHostAddress());
         addLog("thread: " + thread_counter);
         Runnable r = new ServerHandler(this, incoming, new MailHandler());
         new Thread(r).start();
@@ -86,10 +89,7 @@ public class ServerMain extends Application {
       e.printStackTrace();
     }
   }
-/*
-  public static URL getResource(String resource) {
-    return ServerMain.class.getResource(resource);
-  }*/
+
   public static void main(String[] args) {
     launch();
   }

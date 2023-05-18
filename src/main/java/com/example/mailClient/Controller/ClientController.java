@@ -30,7 +30,7 @@ public class ClientController {
  public void requestInbox() {
    try {
      try (Socket s = new Socket(host, 8189)) {
-       System.out.println("Socket opened");
+       System.out.println("Socket opened"); //TODO debug
        ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
        ObjectInputStream in = new ObjectInputStream(s.getInputStream());
        System.out.println("receiving data from server :)");
@@ -58,7 +58,12 @@ public class ClientController {
     public boolean requestAll(){
       try {
         try(Socket s = new Socket(host,8189)){
-          System.out.println("socket opened :)");
+          //handle connection refused error
+          if(s == null){
+            System.out.println("[Client Controller] socket is null");
+            return false;
+          }
+          System.out.println("[Client Controller] socket opened :)"); //TODO dubug
           ObjectInputStream in= new ObjectInputStream(s.getInputStream());
           ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
           out.writeObject("all");
