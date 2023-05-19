@@ -6,18 +6,35 @@ import com.example.mailClient.ClientMain;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.List;
 
 public class ClientController {
   private ClientMain clientMain;
-
+  private boolean serverStatus = false;
+  private Socket socket;
   private static final String host = "192.168.1.75";
 
   public ClientController(ClientMain clientMain){
     this.clientMain=clientMain;
   }
 
+
+  private void connectToSocket() throws IOException {
+    try {
+      String hostName = InetAddress.getLocalHost().getHostName();
+      socket = new Socket(hostName, 8189);
+      ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+      out.flush();
+      ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+      this.serverStatus = true;
+    } catch (IOException e) {
+      this.serverStatus = false;
+    }
+  }
   public String getMaxTimeStamp(List<Mail> inbox){
     long maxTimeStamp= 0;
     for(Mail m:inbox){
