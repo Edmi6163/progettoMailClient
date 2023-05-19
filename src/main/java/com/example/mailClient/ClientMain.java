@@ -142,7 +142,7 @@ public class ClientMain extends Application {
   private void showLoginDialog(){
     try{
       FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("Login.fxml"));
-      AnchorPane page = (AnchorPane) loader.load();
+      AnchorPane page = loader.load();
 
       dialog = new Stage();
       dialog.setTitle("Login");
@@ -178,7 +178,7 @@ public class ClientMain extends Application {
   public void start(Stage topStage){
     this.topStage = topStage;
     this.topStage.setTitle("Client mail window @javamail");
-    //showLoginDialog();
+    showLoginDialog();
     initRootLayout();
     showMailContainer();
 

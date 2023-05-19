@@ -36,19 +36,21 @@ public class LoginController {
   @FXML
   private boolean handleLogin(){
     System.out.println("username is: " + username.getText());// TODO debug
-    String usernameToCheck = this.username.getText();
     File directory = new File("/home/francesco/Documents/Universita/3 Anno/programmazione3/progettoMailClient/src/main/java/com/example/mailServer/files");
+    String usernameToCheck = this.username.getText() + "@javamail.it";
     File[] files = directory.listFiles();
     boolean loginSuccess = false;
     assert files != null;
     for(File file : files){
-      System.out.println(file.getName());
+      System.out.println("file name is " + file.getName());
       System.out.println("login success status: " + loginSuccess);
       if(file.getName().equals(usernameToCheck)){
         loginSuccess = true;
         logger.setLog(username.getText() + " logged in");
-        System.out.println("login success status: " + loginSuccess);
+        System.out.println(username.getText() + " logged in"); //TODO debug, remove
+        System.out.println("login success status: " + loginSuccess); //TODO debug, remove
         stage.close();
+        break;
      } else {
 //        System.out.println(username.getText() + " tried to login, but wasn't registered");
         logger.setLog(username.getText() + " tried to login, but wasn't registered");

@@ -49,9 +49,10 @@ public class ServerMain extends Application {
 
   public ServerMain() {
     userList = new UserList();
+   /*
     userList.addUser("francesco@javamail.it");
     userList.addUser("mauro@javamail.it");
-    userList.addUser("something@javamail.it");
+    userList.addUser("something@javamail.it");*/
   }
 
 
