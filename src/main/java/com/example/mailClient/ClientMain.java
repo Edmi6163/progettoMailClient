@@ -75,7 +75,7 @@ public class ClientMain extends Application {
   public void initRootLayout(){
     try {
       FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("RootLayout.fxml"));
-      rootLayout = (BorderPane) loader.load();
+      rootLayout = loader.load();
       RootLayoutController controller = loader.getController();
       controller.setClientMain(this);
       Scene scene = new Scene(rootLayout);
@@ -89,7 +89,7 @@ public class ClientMain extends Application {
   public void showMailContainer(){
     try {
       FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("MailContainer.fxml"));
-      AnchorPane mailContainer = (AnchorPane) loader.load();
+      AnchorPane mailContainer = loader.load();
       rootLayout.setCenter(mailContainer);
       MailContainerController controller = loader.getController();
       controller.setClientMain(this);
@@ -178,7 +178,7 @@ public class ClientMain extends Application {
   public void start(Stage topStage){
     this.topStage = topStage;
     this.topStage.setTitle("Client mail window @javamail");
-    showLoginDialog();
+    //showLoginDialog();
     initRootLayout();
     showMailContainer();
 

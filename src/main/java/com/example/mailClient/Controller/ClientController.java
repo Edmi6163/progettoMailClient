@@ -58,7 +58,6 @@ public class ClientController {
     public boolean requestAll(){
       try {
         try(Socket s = new Socket(host,8189)){
-          //handle connection refused error
           if(s == null){
             System.out.println("[Client Controller] socket is null");
             return false;

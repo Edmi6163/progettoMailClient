@@ -46,10 +46,13 @@ public class NewMessageController {
 
   @FXML
   private void handleOk() throws InterruptedException{
+    ClientMain clientMain = new ClientMain();
     mail.setReceivers(receiversField.getText());
     mail.setSubject(subjectField.getText());
     mail.setMessage(messageBodyArea.getText());
     if(isInputOk(mail)){
+      //send mail
+      ClientController.sendMail(mail,clientMain);
       okClicked=true;
 
     }
@@ -66,6 +69,7 @@ public class NewMessageController {
    if(receiversField.getText()==null||receiversField.getText().length()==0)
      error+= "Empty message body\n";
    if(error.length()==0){
+
      return true;
    } else {
      Alert alert = new Alert(Alert.AlertType.ERROR);

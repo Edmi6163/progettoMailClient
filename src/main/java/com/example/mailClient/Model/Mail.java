@@ -19,12 +19,12 @@ import java.util.regex.Pattern;
 
 public class Mail implements Serializable {
   //TODO check if _transient_ is needed
-  private StringProperty sender;
-  private StringProperty subject;
-  private ListProperty<String> receivers;
-  private ObjectProperty<LocalDateTime> date;
-  private StringProperty message;
-  private BooleanProperty isSent;
+  private transient StringProperty sender;
+  private transient StringProperty subject;
+  private transient ListProperty<String> receivers;
+  private transient ObjectProperty<LocalDateTime> date;
+  private transient StringProperty message;
+  private transient BooleanProperty isSent;
 
 
   public Mail(String sender,String subject,String receivers,long timestamp,String message) {
