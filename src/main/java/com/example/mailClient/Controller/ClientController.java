@@ -16,7 +16,7 @@ public class ClientController {
   private ClientMain clientMain;
   private boolean serverStatus = false;
   private Socket socket;
-  private static final String host = "192.168.1.75";
+  private static final String host = "127.0.1.1";
 
   public ClientController(ClientMain clientMain){
     this.clientMain=clientMain;

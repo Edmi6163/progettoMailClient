@@ -37,9 +37,9 @@ public class LoginController {
 
 
   /*
-  * @brief: using Set datastructure for uniqness of elements, avoiding the need to check each files name
+  * @brief: using Set data structure for uniqueness of elements, avoiding the need to check each files name
   * @return: true if the username is in the directory, false otherwise
-  * @note: the username is the name of the file in the directory
+  * @note: the directory is hardcoded, it should be changed to a relative path
   * */
   @FXML
   private boolean handleLogin() {
