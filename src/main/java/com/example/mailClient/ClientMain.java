@@ -2,7 +2,7 @@ package com.example.mailClient;
 
 
 import com.example.mailClient.Controller.*;
-import com.example.mailClient.Model.Mail;
+import com.example.mailClient.Model.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -96,7 +96,7 @@ public class ClientMain extends Application {
       e.printStackTrace();
     }
   }
-  public boolean showSendMailDialog(Mail mail,String title){
+  public void showSendMailDialog(Mail mail, String title){
     try {
     FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("NewMessage.fxml"));
     AnchorPane page = (AnchorPane) loader.load();
@@ -112,10 +112,8 @@ public class ClientMain extends Application {
     controller.setMail(mail);
 
     dialog.showAndWait();
-    return controller.isOkClicked();
     } catch (IOException e){
       e.printStackTrace();
-      return false;
     }
   }
 

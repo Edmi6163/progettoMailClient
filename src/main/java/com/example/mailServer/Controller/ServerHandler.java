@@ -10,11 +10,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ServerHandler implements Runnable{
   private ServerMain serverMain;
   private Socket incoming;
-  private MailHandler mailHandler;
+  private final MailHandler mailHandler;
 
   public ServerHandler(ServerMain serverMain,Socket incoming,MailHandler mailHandler){
     this.serverMain=serverMain;
@@ -29,6 +31,7 @@ public class ServerHandler implements Runnable{
     String user="";
     String max;
 
+    System.out.println("ServerHandler started");
     try{
       ObjectOutputStream out = new ObjectOutputStream(incoming.getOutputStream());
       ObjectInputStream in = new ObjectInputStream(incoming.getInputStream());
@@ -49,7 +52,8 @@ public class ServerHandler implements Runnable{
         out.writeObject(MailHandler.getUpdatedList(user, max));
       } else if (action.equals("send")) {
         Mail mail = (Mail)in.readObject();
-        ArrayList<String> receivers = new ArrayList<>(mail.getReceivers());
+        System.out.println("mail is : "+mail.getClass());
+        Set<String> receivers = new HashSet<>(mail.getReceivers());
         boolean wrongReceiver= false;
         for(String receiver: receivers){
           if(!userList.userExist(receiver)) {

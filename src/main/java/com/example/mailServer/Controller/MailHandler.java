@@ -110,7 +110,7 @@ public synchronized static List<Mail> loadInBox(String user){
     }
 
 
-public synchronized void delete(Mail mail,String user){
+public synchronized void deleteMail(Mail mail, String user){
     try{
       if(mail.isIsSent())
         Files.delete(Paths.get("./file/"+user+"/out/"+mail.getMillis()+".txt"));

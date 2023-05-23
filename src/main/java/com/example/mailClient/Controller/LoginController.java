@@ -32,15 +32,12 @@ public class LoginController {
     this.stage=stage;
   }
 
-
-
-
-
   /*
   * @brief: using Set data structure for uniqueness of elements, avoiding the need to check each files name
   * @return: true if the username is in the directory, false otherwise
   * @note: the directory is hardcoded, it should be changed to a relative path
-  * */
+  *
+  */
   @FXML
   private boolean handleLogin() {
     System.out.println("username is: " + username.getText()); // TODO debug
@@ -69,7 +66,7 @@ public class LoginController {
   }
 
   private Set<String> getUsernamesFromDirectory() {
-    File directory = new File("/home/francesco/Documents/Università/3_Anno/Prog3/progettoMailClient/src/main/java/com/example/mailServer/file");
+    File directory = new File("./src/main/java/com/example/mailServer/file");
     File[] files = directory.listFiles();
     Set<String> usernames = new HashSet<>();
 
@@ -77,10 +74,6 @@ public class LoginController {
     for (File file : files) {
       usernames.add(file.getName());
     }
-
     return usernames;
   }
-
-
-
 }

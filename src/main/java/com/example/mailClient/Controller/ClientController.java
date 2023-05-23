@@ -1,22 +1,26 @@
 package com.example.mailClient.Controller;
 import com.example.mailClient.Model.Mail;
+import com.example.mailServer.Model.LoggerModel;
 import javafx.application.Platform;
 import com.example.mailClient.ClientMain;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
 
-public class ClientController {
+public class ClientController implements Serializable {
   private ClientMain clientMain;
   private boolean serverStatus = false;
   private Socket socket;
   private static final String host = "127.0.1.1";
+
+  private static LoggerModel logger;
 
   public ClientController(ClientMain clientMain){
     this.clientMain=clientMain;
@@ -112,11 +116,15 @@ public class ClientController {
       ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
       ObjectInputStream in = new ObjectInputStream(s.getInputStream());
       out.writeObject("send");
+      System.out.println("mail is being sent" + mail.getClass().getName() + mail.getSubject());
+      logger.setLog("sended an email: " + mail.getClass().getName() + mail.getSubject());
       out.writeObject(mail);
-      Mail m = (Mail)in.readObject();
-      if(m!= null){
-        clientMain.setMailSent(true);
-         Platform.runLater(()->clientMain.addOut(m));
+      if(in.available() > 0) {
+        Mail m = (Mail) in.readObject();
+        if (m != null) {
+          clientMain.setMailSent(true);
+          Platform.runLater(() -> clientMain.addOut(m));
+        }
       }
     } catch (Exception e){
       e.printStackTrace();
