@@ -18,7 +18,7 @@ public class MailHandler {
       long millis = date.getTime();
       String sender = mail.getSender();
       List<String> receivers = mail.getReceivers();
-      FileOutputStream file = new FileOutputStream("./file"+sender+"/"+"out"+millis+".txt");
+      FileOutputStream file = new FileOutputStream("../file"+sender+"/"+"out"+millis+".txt");
       ObjectOutputStream output = new ObjectOutputStream(file);
       newMail=new Mail(mail.getSender(),mail.getSubject(),mail.getReceiversString(),millis,mail.getMessage());
       newMail.setIsSent(true);
@@ -88,7 +88,7 @@ public synchronized static List<Mail> loadOutBox(String user){
 public synchronized static List<Mail> loadInBox(String user){
     List<Mail> inbox = new ArrayList<>();
     try{
-      File dir=new File("./file/"+user+"/"+"in");
+      File dir=new File("../file/"+user+"/"+"in");
       ObjectInputStream input = null;
       FileInputStream file = null;
       for(File f: Objects.requireNonNull(dir.listFiles())) {
@@ -110,12 +110,12 @@ public synchronized static List<Mail> loadInBox(String user){
     }
 
 
-public synchronized void deleteMail(Mail mail, String user){
+public synchronized void delete(Mail mail, String user){
     try{
       if(mail.isIsSent())
-        Files.delete(Paths.get("./file/"+user+"/out/"+mail.getMillis()+".txt"));
+        Files.delete(Paths.get("../file/"+user+"/out/"+mail.getMillis()+".txt"));
       else
-        Files.delete(Paths.get("./file/"+user+"/in/"+mail.getMillis()+".txt"));
+        Files.delete(Paths.get("../file/"+user+"/in/"+mail.getMillis()+".txt"));
     } catch (Exception e){
       e.printStackTrace();
     }

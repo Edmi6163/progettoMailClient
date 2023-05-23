@@ -24,6 +24,7 @@ public class ClientController implements Serializable {
 
   public ClientController(ClientMain clientMain){
     this.clientMain=clientMain;
+    logger = new LoggerModel();
   }
 
 
@@ -116,7 +117,7 @@ public class ClientController implements Serializable {
       ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
       ObjectInputStream in = new ObjectInputStream(s.getInputStream());
       out.writeObject("send");
-      System.out.println("mail is being sent" + mail.getClass().getName() + mail.getSubject());
+      System.out.println("mail is being sent from " + mail.getSender() + "to: "+ mail.getReceiversString()  + mail.getSubject());
       logger.setLog("sended an email: " + mail.getClass().getName() + mail.getSubject());
       out.writeObject(mail);
       if(in.available() > 0) {

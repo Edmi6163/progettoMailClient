@@ -21,7 +21,7 @@ public class Mail implements Serializable {
   private StringProperty sender;
   private StringProperty subject;
   private ListProperty<String> receivers;
-  private transient ObjectProperty<LocalDateTime> date;
+  private transient ObjectProperty<LocalDateTime> date; //needed transient beacause ObjectProperty<LocalDateTime> is not serializable
   private StringProperty message;
   private BooleanProperty isSent;
 

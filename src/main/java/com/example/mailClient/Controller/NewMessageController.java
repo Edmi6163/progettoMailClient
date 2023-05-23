@@ -62,24 +62,24 @@ public class NewMessageController {
     String error= "";
     if(receiversField.getText()==null||receiversField.getText().length()==0)
       error+="Missing receiver\n";
-   if(mail.getReceiversString().length()==0)
-     error+="Wrong email format\n";
-   if(subjectField.getText()==null||subjectField.getText().length()==0)
-     error+="Missing subject\n";
-   if(receiversField.getText()==null||receiversField.getText().length()==0)
-     error+= "Empty message body\n";
-   if(error.length()==0){
+    if(mail.getReceiversString().length()==0)
+      error+="Wrong email format\n";
+    if(subjectField.getText()==null||subjectField.getText().length()==0)
+      error+="Missing subject\n";
+    if(receiversField.getText()==null||receiversField.getText().length()==0)
+      error+= "Empty message body\n";
+    if(error.length()==0){
 
-     return true;
-   } else {
-     Alert alert = new Alert(Alert.AlertType.ERROR);
-     alert.initOwner(dialog);
-     alert.setTitle("Invalid fields");
-     alert.setHeaderText("Errors detected in the following fields");
-     alert.setContentText(error);
-     alert.showAndWait();
+      return true;
+    } else {
+      Alert alert = new Alert(Alert.AlertType.ERROR);
+      alert.initOwner(dialog);
+      alert.setTitle("Invalid fields");
+      alert.setHeaderText("Errors detected in the following fields");
+      alert.setContentText(error);
+      alert.showAndWait();
 
-     return false;
-   }
+      return false;
+    }
   }
 }

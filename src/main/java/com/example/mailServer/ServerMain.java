@@ -49,10 +49,9 @@ public class ServerMain extends Application {
 
   public ServerMain() {
     userList = new UserList();
-   /*
     userList.addUser("francesco@javamail.it");
     userList.addUser("mauro@javamail.it");
-    userList.addUser("something@javamail.it");*/
+    userList.addUser("something@javamail.it");
   }
 
 
@@ -60,8 +59,9 @@ public class ServerMain extends Application {
 
   private void setUpServer(){
     LoggerModel logger = new LoggerModel();
+    int thread_counter = 0;
+
     try {
-      int thread_counter = 0;
       ServerSocket s = new ServerSocket(8189);
       logger.setLog("connected to server socket,the ip is " + Inet4Address.getLocalHost().getHostAddress() + " and the port is 8189"); //TODO when view will start remove this
       System.out.println("connected to server socket,the ip is " + Inet4Address.getLocalHost().getHostAddress() + " and the port is 8189");
