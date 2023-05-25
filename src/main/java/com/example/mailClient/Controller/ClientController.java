@@ -118,7 +118,7 @@ public class ClientController implements Serializable {
       ObjectInputStream in = new ObjectInputStream(s.getInputStream());
       out.writeObject("send");
       System.out.println("mail is being sent from " + mail.getSender() + "to: "+ mail.getReceiversString()  + mail.getSubject());
-      logger.setLog("sended an email: " + mail.getClass().getName() + mail.getSubject());
+      logger.setLog("sent an email: " + mail.getReceiversString() + mail.getSubject());
       out.writeObject(mail);
       if(in.available() > 0) {
         Mail m = (Mail) in.readObject();
