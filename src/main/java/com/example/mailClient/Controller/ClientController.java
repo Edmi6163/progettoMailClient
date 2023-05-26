@@ -27,8 +27,14 @@ public class ClientController implements Serializable {
     logger = new LoggerModel();
   }
 
+  /*
+  * This method checks if the server is online
+   */
+  public boolean checkConnection() {
+    return connectToSocket();
+  }
 
-  private void connectToSocket() throws IOException {
+  private boolean connectToSocket() {
     try {
       String hostName = InetAddress.getLocalHost().getHostName();
       socket = new Socket(hostName, 8189);
@@ -39,6 +45,7 @@ public class ClientController implements Serializable {
     } catch (IOException e) {
       this.serverStatus = false;
     }
+    return serverStatus;
   }
   public String getMaxTimeStamp(List<Mail> inbox){
     long maxTimeStamp= 0;

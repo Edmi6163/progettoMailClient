@@ -86,10 +86,10 @@ public class NewMessageController {
       }
     }
 
-    Alert alert = new Alert(Alert.AlertType.ERROR);
+    Alert alert = new Alert(Alert.AlertType.WARNING);
     alert.initOwner(dialog);
     alert.setTitle("Mail not exists");
-    alert.setHeaderText("Errors, mail written is not valid");
+    alert.setHeaderText("Sorry,receiver doesn't exist or the email address is not valid");
     alert.setContentText(error);
     alert.showAndWait();
 

@@ -20,7 +20,6 @@ import java.util.List;
 
 public class ClientMain extends Application {
   private Stage topStage;
-  private Stage dialog;
   private BorderPane rootLayout;
   private boolean mailSent;
 
@@ -83,6 +82,10 @@ public class ClientMain extends Application {
     } catch (IOException e){
       e.printStackTrace();
     }
+
+    if(!checkConnection()){
+      showErrorPopUp();
+    }
   }
 
   public void showMailContainer(){
@@ -130,18 +133,22 @@ public class ClientMain extends Application {
   }
 
   public void showErrorPopUp(){
-    Alert popup=new Alert(Alert.AlertType.INFORMATION);
-    popup.initOwner(topStage);
-    popup.setTitle("Error server");
-    popup.setContentText("Server propably is offline, Please try again later");
-    popup.showAndWait();
+    if(topStage != null) {
+      Alert popup = new Alert(Alert.AlertType.INFORMATION);
+      popup.initOwner(topStage);
+      popup.setTitle("Server error");
+      popup.setContentText("Server propably is offline, Please try again later");
+      popup.showAndWait();
+    } else {
+      System.err.println("Error: topStage is null");
+    }
   }
   private void showLoginDialog(){
     try{
       FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("Login.fxml"));
       AnchorPane page = loader.load();
 
-      dialog = new Stage();
+      Stage dialog = new Stage();
       dialog.setTitle("Login");
       dialog.initModality(Modality.WINDOW_MODAL);
       dialog.initOwner(topStage);
@@ -149,7 +156,7 @@ public class ClientMain extends Application {
       dialog.setScene(scene);
       dialog.setOnCloseRequest(windowEvent -> Platform.exit());
       LoginController loginController = loader.getController();
-      loginController.setClientMain(this,dialog);
+      loginController.setClientMain(this, dialog);
 
       dialog.showAndWait();
     } catch (IOException e){
@@ -168,6 +175,14 @@ public class ClientMain extends Application {
       }
     }
   }
+
+  private boolean checkConnection() {
+    if(!clientHandler.checkConnection()){
+      showErrorPopUp();
+      return false;
+    }
+    return true;
+  }
   public Stage getTopStage(){
     return topStage;
   }
@@ -175,7 +190,9 @@ public class ClientMain extends Application {
   public void start(Stage topStage){
     this.topStage = topStage;
     this.topStage.setTitle("Client mail window @javamail");
+
     showLoginDialog();
+
     initRootLayout();
     showMailContainer();
 
