@@ -7,7 +7,7 @@
 
 <AnchorPane fx:id="loginPane" maxHeight="110.0" maxWidth="392.0" minHeight="110.0" minWidth="320.0" prefHeight="110.0" prefWidth="326.0"
 						xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-						fx:controller="com.example.mailClient.Controller.LoginController">
+						fx:controller="com.example.mailServer.Controller.LoginController">
 	<Label layoutX="225.0" layoutY="41.0" prefHeight="18.0" prefWidth="109.0" text="\@javamail.it"
 				 AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="19.0"/>
 	<TextField fx:id="username" layoutX="68.0" layoutY="38.0" prefHeight="26.0" prefWidth="194.0"

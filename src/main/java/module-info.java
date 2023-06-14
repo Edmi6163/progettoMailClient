@@ -9,4 +9,5 @@ module com.example.progettomailclient {
   exports com.example.mailServer;
   exports com.example.mailClient;
   exports com.example.mailClient.Controller;
-  }
+  exports com.example.mailServer.Controller;
+}

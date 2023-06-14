@@ -1,4 +1,4 @@
-package com.example.mailClient.Controller;
+package com.example.mailServer.Controller;
 
 import com.example.mailClient.Model.User;
 import com.example.mailServer.Model.LoggerModel;
@@ -41,6 +41,7 @@ public class LoginController {
   @FXML
   private boolean handleLogin() {
     System.out.println("username is: " + username.getText()); // TODO debug
+    logger.setLog("username is: " + username.getText());
     String usernameToCheck = this.username.getText() + "@javamail.it";
 
     Set<String> usernames = getUsernamesFromDirectory();
@@ -48,8 +49,9 @@ public class LoginController {
     boolean loginSuccess = usernames.contains(usernameToCheck);
 
     if (loginSuccess) {
-      logger.setLog(username.getText() + " logged in ");
+      logger.setLog(username.getText() + " logged in successfully");
       System.out.println(username.getText() + " logged in ");
+      clientMain.setUserMail(usernameToCheck);
       stage.close();
     } else {
       logger.setLog(username.getText() + " tried to login, but wasn't registered");

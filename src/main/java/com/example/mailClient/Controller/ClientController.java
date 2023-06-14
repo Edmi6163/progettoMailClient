@@ -8,10 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.List;
 
 public class ClientController implements Serializable {
@@ -19,6 +16,7 @@ public class ClientController implements Serializable {
   private boolean serverStatus = false;
   private Socket socket;
   private static final String host = "127.0.1.1";
+
 
   private static LoggerModel logger;
 
@@ -124,8 +122,8 @@ public class ClientController implements Serializable {
       ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
       ObjectInputStream in = new ObjectInputStream(s.getInputStream());
       out.writeObject("send");
-      System.out.println("mail is being sent from " + mail.getSender() + "to: "+ mail.getReceiversString()  + mail.getSubject());
-      logger.setLog("sent an email: " + mail.getReceiversString() + mail.getSubject());
+      System.out.println("sending mail to server " + mail);
+      logger.setLog("sent an email: " + mail);
       out.writeObject(mail);
       if(in.available() > 0) {
         Mail m = (Mail) in.readObject();

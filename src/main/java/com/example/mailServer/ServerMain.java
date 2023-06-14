@@ -59,12 +59,12 @@ public class ServerMain extends Application {
 
   private void setUpServer(){
     LoggerModel logger = new LoggerModel();
-    int thread_counter = 0;
 
     try {
+      int thread_counter = 0;
       ServerSocket s = new ServerSocket(8189);
       logger.setLog("connected to server socket,the ip is " + Inet4Address.getLocalHost().getHostAddress() + " and the port is 8189"); //TODO when view will start remove this
-      System.out.println("connected to server socket,the ip is " + Inet4Address.getLocalHost().getHostAddress() + " and the port is 8189");
+      System.out.println("connected to server socket,the ip is " + Inet4Address.getLocalHost().getHostAddress() + " and the port is 8189"); //TODO when view will start remove this
       while (true) {
         Socket incoming = s.accept();
         logger.setLog("incoming ip is: " + Inet4Address.getLocalHost().getHostAddress()); //TODO same as the println above

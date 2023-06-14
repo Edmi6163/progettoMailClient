@@ -3,6 +3,7 @@ package com.example.mailClient;
 
 import com.example.mailClient.Controller.*;
 import com.example.mailClient.Model.*;
+import com.example.mailServer.Controller.LoginController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -23,12 +24,14 @@ public class ClientMain extends Application {
   private BorderPane rootLayout;
   private boolean mailSent;
 
-  public boolean isMailSent(){
+  public boolean isMailSent() {
     return mailSent;
   }
-  public void setMailSent(boolean mailSent){
+
+  public void setMailSent(boolean mailSent) {
     this.mailSent = mailSent;
   }
+
   private ObservableList<Mail> inbox = FXCollections.observableArrayList();
   private ObservableList<Mail> outbox = FXCollections.observableArrayList();
 
@@ -38,39 +41,57 @@ public class ClientMain extends Application {
   public ClientController getClientHandler() {
     return clientHandler;
   }
-  public ClientMain(){
+
+  public ClientMain() {
     clientHandler = new ClientController(this);
   }
-  public void setUserMail(String userMail){
+
+  public void setUserMail(String userMail) {
     this.userMail = userMail;
   }
-  public ObservableList<Mail> getInbox(){
+
+  public ObservableList<Mail> getInbox() {
     return inbox;
   }
-  public ObservableList<Mail> getOutbox(){
+
+  public ObservableList<Mail> getOutbox() {
     return outbox;
   }
-  public void addInbox(List<Mail> in){
+
+  public void addInbox(List<Mail> in) {
     inbox.addAll(in);
   }
-  public void addOutbox(List<Mail> out){
+
+  public void addOutbox(List<Mail> out) {
     outbox.addAll(out);
   }
-  public void addOut(Mail out){
+
+  public void addOut(Mail out) {
     outbox.add(out);
   }
-  public void delete(Mail mail){
-    if(mail.isIsSent())
+
+  public void delete(Mail mail) {
+    if (mail.isIsSent())
       outbox.remove(mail);
     else
       inbox.remove(mail);
   }
-  public String getUserMail(){
+
+  public String getUserMail() {
     return userMail;
   }
 
 
-  public void initRootLayout(){
+  private void showServerUpNotification() {
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    alert.setTitle("Server is up");
+    alert.setHeaderText("Server is up and running");
+    alert.setContentText("You can send email now");
+    alert.showAndWait();
+  }
+
+
+  public void initRootLayout() {
     try {
       FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("RootLayout.fxml"));
       rootLayout = loader.load();
@@ -79,11 +100,10 @@ public class ClientMain extends Application {
       Scene scene = new Scene(rootLayout);
       topStage.setScene(scene);
       topStage.show();
-    } catch (IOException e){
+    } catch (IOException e) {
       e.printStackTrace();
     }
-
-    if(!checkConnection()){
+    if (!checkConnection()) {
       showErrorPopUp();
     }
   }
@@ -192,7 +212,6 @@ public class ClientMain extends Application {
     this.topStage.setTitle("Client mail window @javamail");
 
     showLoginDialog();
-
     initRootLayout();
     showMailContainer();
 

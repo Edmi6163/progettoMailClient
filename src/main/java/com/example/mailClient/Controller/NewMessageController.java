@@ -71,7 +71,6 @@ public class NewMessageController {
    * @brief: Check if the receiversField is a valid email address it's a subfolder name in folder "src/com/examlpe/mailServer/file, if not, display an error messager
    * @param mail
    * @param clientMain
-   *
    */
 
   private boolean checkIfMailExists(Mail mail, ClientMain clientMain) {

@@ -97,7 +97,7 @@ public class Mail implements Serializable {
     return date.get();
   }
   public String getFormattedDate(){
-    return date.get().format(DateTimeFormatter.ofPattern("dd/mm/yyyy-HH:mm"));
+    return date.get().format(DateTimeFormatter.ofPattern("dd/MM/yyyy-HH:mm"));
   }
 
   public ObjectProperty<LocalDateTime> dateProperty() {

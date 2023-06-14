@@ -18,7 +18,7 @@ public class MailHandler {
       long millis = date.getTime();
       String sender = mail.getSender();
       List<String> receivers = mail.getReceivers();
-      FileOutputStream file = new FileOutputStream("../file"+sender+"/"+"out"+millis+".txt");
+      FileOutputStream file = new FileOutputStream("./file"+sender+"/"+"out"+millis+".txt");
       ObjectOutputStream output = new ObjectOutputStream(file);
       newMail=new Mail(mail.getSender(),mail.getSubject(),mail.getReceiversString(),millis,mail.getMessage());
       newMail.setIsSent(true);
