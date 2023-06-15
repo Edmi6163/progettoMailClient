@@ -4,6 +4,8 @@ package com.example.mailClient;
 import com.example.mailClient.Controller.*;
 import com.example.mailClient.Model.*;
 import com.example.mailServer.Controller.LoginController;
+
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -15,6 +17,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 
 import java.io.IOException;
 import java.util.List;

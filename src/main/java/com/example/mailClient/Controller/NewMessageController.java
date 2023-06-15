@@ -21,7 +21,6 @@ public class NewMessageController {
   private Stage dialog;
   private Mail mail;
   private boolean okClicked = false;
-  //private ClientMain clientMain;
 
   @FXML
   private void initialize(){

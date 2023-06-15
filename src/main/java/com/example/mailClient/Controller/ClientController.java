@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ClientController implements Serializable {
   private ClientMain clientMain;
-  private boolean serverStatus = false;
+  private transient boolean serverStatus = false;
   private Socket socket;
   private static final String host = "127.0.1.1";
 
