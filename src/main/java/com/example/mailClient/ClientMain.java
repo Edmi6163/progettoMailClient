@@ -171,6 +171,7 @@ public class ClientMain extends Application {
       Stage dialog = new Stage();
       dialog.setTitle("Login");
       dialog.initModality(Modality.WINDOW_MODAL);
+      dialog.setResizable(false);
       dialog.initOwner(topStage);
       Scene scene = new Scene(page);
       dialog.setScene(scene);

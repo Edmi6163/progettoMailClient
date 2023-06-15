@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Mail implements Serializable {
-  //TODO check if _transient_ is needed
+  //OjectProopery<LocalDateTime> is not serializable, so must be transient
   private StringProperty sender;
   private StringProperty subject;
   private ListProperty<String> receivers;

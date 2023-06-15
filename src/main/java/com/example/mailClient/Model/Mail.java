@@ -22,7 +22,7 @@ public class Mail implements Serializable {
   private  StringProperty sender;
   private  StringProperty subject;
   private  ListProperty<String> receivers;
-  private  ObjectProperty<LocalDateTime> date;
+  private  transient ObjectProperty<LocalDateTime> date;
   private  StringProperty message;
   private  BooleanProperty isSent;
 

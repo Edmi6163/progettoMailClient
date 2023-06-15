@@ -83,10 +83,11 @@ public class ServerMain extends Application {
   public void start(Stage stage) throws Exception {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("ServerLayout.fxml"));
-      Scene scene = new Scene(loader.load(), 770, 500);
+      Scene scene = new Scene(loader.load(), 400, 500);
       stage.setTitle("Server log @javamail");
       stage.setScene(scene);
       stage.show();
+      stage.setResizable(false);
       scene.getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, (WindowEvent event) -> System.exit(1));
       Thread t = new Thread(this::setUpServer);
       t.start();

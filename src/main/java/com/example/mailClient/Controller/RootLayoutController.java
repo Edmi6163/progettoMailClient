@@ -8,14 +8,11 @@ import com.example.mailClient.ClientMain;
 
 public class RootLayoutController {
   @FXML
-  public Label addressLabel;
-  @FXML
   public Label userNameLabel;
   private ClientMain clientMain;
 
   public void setClientMain(ClientMain clientMain) {
     this.clientMain = clientMain;
-//    addressLabel.setText(clientMain.getUserMail());
     userNameLabel.setText(clientMain.getUserMail());
   }
 

@@ -1,5 +1,6 @@
 package com.example.mailServer.Controller;
 
+import com.example.mailServer.Model.LoggerModel;
 import com.example.mailServer.ServerMain;
 import com.example.mailServer.Model.Mail;
 import com.example.mailServer.Model.UserList;
@@ -41,18 +42,10 @@ public class ServerHandler implements Runnable {
 
     String action = (String) in.readObject();
     switch (action) {
-      case "all":
-        handleAllAction(in, out, userList);
-        break;
-      case "inbox":
-        handleInboxAction(in, out);
-        break;
-      case "send":
-        handleSendAction(in, out, userList);
-        break;
-      default:
-        // Handle unrecognized action
-        break;
+      case "all" -> handleAllAction(in, out, userList);
+      case "inbox" -> handleInboxAction(in, out);
+      case "send" -> handleSendAction(in, out, userList);
+      default -> log("Unrecognized action"); //handle unrecognized action
     }
   }
 

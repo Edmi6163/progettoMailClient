@@ -122,7 +122,7 @@ public class ClientController implements Serializable {
       ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
       ObjectInputStream in = new ObjectInputStream(s.getInputStream());
       out.writeObject("send");
-      System.out.println("sending mail to server " + mail);
+      System.out.println("sending mail: \n" + mail);
       logger.setLog("sent an email: " + mail);
       out.writeObject(mail);
       if(in.available() > 0) {
