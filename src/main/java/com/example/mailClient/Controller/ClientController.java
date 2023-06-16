@@ -26,7 +26,7 @@ public class ClientController implements Serializable {
   }
 
   /*
-  * This method checks if the server is online
+  * @brief: This method checks if the server is online
    */
   public boolean checkConnection() {
     return connectToSocket();
@@ -60,7 +60,7 @@ public class ClientController implements Serializable {
        System.out.println("Socket opened"); //TODO debug
        ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
        ObjectInputStream in = new ObjectInputStream(s.getInputStream());
-       System.out.println("receiving data from server :)");
+       System.out.println("receiving data from server :)" + s);
        out.writeObject("inbox");
        out.writeObject(clientMain.getUserMail());
        out.writeObject(getMaxTimeStamp(clientMain.getInbox()));
@@ -85,11 +85,7 @@ public class ClientController implements Serializable {
     public boolean requestAll(){
       try {
         try(Socket s = new Socket(host,8189)){
-          if(s == null){
-            System.out.println("[Client Controller] socket is null");
-            return false;
-          }
-          System.out.println("[Client Controller] socket opened :)"); //TODO dubug
+          System.out.println("[Client Controller] socket opened :)"+ s); //TODO dubug
           ObjectInputStream in= new ObjectInputStream(s.getInputStream());
           ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
           out.writeObject("all");

@@ -21,6 +21,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ClientMain extends Application {
   private Stage topStage;
@@ -86,14 +88,34 @@ public class ClientMain extends Application {
 
 
   private void showServerUpNotification() {
-    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-    alert.setTitle("Server is up");
-    alert.setHeaderText("Server is up and running");
-    alert.setContentText("You can send email now");
-    alert.showAndWait();
+    Platform.runLater(() -> {
+      Alert alert = new Alert(Alert.AlertType.INFORMATION);
+      alert.setTitle("Server is up");
+      alert.setHeaderText("Server is up and running");
+      alert.setContentText("You can read and send new email now");
+      alert.showAndWait();
+    });
   }
 
+  private void stopServerCheckTimer(Timer timer){
+    if(timer!=null)
+      timer.cancel();
+      timer = null;
+  }
 
+  private void startServerCheckTimer(){
+    Timer timer = new Timer();
+
+    timer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        if (clientHandler.checkConnection()) {
+          showServerUpNotification();
+          stopServerCheckTimer(timer);
+        }
+      }
+    }, 0, 10000);
+  }
   public void initRootLayout() {
     try {
       FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("RootLayout.fxml"));
@@ -109,6 +131,7 @@ public class ClientMain extends Application {
     if (!checkConnection()) {
       showErrorPopUp();
     }
+    startServerCheckTimer();
   }
 
   public void showMailContainer(){
@@ -156,15 +179,11 @@ public class ClientMain extends Application {
   }
 
   public void showErrorPopUp(){
-    if(topStage != null) {
       Alert popup = new Alert(Alert.AlertType.INFORMATION);
       popup.initOwner(topStage);
       popup.setTitle("Server error");
       popup.setContentText("Server propably is offline, Please try again later");
       popup.showAndWait();
-    } else {
-      System.err.println("Error: topStage is null");
-    }
   }
   private void showLoginDialog(){
     try{
