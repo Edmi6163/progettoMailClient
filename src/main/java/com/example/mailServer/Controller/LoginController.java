@@ -1,17 +1,15 @@
 package com.example.mailServer.Controller;
 
-import com.example.mailClient.Model.User;
 import com.example.mailServer.Model.LoggerModel;
-import com.example.mailServer.Model.UserList;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.SubScene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import com.example.mailClient.ClientMain;
-import com.example.mailServer.*;
 
 import java.io.File;
 import java.util.HashSet;
@@ -22,26 +20,28 @@ public class LoginController {
   private TextField username;
   @FXML
   private AnchorPane loginPane;
-
-  LoggerModel logger = new LoggerModel();
+@FXML
+private TextFlow logFlow;
+  private LoggerModel logger = new LoggerModel();
   private ClientMain clientMain;
   private Stage stage;
+
 
   public void setClientMain(ClientMain main,Stage stage){
     this.clientMain=main;
     this.stage=stage;
   }
 
+
+
   /*
   * @brief: using Set data structure for uniqueness of elements, avoiding the need to check each files name
   * @return: true if the username is in the directory, false otherwise
   * @note: the directory is hardcoded, it should be changed to a relative path
-  *
   */
   @FXML
   private boolean handleLogin() {
-    System.out.println("username is: " + username.getText()); // TODO debug
-    logger.setLog("username is: " + username.getText());
+//    logger.setLog("username is: " + username.getText());
     String usernameToCheck = this.username.getText() + "@javamail.it";
 
     Set<String> usernames = getUsernamesFromDirectory();

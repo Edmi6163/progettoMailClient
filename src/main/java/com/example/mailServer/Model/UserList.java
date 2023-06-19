@@ -27,6 +27,7 @@ public class UserList implements Serializable {
     return users;
   }
 
+
   public List<Mail> getUserInbox(String u){
     List<Mail> inbox= new ArrayList<>();
     inbox.add(new Mail()); //TODO see this part better

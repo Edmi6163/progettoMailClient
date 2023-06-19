@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.TextFlow?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/18.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mailServer.Controller.ServerLayoutController">
-	<content>
-		<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-			<children>
-				<TextFlow fx:id="logFlow" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-			</children>
-		</AnchorPane>
-	</content>
-</ScrollPane>
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mailServer.Controller.ServerLayoutController">
+	<children>
+		<ListView fx:id="logList" prefHeight="480.0" prefWidth="720.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
+		<Label layoutX="17.0" layoutY="26.0" prefHeight="26.0" prefWidth="50.0" text="Log" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="13.0" />
+	</children>
+</AnchorPane>

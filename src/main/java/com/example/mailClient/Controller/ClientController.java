@@ -85,7 +85,7 @@ public class ClientController implements Serializable {
     public boolean requestAll(){
       try {
         try(Socket s = new Socket(host,8189)){
-          System.out.println("[Client Controller] socket opened :)"+ s); //TODO dubug
+          System.out.println("[Client Controller] socket opened :)"+ s); //TODO debug
           ObjectInputStream in= new ObjectInputStream(s.getInputStream());
           ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
           out.writeObject("all");
@@ -117,6 +117,9 @@ public class ClientController implements Serializable {
     try(Socket s = new Socket(host,8189)) {
       ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
       ObjectInputStream in = new ObjectInputStream(s.getInputStream());
+      //print in terminal in and out mails
+      System.out.println("in mails: " + clientMain.getInbox());
+      System.out.println("out mails: " + clientMain.getOutbox());
       out.writeObject("send");
       System.out.println("sending mail: \n" + mail);
       logger.setLog("sent an email: " + mail);

@@ -32,8 +32,9 @@ public class ServerMain extends Application {
 
   private final UserList userList;
   private ObservableList<String> logList = FXCollections.observableArrayList();
+  private final LoggerModel logger = new LoggerModel();
 
-  ServerLayoutController controller = new ServerLayoutController();
+//  ServerLayoutController controller = new ServerLayoutController();
   public ObservableList<String> getLogList() {
     return logList;
   }
@@ -58,7 +59,6 @@ public class ServerMain extends Application {
 
 
   private void setUpServer(){
-    LoggerModel logger = new LoggerModel();
 
     try {
       int thread_counter = 0;
@@ -83,11 +83,10 @@ public class ServerMain extends Application {
   public void start(Stage stage) throws Exception {
     try {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("ServerLayout.fxml"));
-      Scene scene = new Scene(loader.load(), 400, 500);
+      Scene scene = new Scene(loader.load(), 800, 700);
       stage.setTitle("Server log @javamail");
       stage.setScene(scene);
       stage.show();
-      stage.setResizable(false);
       scene.getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, (WindowEvent event) -> System.exit(1));
       Thread t = new Thread(this::setUpServer);
       t.start();

@@ -15,13 +15,12 @@ import java.util.Set;
 
 public class ServerHandler implements Runnable {
   private final ServerMain serverMain;
+  private LoggerModel logger;
   private final Socket incoming;
-  private final MailHandler mailHandler;
 
   public ServerHandler(ServerMain serverMain, Socket incoming, MailHandler mailHandler) {
     this.serverMain = serverMain;
     this.incoming = incoming;
-    this.mailHandler = mailHandler;
   }
 
   @Override
@@ -37,10 +36,11 @@ public class ServerHandler implements Runnable {
 
   private void handleRequest() throws IOException, ClassNotFoundException {
     UserList userList = serverMain.getUserList();
+    assert userList != null;
     ObjectOutputStream out = new ObjectOutputStream(incoming.getOutputStream());
     ObjectInputStream in = new ObjectInputStream(incoming.getInputStream());
 
-    String action = (String) in.readObject();
+    String action = in.readObject().toString();
     switch (action) {
       case "all" -> handleAllAction(in, out, userList);
       case "inbox" -> handleInboxAction(in, out);
@@ -89,6 +89,7 @@ public class ServerHandler implements Runnable {
 
   private void closeConnection() {
     try {
+      logger.setLog("closing connection");
       incoming.close();
     } catch (IOException e) {
       e.printStackTrace();

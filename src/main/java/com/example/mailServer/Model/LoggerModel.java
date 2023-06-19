@@ -7,12 +7,12 @@ public class LoggerModel {
   public SimpleStringProperty log;
 
   public LoggerModel() {
-    log = new SimpleStringProperty("Start server \n");
+    log = new SimpleStringProperty("Start server mod \n");
   }
   public SimpleStringProperty getLog() {
     return log;
   }
   public void setLog(String logs) {
-    Platform.runLater(()-> log.set(logs));
+    log.set(logs);
   }
 }

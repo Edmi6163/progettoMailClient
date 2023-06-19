@@ -13,10 +13,12 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 
 import java.io.IOException;
@@ -89,18 +91,16 @@ public class ClientMain extends Application {
 
   private void showServerUpNotification() {
     Platform.runLater(() -> {
-      Alert alert = new Alert(Alert.AlertType.INFORMATION);
-      alert.setTitle("Server is up");
-      alert.setHeaderText("Server is up and running");
-      alert.setContentText("You can read and send new email now");
-      alert.showAndWait();
+      Tooltip tooltip = new Tooltip();
+      tooltip.setText("Server is up!");
+      tooltip.setHideDelay(Duration.seconds(5));
     });
   }
 
   private void stopServerCheckTimer(Timer timer){
     if(timer!=null)
       timer.cancel();
-      timer = null;
+    timer = null;
   }
 
   private void startServerCheckTimer(){
@@ -116,6 +116,7 @@ public class ClientMain extends Application {
       }
     }, 0, 10000);
   }
+
   public void initRootLayout() {
     try {
       FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("RootLayout.fxml"));
@@ -234,13 +235,13 @@ public class ClientMain extends Application {
     this.topStage = topStage;
     this.topStage.setTitle("Client mail window @javamail");
 
+    Thread refresh = new Thread(this::refresh);
+    refresh.setDaemon(true);
+    refresh.start();
     showLoginDialog();
     initRootLayout();
     showMailContainer();
 
-    Thread refresh = new Thread(this::refresh);
-    refresh.setDaemon(true);
-    refresh.start();
   }
 
   public static void main(String[] args){

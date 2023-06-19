@@ -1,11 +1,10 @@
 package com.example.mailServer.Controller;
 
-import com.example.mailServer.Model.LoggerModel;
+import com.example.mailServer.Model.*;
 import com.example.mailServer.ServerMain;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -15,25 +14,21 @@ import java.util.Date;
 import java.util.List;
 
 public class ServerLayoutController {
+	private ServerMain serverMain;
 
-  @FXML
-  public TextFlow logFlow;
+	@FXML
+	private ListView<String> logList = new ListView<>();
 
-  private LoggerModel loggerModel;
+	public void setMainApp(ServerMain serverMain) {
+		this.serverMain = serverMain;
+		logList.setItems(serverMain.getLogList());
+	}
 
-  public ServerLayoutController() {
-    loggerModel = new LoggerModel();
-    loggerModel.getLog().addListener((observable, oldValue, newValue) -> {
-      setLog(newValue);
-    });
-  }
+	public void initialize() {
+		setLog("server started");
+	}
 
-  public void initialize() {
-    loggerModel.setLog("Server started");
-  }
-    public void setLog(String log){
-      Text fullLog = new Text("[" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "]\t" + "  " + log + "\n");
-      fullLog.setFill(Color.web("#000000"));
-      logFlow.getChildren().add(fullLog);
-    }
-  }
+	public void setLog(String log) {
+		logList.getItems().add(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "  " + log);
+	}
+}
