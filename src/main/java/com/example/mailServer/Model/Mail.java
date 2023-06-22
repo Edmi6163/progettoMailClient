@@ -17,13 +17,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Mail implements Serializable {
-  //OjectProopery<LocalDateTime> is not serializable, so must be transient
-  private StringProperty sender;
-  private StringProperty subject;
-  private ListProperty<String> receivers;
+  //ObjectProopery<LocalDateTime> is not serializable, so must be transient
+  private transient   StringProperty sender;
+  private  transient StringProperty subject;
+  private transient ListProperty<String> receivers;
   private transient ObjectProperty<LocalDateTime> date; //needed transient beacause ObjectProperty<LocalDateTime> is not serializable
-  private StringProperty message;
-  private BooleanProperty isSent;
+  private  transient StringProperty message;
+  private transient BooleanProperty isSent;
 
 
   public Mail(String sender,String subject,String receivers,long timestamp,String message) {
@@ -74,11 +74,24 @@ public class Mail implements Serializable {
 
   public void setReceivers(String r) {
     ArrayList<String> list = new ArrayList<>();
-    Matcher m = Pattern.compile("[a-zA-Z0-9_.+-]+@[a-zA-Z0-9_.+-]+\\.[a-z-A-Z0-9-.]+").matcher(r);
-    while(m.find())
-      list.add(m.group());
+
+    String[] receiverArray = r.split(",");
+    for (String receiver : receiverArray) {
+      String trimmedReceiver = receiver.trim();
+      if (isValidEmail(trimmedReceiver)) {
+        list.add(trimmedReceiver);
+      }
+    }
+
     receivers.set(FXCollections.observableArrayList(list));
   }
+
+  private boolean isValidEmail(String email) {
+    //regex to identify a mail
+    Matcher m = Pattern.compile("[a-zA-Z0-9_.+-]+@[a-zA-Z0-9_.+-]+\\.[a-zA-Z0-9-.]+").matcher(email);
+    return m.matches();
+  }
+
   public StringProperty receiversStringProperty(){
     if(receivers==null){
       return new SimpleStringProperty("");
@@ -96,7 +109,7 @@ public class Mail implements Serializable {
     return date.get();
   }
   public String getFormattedDate(){
-    return date.get().format(DateTimeFormatter.ofPattern("dd/mm/yyyy-HH:mm"));
+    return date.get().format(DateTimeFormatter.ofPattern("dd/MM/yyyy-HH:mm"));
   }
 
   public ObjectProperty<LocalDateTime> dateProperty() {

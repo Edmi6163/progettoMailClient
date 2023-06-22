@@ -1,6 +1,7 @@
 package com.example.mailServer.Controller;
 
 import com.example.mailServer.Model.*;
+
 import com.example.mailServer.ServerMain;
 import javafx.application.Platform;
 import javafx.fxml.FXML;

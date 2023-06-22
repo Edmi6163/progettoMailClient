@@ -1,6 +1,5 @@
 package com.example.mailServer.Controller;
 
-import com.example.mailServer.Model.LoggerModel;
 import com.example.mailServer.ServerMain;
 import com.example.mailServer.Model.Mail;
 import com.example.mailServer.Model.UserList;
@@ -14,12 +13,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ServerHandler implements Runnable {
-  private final ServerMain serverMain;
-  private LoggerModel logger;
+  private final ServerMain mail;
+  private ServerLayoutController logger = new ServerLayoutController();
   private final Socket incoming;
 
   public ServerHandler(ServerMain serverMain, Socket incoming, MailHandler mailHandler) {
-    this.serverMain = serverMain;
+    this.mail = serverMain;
     this.incoming = incoming;
   }
 
@@ -35,12 +34,14 @@ public class ServerHandler implements Runnable {
   }
 
   private void handleRequest() throws IOException, ClassNotFoundException {
-    UserList userList = serverMain.getUserList();
+    UserList userList = mail.getUserList();
     assert userList != null;
+
     ObjectOutputStream out = new ObjectOutputStream(incoming.getOutputStream());
     ObjectInputStream in = new ObjectInputStream(incoming.getInputStream());
 
     String action = in.readObject().toString();
+    System.out.println("Action: " + action);
     switch (action) {
       case "all" -> handleAllAction(in, out, userList);
       case "inbox" -> handleInboxAction(in, out);
@@ -66,8 +67,14 @@ public class ServerHandler implements Runnable {
     out.writeObject(MailHandler.getUpdatedList(user, max));
   }
 
+
   private void handleSendAction(ObjectInputStream in, ObjectOutputStream out, UserList userList) throws IOException, ClassNotFoundException {
-    Mail mail = (Mail) in.readObject();
+    System.out.println("***handleSendAction***");
+    log("***handleSendAction***");
+
+    Mail mail = (Mail) in.readObject(); //FIXME here the program that mail aren't sent
+    System.out.println("mail: " + mail.getClass());
+    System.out.println("[handle send action] mail, when appears the program work: " + mail);
     Set<String> receivers = new HashSet<>(mail.getReceivers());
     for (String receiver : receivers) {
       if (!userList.userExist(receiver)) {
@@ -80,6 +87,8 @@ public class ServerHandler implements Runnable {
       }
 
       log(mail.getSender() + " sent an email to " + mail.getReceiversString());
+      logger.setLog(mail.getSender() + " sent an email to " + mail.getReceiversString());
+      System.out.println(mail.getSender() + " sent an email to " + mail.getReceiversString());
 
       mail.setIsSent(true);
       Mail toSave = MailHandler.save(mail);
@@ -87,7 +96,7 @@ public class ServerHandler implements Runnable {
     }
   }
 
-  private void closeConnection() {
+  private synchronized void closeConnection() {
     try {
       logger.setLog("closing connection");
       incoming.close();
@@ -97,6 +106,6 @@ public class ServerHandler implements Runnable {
   }
 
   private void log(String message) {
-    Platform.runLater(() -> serverMain.addLog(message));
+    Platform.runLater(() -> mail.addLog(message));
   }
 }

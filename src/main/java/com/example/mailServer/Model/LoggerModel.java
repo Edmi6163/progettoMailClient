@@ -1,10 +1,12 @@
 package com.example.mailServer.Model;
 
+import com.example.mailServer.Controller.ServerLayoutController;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 
 public class LoggerModel {
   public SimpleStringProperty log;
+  public ServerLayoutController logger;
 
   public LoggerModel() {
     log = new SimpleStringProperty("Start server mod \n");
@@ -12,7 +14,7 @@ public class LoggerModel {
   public SimpleStringProperty getLog() {
     return log;
   }
-  public void setLog(String logs) {
-    log.set(logs);
+ public void setLog(String logs) {
+    logger.setLog(logs);
   }
 }

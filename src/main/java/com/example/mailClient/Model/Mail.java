@@ -17,14 +17,17 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/*
+* @note: transient is needed because none of the parameters are serializable
+* */
+
 public class Mail implements Serializable {
-  //TODO check if _transient_ is needed
-  private  StringProperty sender;
-  private  StringProperty subject;
-  private  ListProperty<String> receivers;
-  private  transient ObjectProperty<LocalDateTime> date;
-  private  StringProperty message;
-  private  BooleanProperty isSent;
+  private transient StringProperty sender;
+  private  transient StringProperty subject;
+  private  transient ListProperty<String> receivers;
+  private transient ObjectProperty<LocalDateTime> date;
+  private  transient StringProperty message;
+  private transient BooleanProperty isSent;
 
 
   public Mail(String sender,String subject,String receivers,long timestamp,String message) {

@@ -10,4 +10,5 @@ module com.example.progettomailclient {
   exports com.example.mailClient;
   exports com.example.mailClient.Controller;
   exports com.example.mailServer.Controller;
+  exports com.example.mailClient.Model;
 }

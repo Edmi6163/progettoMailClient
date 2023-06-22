@@ -1,5 +1,6 @@
 package com.example.mailClient.Controller;
 import com.example.mailClient.Model.Mail;
+import com.example.mailServer.Controller.ServerLayoutController;
 import com.example.mailServer.Model.LoggerModel;
 import javafx.application.Platform;
 import com.example.mailClient.ClientMain;
@@ -18,11 +19,12 @@ public class ClientController implements Serializable {
   private static final String host = "127.0.1.1";
 
 
-  private static LoggerModel logger;
+//  private static LoggerModel logger;
+  private static ServerLayoutController logger;
 
   public ClientController(ClientMain clientMain){
     this.clientMain=clientMain;
-    logger = new LoggerModel();
+    logger = new ServerLayoutController();
   }
 
   /*
@@ -54,6 +56,10 @@ public class ClientController implements Serializable {
     }
     return " "+ maxTimeStamp;
   }
+
+  public void noMailPopUp() {
+    Platform.runLater(() -> clientMain.noMailPopUp());
+  }
  public void requestInbox() {
    try {
      try (Socket s = new Socket(host, 8189)) {
@@ -72,6 +78,8 @@ public class ClientController implements Serializable {
            clientMain.addInbox(res);
            clientMain.showNewMailPopUp(res.size());
          }
+       } else {
+         noMailPopUp();
        }
      } catch (ClassNotFoundException e) {
        e.printStackTrace();
@@ -112,31 +120,60 @@ public class ClientController implements Serializable {
       }
       return true;
    }
-   public static void sendMail(Mail mail, ClientMain clientMain){
+ /*  public static void sendMail(Mail mail, ClientMain clientMain){
     clientMain.setMailSent(false);
     try(Socket s = new Socket(host,8189)) {
+      //serialization of the mail object
       ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
       ObjectInputStream in = new ObjectInputStream(s.getInputStream());
-      //print in terminal in and out mails
       System.out.println("in mails: " + clientMain.getInbox());
-      System.out.println("out mails: " + clientMain.getOutbox());
-      out.writeObject("send");
-      System.out.println("sending mail: \n" + mail);
-      logger.setLog("sent an email: " + mail);
+      System.out.println("out mails: " + clientMain.getOutbox()); //TODO remove this
+      //print writeObject("send") in server log
+      logger.setLog("out.writeObject(send)");
+      out.writeObject("send"); //this is the command for the server to send the mail,see ServerHandler class
       out.writeObject(mail);
+      out.flush();
+      System.out.println("[send mail CC] mail written to server \n" + mail);
+      System.out.println("in.available() = " + in.available());
       if(in.available() > 0) {
-        Mail m = (Mail) in.readObject();
-        if (m != null) {
+        System.out.println("in.available() > 0" + in.available()); //FIXME in.available = 0
+        //TODO debug
+//        Mail m = (Mail) in.readObject();
+        if (mail != null) {
           clientMain.setMailSent(true);
-          Platform.runLater(() -> clientMain.addOut(m));
+          System.out.println("mail before addOut: " + mail);
+          Platform.runLater(() -> clientMain.addOut(mail));
         }
       }
     } catch (Exception e){
       e.printStackTrace();
     }
-   }
+   }*/
 
-   public static  void deleteMail(Mail mail,ClientMain clientMain){
+  public static void sendMail(Mail mail, ClientMain clientMain) {
+    clientMain.setMailSent(false);
+    try (Socket s = new Socket(host, 8189)) {
+      ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
+      ObjectInputStream in = new ObjectInputStream(s.getInputStream());
+      out.writeObject("send");
+      out.writeObject(mail);
+      out.flush();
+      System.out.println("[send mail CC] mail written to server\n" + mail);
+
+      // Read the response from the server
+      Object response = in.readObject();
+      if (response instanceof Mail) {
+        Mail responseMail = (Mail) response;
+        clientMain.setMailSent(true);
+        System.out.println("Received response mail: " + responseMail);
+        Platform.runLater(() -> clientMain.addOut(responseMail));
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public static  void deleteMail(Mail mail,ClientMain clientMain){
     try (Socket s = new Socket(host,8189)){
       ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
       ObjectInputStream in = new ObjectInputStream(s.getInputStream());

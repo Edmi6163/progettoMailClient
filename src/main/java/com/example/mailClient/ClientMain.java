@@ -74,6 +74,7 @@ public class ClientMain extends Application {
   }
 
   public void addOut(Mail out) {
+    System.out.println("adding to outbox");
     outbox.add(out);
   }
 
@@ -91,9 +92,11 @@ public class ClientMain extends Application {
 
   private void showServerUpNotification() {
     Platform.runLater(() -> {
-      Tooltip tooltip = new Tooltip();
-      tooltip.setText("Server is up!");
-      tooltip.setHideDelay(Duration.seconds(5));
+      Alert alert = new Alert(Alert.AlertType.INFORMATION);
+      alert.setTitle("Server is up!");
+      alert.setHeaderText("Server is up!");
+      alert.setContentText("Server is up!");
+      alert.show();
     });
   }
 
@@ -176,15 +179,15 @@ public class ClientMain extends Application {
     else
       popup.setContentText("You received a new message");
 
-    popup.showAndWait();
+    popup.show();
   }
 
   public void showErrorPopUp(){
       Alert popup = new Alert(Alert.AlertType.INFORMATION);
       popup.initOwner(topStage);
       popup.setTitle("Server error");
-      popup.setContentText("Server propably is offline, Please try again later");
-      popup.showAndWait();
+      popup.setContentText("Server propably is offline or check your internet connection");
+      popup.show();
   }
   private void showLoginDialog(){
     try{
@@ -194,7 +197,6 @@ public class ClientMain extends Application {
       Stage dialog = new Stage();
       dialog.setTitle("Login");
       dialog.initModality(Modality.WINDOW_MODAL);
-      dialog.setResizable(false);
       dialog.initOwner(topStage);
       Scene scene = new Scene(page);
       dialog.setScene(scene);
@@ -220,6 +222,14 @@ public class ClientMain extends Application {
     }
   }
 
+  public void noMailPopUp() {
+    Alert popup = new Alert(Alert.AlertType.INFORMATION);
+    popup.initOwner(topStage);
+    popup.setTitle("No mail");
+    popup.setContentText("You have no mail");
+    popup.show();
+  }
+
   private boolean checkConnection() {
     if(!clientHandler.checkConnection()){
       showErrorPopUp();
@@ -234,10 +244,11 @@ public class ClientMain extends Application {
   public void start(Stage topStage){
     this.topStage = topStage;
     this.topStage.setTitle("Client mail window @javamail");
-
+/*
     Thread refresh = new Thread(this::refresh);
     refresh.setDaemon(true);
     refresh.start();
+ */
     showLoginDialog();
     initRootLayout();
     showMailContainer();
@@ -247,4 +258,6 @@ public class ClientMain extends Application {
   public static void main(String[] args){
     launch(args);
   }
+
+
 }

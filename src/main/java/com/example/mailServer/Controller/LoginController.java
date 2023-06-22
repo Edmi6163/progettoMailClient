@@ -1,6 +1,7 @@
 package com.example.mailServer.Controller;
 
 import com.example.mailServer.Model.LoggerModel;
+import com.example.mailServer.Controller.ServerLayoutController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -22,7 +23,7 @@ public class LoginController {
   private AnchorPane loginPane;
 @FXML
 private TextFlow logFlow;
-  private LoggerModel logger = new LoggerModel();
+  private ServerLayoutController logger = new ServerLayoutController();
   private ClientMain clientMain;
   private Stage stage;
 
@@ -50,6 +51,7 @@ private TextFlow logFlow;
 
     if (loginSuccess) {
       logger.setLog(username.getText() + " logged in successfully");
+
       System.out.println(username.getText() + " logged in ");
       clientMain.setUserMail(usernameToCheck);
       stage.close();

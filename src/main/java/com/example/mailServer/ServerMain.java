@@ -32,7 +32,7 @@ public class ServerMain extends Application {
 
   private final UserList userList;
   private ObservableList<String> logList = FXCollections.observableArrayList();
-  private final LoggerModel logger = new LoggerModel();
+  private final ServerLayoutController logger = new ServerLayoutController();
 
 //  ServerLayoutController controller = new ServerLayoutController();
   public ObservableList<String> getLogList() {

@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import com.example.mailClient.ClientMain;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class NewMessageController {
   @FXML
@@ -53,6 +54,8 @@ public class NewMessageController {
   private void handleOk() throws InterruptedException{
     ClientMain clientMain = new ClientMain();
     boolean mailExist = false;
+    String receiver = receiversField.getText().trim();
+
     mail.setReceivers(receiversField.getText());
     mail.setSubject(subjectField.getText());
     mail.setMessage(messageBodyArea.getText());
@@ -61,6 +64,7 @@ public class NewMessageController {
     }
     if(isInputOk(mail) && mailExist){
       //send mail
+      System.out.println("[NMC handle ok] sending mail: "+ mail);
       ClientController.sendMail(mail,clientMain);
       okClicked=true;
     }
