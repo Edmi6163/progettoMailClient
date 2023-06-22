@@ -1,7 +1,6 @@
 package com.example.mailClient.Controller;
-import com.example.mailClient.Model.Mail;
 import com.example.mailServer.Controller.ServerLayoutController;
-import com.example.mailServer.Model.LoggerModel;
+import com.example.mailServer.Model.Mail;
 import javafx.application.Platform;
 import com.example.mailClient.ClientMain;
 
@@ -160,10 +159,17 @@ public class ClientController implements Serializable {
       out.flush();
       System.out.println("[send mail CC] mail written to server\n" + mail);
 
+      System.out.println("in.available() = " + in.available());
       // Read the response from the server
       Object response = in.readObject();
+      if(response == null){
+        System.out.println("response is null");
+      } else {
+        System.out.println("response is not null");
+      }
       if (response instanceof Mail) {
         Mail responseMail = (Mail) response;
+        System.out.println("Received response mail: " + responseMail);
         clientMain.setMailSent(true);
         System.out.println("Received response mail: " + responseMail);
         Platform.runLater(() -> clientMain.addOut(responseMail));

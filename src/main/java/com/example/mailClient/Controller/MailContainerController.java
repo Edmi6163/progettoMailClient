@@ -1,9 +1,9 @@
 package com.example.mailClient.Controller;
 
-import com.example.mailClient.Model.Mail;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import com.example.mailClient.ClientMain;
+import com.example.mailServer.Model.Mail;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

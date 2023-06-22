@@ -6,6 +6,7 @@ import com.example.mailClient.Model.*;
 import com.example.mailServer.Controller.LoginController;
 
 
+import com.example.mailServer.Model.Mail;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;

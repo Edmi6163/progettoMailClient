@@ -1,6 +1,6 @@
 package com.example.mailClient.Controller;
 
-import com.example.mailClient.Model.Mail;
+import com.example.mailServer.Model.Mail;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 import com.example.mailClient.ClientMain;
 
 import java.io.File;
-import java.util.ArrayList;
 
 public class NewMessageController {
   @FXML

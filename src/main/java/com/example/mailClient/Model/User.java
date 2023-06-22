@@ -1,5 +1,7 @@
 package com.example.mailClient.Model;
 
+import com.example.mailServer.Model.Mail;
+
 import java.util.List;
 
 public class User {
@@ -9,7 +11,7 @@ public class User {
   private List<Mail> outbox;
 
 
-  public User(String email,List<Mail> inbox, List<Mail> outbox) {
+  public User(String email, List<Mail> inbox, List<Mail> outbox) {
     this.email = email;
     this.inbox = inbox;
     this.outbox = outbox;

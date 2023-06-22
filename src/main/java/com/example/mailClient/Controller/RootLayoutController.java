@@ -1,7 +1,6 @@
 package com.example.mailClient.Controller;
 
-import com.example.mailClient.Model.Mail;
-import com.example.mailServer.Controller.LoginController;
+import com.example.mailServer.Model.Mail;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import com.example.mailClient.ClientMain;
