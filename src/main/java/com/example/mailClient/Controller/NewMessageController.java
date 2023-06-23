@@ -6,9 +6,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+import com.example.Transmission.Email;
 import com.example.mailClient.ClientMain;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class NewMessageController {
   @FXML
@@ -23,14 +26,15 @@ public class NewMessageController {
   private boolean okClicked = false;
 
   @FXML
-  private void initialize(){
+  private void initialize() {
 
   }
-  public void setDialog(Stage dialog){
-    this.dialog=dialog;
+
+  public void setDialog(Stage dialog) {
+    this.dialog = dialog;
   }
 
-  public void setMail(Mail mail){
+  public void setMail(Mail mail) {
     this.mail = mail;
 
     if (mail == null) {
@@ -41,37 +45,46 @@ public class NewMessageController {
     messageBodyArea.setText(this.mail.getMessage());
   }
 
-  public boolean isOkClicked(){
+  public boolean isOkClicked() {
     return okClicked;
   }
 
   /*
-   * @brief: when the user click "send", check if the fields are filled and valid, if not, display an error message
+   * @brief: when the user click "send", check if the fields are filled and valid,
+   * if not, display an error message
+   * 
    * @throws InterruptedException
    */
   @FXML
-  private void handleOk() throws InterruptedException{
+  private void handleOk() throws InterruptedException {
     ClientMain clientMain = new ClientMain();
     boolean mailExist = false;
-    String receiver = receiversField.getText().trim();
 
     mail.setReceivers(receiversField.getText());
     mail.setSubject(subjectField.getText());
     mail.setMessage(messageBodyArea.getText());
-    if(checkIfMailExists(mail,clientMain)){
-      mailExist = true;
-    }
-    if(isInputOk(mail) && mailExist){
-      //send mail
-      System.out.println("[NMC handle ok] sending mail: "+ mail);
-      ClientController.sendMail(mail,clientMain);
-      okClicked=true;
-    }
+    ArrayList<String> receivers = new ArrayList<>();
+
+    receivers.add("francesco@javamail.it");
+
+    Email m = new Email("francesco@javamail.it", receivers, subjectField.getText(), messageBodyArea.getText());
+    // if (checkIfMailExists(m, clientMain)) {
+    // mailExist = true;
+    // }
+    // if (isInputOk(m) && mailExist) {
+    // send mail
+    ClientController.sendMail(m, clientMain);
+    okClicked = true;
+    // }
   }
 
   /*
-   * @brief: Check if the receiversField is a valid email address it's a subfolder name in folder "src/com/examlpe/mailServer/file, if not, display an error messager
+   * @brief: Check if the receiversField is a valid email address it's a subfolder
+   * name in folder "src/com/examlpe/mailServer/file, if not, display an error
+   * messager
+   * 
    * @param mail
+   * 
    * @param clientMain
    */
 
@@ -97,17 +110,17 @@ public class NewMessageController {
     return false;
   }
 
-  public boolean isInputOk(Mail mail){
-    String error= "";
-    if(receiversField.getText()==null||receiversField.getText().length()==0)
-      error+="Missing receiver\n";
-    if(mail.getReceiversString().length()==0)
-      error+="Wrong email format\n";
-    if(subjectField.getText()==null||subjectField.getText().length()==0)
-      error+="Missing subject\n";
-    if(receiversField.getText()==null||receiversField.getText().length()==0)
-      error+= "Empty message body\n";
-    if(error.length()==0){
+  public boolean isInputOk(Mail mail) {
+    String error = "";
+    if (receiversField.getText() == null || receiversField.getText().length() == 0)
+      error += "Missing receiver\n";
+    if (mail.getReceiversString().length() == 0)
+      error += "Wrong email format\n";
+    if (subjectField.getText() == null || subjectField.getText().length() == 0)
+      error += "Missing subject\n";
+    if (receiversField.getText() == null || receiversField.getText().length() == 0)
+      error += "Empty message body\n";
+    if (error.length() == 0) {
 
       return true;
     } else {
