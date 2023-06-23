@@ -4,10 +4,7 @@ import com.example.mailServer.Model.Mail;
 import javafx.application.Platform;
 import com.example.mailClient.ClientMain;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.net.*;
 import java.util.List;
 
@@ -17,9 +14,11 @@ public class ClientController implements Serializable {
   private Socket socket;
   private static final String host = "127.0.1.1";
 
-
-//  private static LoggerModel logger;
+  //  private static LoggerModel logger;
   private static ServerLayoutController logger;
+
+  ObjectOutputStream out;
+  ObjectInputStream in;
 
   public ClientController(ClientMain clientMain){
     this.clientMain=clientMain;
@@ -63,8 +62,8 @@ public class ClientController implements Serializable {
    try {
      try (Socket s = new Socket(host, 8189)) {
        System.out.println("Socket opened"); //TODO debug
-       ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
-       ObjectInputStream in = new ObjectInputStream(s.getInputStream());
+        out = new ObjectOutputStream(s.getOutputStream());
+        in = new ObjectInputStream(s.getInputStream());
        System.out.println("receiving data from server :)" + s);
        out.writeObject("inbox");
        out.writeObject(clientMain.getUserMail());
@@ -93,8 +92,9 @@ public class ClientController implements Serializable {
       try {
         try(Socket s = new Socket(host,8189)){
           System.out.println("[Client Controller] socket opened :)"+ s); //TODO debug
-          ObjectInputStream in= new ObjectInputStream(s.getInputStream());
-          ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
+           in= new ObjectInputStream(s.getInputStream());
+           out = new ObjectOutputStream(s.getOutputStream());
+           String getInput;
           out.writeObject("all");
           out.writeObject(clientMain.getUserMail());
           List<Mail> resIn = (List<Mail>) in.readObject();
@@ -119,56 +119,22 @@ public class ClientController implements Serializable {
       }
       return true;
    }
- /*  public static void sendMail(Mail mail, ClientMain clientMain){
-    clientMain.setMailSent(false);
-    try(Socket s = new Socket(host,8189)) {
-      //serialization of the mail object
-      ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
-      ObjectInputStream in = new ObjectInputStream(s.getInputStream());
-      System.out.println("in mails: " + clientMain.getInbox());
-      System.out.println("out mails: " + clientMain.getOutbox()); //TODO remove this
-      //print writeObject("send") in server log
-      logger.setLog("out.writeObject(send)");
-      out.writeObject("send"); //this is the command for the server to send the mail,see ServerHandler class
-      out.writeObject(mail);
-      out.flush();
-      System.out.println("[send mail CC] mail written to server \n" + mail);
-      System.out.println("in.available() = " + in.available());
-      if(in.available() > 0) {
-        System.out.println("in.available() > 0" + in.available()); //FIXME in.available = 0
-        //TODO debug
-//        Mail m = (Mail) in.readObject();
-        if (mail != null) {
-          clientMain.setMailSent(true);
-          System.out.println("mail before addOut: " + mail);
-          Platform.runLater(() -> clientMain.addOut(mail));
-        }
-      }
-    } catch (Exception e){
-      e.printStackTrace();
-    }
-   }*/
 
   public static void sendMail(Mail mail, ClientMain clientMain) {
     clientMain.setMailSent(false);
     try (Socket s = new Socket(host, 8189)) {
-      ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
       ObjectInputStream in = new ObjectInputStream(s.getInputStream());
+      ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
       out.writeObject("send");
+      System.out.println("action send written to server");
       out.writeObject(mail);
       out.flush();
-      System.out.println("[send mail CC] mail written to server\n" + mail);
+      System.out.println("[send mail CC] mail written to server\n" + mail.toString());
 
-      System.out.println("in.available() = " + in.available());
+      System.out.println("in.available() = " + in.available()); //FIXME in.available() is always 0 and the program gets stuck here due to EOF
       // Read the response from the server
       Object response = in.readObject();
-      if(response == null){
-        System.out.println("response is null");
-      } else {
-        System.out.println("response is not null");
-      }
-      if (response instanceof Mail) {
-        Mail responseMail = (Mail) response;
+      if (response instanceof Mail responseMail) {
         System.out.println("Received response mail: " + responseMail);
         clientMain.setMailSent(true);
         System.out.println("Received response mail: " + responseMail);

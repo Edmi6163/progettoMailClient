@@ -17,6 +17,9 @@ public class ServerHandler implements Runnable {
   private ServerLayoutController logger = new ServerLayoutController();
   private final Socket incoming;
 
+  ObjectOutputStream out;
+  ObjectInputStream in;
+
   public ServerHandler(ServerMain serverMain, Socket incoming, MailHandler mailHandler) {
     this.mail = serverMain;
     this.incoming = incoming;
@@ -37,8 +40,8 @@ public class ServerHandler implements Runnable {
     UserList userList = mail.getUserList();
     assert userList != null;
 
-    ObjectOutputStream out = new ObjectOutputStream(incoming.getOutputStream());
-    ObjectInputStream in = new ObjectInputStream(incoming.getInputStream());
+     out = new ObjectOutputStream(incoming.getOutputStream());
+     in = new ObjectInputStream(incoming.getInputStream());
 
     String action = in.readObject().toString();
     System.out.println("Action: " + action);
@@ -73,8 +76,8 @@ public class ServerHandler implements Runnable {
     log("***handleSendAction***");
 
     Mail mail = (Mail) in.readObject(); //FIXME here the program that mail aren't sent
-    System.out.println("mail: " + mail.getClass());
-    System.out.println("[handle send action] mail, when appears the program work: " + mail);
+    System.out.println("[handle send action] mail arrived to server:\n " + mail);
+    System.out.println("[handle send action] receivers: " + mail.getReceiversString());
     Set<String> receivers = new HashSet<>(mail.getReceivers());
     for (String receiver : receivers) {
       if (!userList.userExist(receiver)) {

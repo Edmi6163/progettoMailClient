@@ -31,7 +31,7 @@ public class Mail implements Serializable {
     this.subject = new SimpleStringProperty(subject);
     this.receivers = new SimpleListProperty<>();
     if(receivers!=null) setReceivers(receivers);
-    this.date = new SimpleObjectProperty<>(LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), TimeZone.getDefault().toZoneId()));
+    this.date = new SimpleObjectProperty<>(LocalDateTime.now());
     this.message = new SimpleStringProperty(message);
     this.isSent = new SimpleBooleanProperty(false);
   }
@@ -108,8 +108,8 @@ public class Mail implements Serializable {
   public LocalDateTime getDate() {
     return date.get();
   }
-  public String getFormattedDate(){
-    return date.get().format(DateTimeFormatter.ofPattern("dd/MM/yyyy-HH:mm"));
+  public synchronized String getFormattedDate(){
+     return date.get().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
   }
 
   public ObjectProperty<LocalDateTime> dateProperty() {
@@ -151,8 +151,8 @@ public class Mail implements Serializable {
   public void init(){
     this.sender = new SimpleStringProperty();
     this.subject = new SimpleStringProperty();
-    this.receivers = new SimpleListProperty<>();
-    this.date = new SimpleObjectProperty<>();
+    this.receivers = new SimpleListProperty<>(FXCollections.observableArrayList());
+    this.date = new SimpleObjectProperty<>(LocalDateTime.now());
     this.isSent = new SimpleBooleanProperty();
   }
 
@@ -173,10 +173,22 @@ public class Mail implements Serializable {
     setSubject(s.readUTF());
     setReceivers(s.readUTF());
     setDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(s.readLong()),TimeZone.getDefault().toZoneId()));
+    setMessage(s.readUTF());
     setIsSent(s.readBoolean());
   }
+
   @Override
-  public String toString(){
-    return "sender: "+sender+"\nsubject: "+subject+"\nreceivers: "+receivers+"\ndate: "+ getFormattedDate();
-  }
+    public String toString() {
+      StringBuilder builder = new StringBuilder();
+      builder.append("sender: ").append(sender).append("\n");
+      builder.append("subject: ").append(subject).append("\n");
+      builder.append("receivers: ").append(receivers).append("\n");
+      if (date != null) {
+        builder.append("date: ").append(getFormattedDate());
+      } else {
+        builder.append("date: null");
+      }
+      return builder.toString();
+    }
+
 }
