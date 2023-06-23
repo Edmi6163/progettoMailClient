@@ -14,7 +14,7 @@ import javafx.scene.control.SplitPane;
 import javafx.stage.Stage;
 import com.example.mailServer.Controller.MailHandler;
 import com.example.mailServer.Controller.ServerHandler;
-import com.example.mailServer.Model.UserList;
+import com.example.mailServer.Model.UserListconfronts;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;

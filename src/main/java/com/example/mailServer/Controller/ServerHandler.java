@@ -78,35 +78,27 @@ public class ServerHandler implements Runnable {
     System.out.println("***handleSendAction***");
     // log("***handleSendAction***");
 
-    System.out.println(mail);
-    // System.out.println("[handle send action] mail arrived to server:\n " + mail);
-    // System.out.println("[handle send action] receivers: " +
-    // mail.getReceiversString());
-    // Set<String> receivers = new HashSet<>(mail.getReceivers());
-    // for (String receiver : receivers) {
-    // if (!userList.userExist(receiver)) {
-    // Mail wrong = new Mail("System",
-    // "Wrong email address", mail.getSender(),
-    // 0,
-    // "It wasn't possible to send this email to " + receiver + ", wrong email
-    // address." +
-    // "\n***********************\n" + mail
-    // + "\n***********************\nTHIS IS AN AUTOMATED MESSAGE, PLEASE, DO NOT
-    // REPLY.");
-    // mail.getReceivers().remove(receiver);
-    // }
-
-    // log(mail.getSender() + " sent an email to " + mail.getReceiversString());
-    // logger.setLog(mail.getSender() + " sent an email to " +
-    // mail.getReceiversString());
-    // System.out.println(mail.getSender() + " sent an email to " +
-    // mail.getReceiversString());
-
-    // mail.setIsSent(true);
-    // Mail toSave = MailHandler.save(mail);
-    // out.writeObject(toSave);
-
-    /* SI SPACCA PERCHÈ MANCA IL WRITEOBJECT DEL SERVER */
+    System.out.println("mail received in server: " + mail);
+   System.out.println("[handle send action] mail arrived to server:\n " + mail);
+   System.out.println("[handle send action] receivers: " + mail.getReceivers());
+   Set<String> receivers = new HashSet<>(mail.getReceivers());
+   for (String receiver : receivers) {
+   if (!userList.userExist(receiver)) {
+   Mail wrong = new Mail("System",
+     "Wrong email address", mail.getSender(),
+   0,
+   "It wasn't possible to send this email to " + receiver + ", wrong email  address + "+
+   "\n***********************\n" + mail
+   + "\n***********************\nTHIS IS AN AUTOMATED MESSAGE, PLEASE, DO NOT REPLY.");
+   mail.getReceivers().remove(receiver);
+   }
+//   log(mail.getSender() + " sent an email to " + mail.getReceiversString());
+   logger.setLog(mail.getSender() + " sent an email to " + mail.getReceivers());
+   System.out.println(mail.getSender() + " sent an email to " + mail.getReceivers());
+   mail.setBin(true);
+   out.writeObject(mail);
+   Mail toSave = MailHandler.save(mail);
+//SI SPACCA PERCHÈ MANCA IL WRITEOBJECT DEL SERVER
 
   }
 

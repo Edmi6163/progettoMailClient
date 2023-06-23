@@ -1,5 +1,6 @@
 package com.example.mailServer.Controller;
 
+import com.example.Transmission.Email;
 import com.example.mailServer.Model.Mail;
 
 import java.io.*;
@@ -11,8 +12,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class MailHandler {
-  public synchronized static Mail save(Mail mail){
-    Mail newMail = null;
+  public synchronized static Email save(Email mail){
+    Email newMail = null;
     try{
       Date date = new Date();
       long millis = date.getTime();
@@ -20,8 +21,8 @@ public class MailHandler {
       List<String> receivers = mail.getReceivers();
       FileOutputStream file = new FileOutputStream("./file"+sender+"/"+"out"+millis+".txt");
       ObjectOutputStream output = new ObjectOutputStream(file);
-      newMail=new Mail(mail.getSender(),mail.getSubject(),mail.getReceiversString(),millis,mail.getMessage());
-      newMail.setIsSent(true);
+      newMail=new Email(mail.getSender(),mail.getReceivers(),mail.getSubject());
+      newMail.setBin(false);
       output.writeObject(newMail);
       output.close();
       file.close();
@@ -29,7 +30,7 @@ public class MailHandler {
         System.out.println(r);
         file = new FileOutputStream("./file"+r+"/"+"in/"+millis+".txt");
         output = new ObjectOutputStream(file);
-        newMail.setIsSent(false);
+        newMail.setBin(false);
         output.writeObject(newMail);
         output.close();
         file.close();

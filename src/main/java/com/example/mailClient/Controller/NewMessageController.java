@@ -65,17 +65,15 @@ public class NewMessageController {
     mail.setMessage(messageBodyArea.getText());
     ArrayList<String> receivers = new ArrayList<>();
 
-    receivers.add("francesco@javamail.it");
-
-    Email m = new Email("francesco@javamail.it", receivers, subjectField.getText(), messageBodyArea.getText());
-    // if (checkIfMailExists(m, clientMain)) {
-    // mailExist = true;
-    // }
-    // if (isInputOk(m) && mailExist) {
+    Email m = new Email(clientMain.getUserMail(), receivers, subjectField.getText(), messageBodyArea.getText());
+    if (checkIfMailExists(m, clientMain)) {
+      mailExist = true;
+    }
+    if (isInputOk(m) && mailExist) {
     // send mail
     ClientController.sendMail(m, clientMain);
     okClicked = true;
-    // }
+    }
   }
 
   /*
@@ -88,7 +86,7 @@ public class NewMessageController {
    * @param clientMain
    */
 
-  private boolean checkIfMailExists(Mail mail, ClientMain clientMain) {
+  private boolean checkIfMailExists(Email mail, ClientMain clientMain) {
     String error = "";
 
     File[] files = new File("src/main/java/com/example/mailServer/file").listFiles();
@@ -110,11 +108,11 @@ public class NewMessageController {
     return false;
   }
 
-  public boolean isInputOk(Mail mail) {
+  public boolean isInputOk(Email mail) {
     String error = "";
     if (receiversField.getText() == null || receiversField.getText().length() == 0)
       error += "Missing receiver\n";
-    if (mail.getReceiversString().length() == 0)
+    if (mail.getReceivers().size() == 0)
       error += "Wrong email format\n";
     if (subjectField.getText() == null || subjectField.getText().length() == 0)
       error += "Missing subject\n";
