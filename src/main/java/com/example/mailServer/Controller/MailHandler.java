@@ -21,7 +21,7 @@ public class MailHandler {
       List<String> receivers = mail.getReceivers();
       FileOutputStream file = new FileOutputStream("./file"+sender+"/"+"out"+millis+".txt");
       ObjectOutputStream output = new ObjectOutputStream(file);
-      newMail=new Email(mail.getSender(),mail.getReceivers(),mail.getSubject());
+      newMail=new Email(mail.getSender(),mail.getReceivers(),mail.getSubject(),mail.getText());
       newMail.setBin(false);
       output.writeObject(newMail);
       output.close();

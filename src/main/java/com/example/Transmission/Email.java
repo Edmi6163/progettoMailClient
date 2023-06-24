@@ -29,7 +29,7 @@ public class Email implements Serializable {
         return sender;
     }
 
-    public List<String> getReceivers() {
+    public ArrayList<String> getReceivers() {
         return receivers;
     }
 

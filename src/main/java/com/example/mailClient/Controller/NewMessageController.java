@@ -11,6 +11,8 @@ import com.example.Transmission.Email;
 import com.example.mailClient.ClientMain;
 
 import java.io.File;
+import java.security.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class NewMessageController {
@@ -65,13 +67,15 @@ public class NewMessageController {
     mail.setMessage(messageBodyArea.getText());
     ArrayList<String> receivers = new ArrayList<>();
 
-    Email m = new Email(clientMain.getUserMail(), receivers, subjectField.getText(), messageBodyArea.getText());
+
+    Mail m = new Mail(clientMain.getUserMail(), subjectField.getText(), receiversField.getText(), 0L, messageBodyArea.getText()); //TODO figure out timestamp
+    Email e = new Email(clientMain.getUserMail(), receivers, subjectField.getText(), messageBodyArea.getText());
     if (checkIfMailExists(m, clientMain)) {
       mailExist = true;
     }
     if (isInputOk(m) && mailExist) {
     // send mail
-    ClientController.sendMail(m, clientMain);
+    ClientController.sendMail(e, clientMain);
     okClicked = true;
     }
   }
@@ -86,7 +90,7 @@ public class NewMessageController {
    * @param clientMain
    */
 
-  private boolean checkIfMailExists(Email mail, ClientMain clientMain) {
+  private boolean checkIfMailExists(Mail mail, ClientMain clientMain) {
     String error = "";
 
     File[] files = new File("src/main/java/com/example/mailServer/file").listFiles();
@@ -108,7 +112,7 @@ public class NewMessageController {
     return false;
   }
 
-  public boolean isInputOk(Email mail) {
+  public boolean isInputOk(Mail mail) {
     String error = "";
     if (receiversField.getText() == null || receiversField.getText().length() == 0)
       error += "Missing receiver\n";
