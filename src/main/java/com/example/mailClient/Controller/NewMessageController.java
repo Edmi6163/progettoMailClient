@@ -14,6 +14,7 @@ import java.io.File;
 import java.security.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class NewMessageController {
   @FXML
@@ -62,14 +63,20 @@ public class NewMessageController {
     ClientMain clientMain = new ClientMain();
     boolean mailExist = false;
 
+    String sender = clientMain.getUserMail();
+    System.out.println("[NMC] sender is: " + clientMain.getUserMail());
     mail.setReceivers(receiversField.getText());
+    System.out.println("[NMC] receiver field is: " + receiversField.getText());
     mail.setSubject(subjectField.getText());
     mail.setMessage(messageBodyArea.getText());
     ArrayList<String> receivers = new ArrayList<>();
 
+    receivers.addAll(Arrays.asList(receiversField.getText().split(",")));
 
-    Mail m = new Mail(clientMain.getUserMail(), subjectField.getText(), receiversField.getText(), 0L, messageBodyArea.getText()); //TODO figure out timestamp
-    Email e = new Email(clientMain.getUserMail(), receivers, subjectField.getText(), messageBodyArea.getText());
+    Mail m = new Mail(sender,subjectField.getText(), receiversField.getText(), 0L, messageBodyArea.getText()); //TODO figure out timestamp
+    System.out.println("[NewMessageController] handleOk() m: " + m);
+    Email e = new Email(sender, receivers, subjectField.getText(), messageBodyArea.getText());
+    System.out.println("[NewMessageController] handleOk() e: " + e);
     if (checkIfMailExists(m, clientMain)) {
       mailExist = true;
     }

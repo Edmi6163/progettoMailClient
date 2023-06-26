@@ -78,7 +78,6 @@ public class ServerHandler implements Runnable {
     System.out.println("***handleSendAction***");
     // log("***handleSendAction***");
 
-    System.out.println("mail received in server: " + mail);
     System.out.println("[handle send action] mail arrived to server:\n " + mail);
     System.out.println("[handle send action] receivers: " + mail.getReceivers());
     Set<String> receivers = new HashSet<>(mail.getReceivers());
@@ -97,7 +96,7 @@ public class ServerHandler implements Runnable {
       System.out.println(mail.getSender() + " sent an email to " + mail.getReceivers());
       mail.setBin(true);
       out.writeObject(mail);
-      Email toSave = MailHandler.save(mail);
+      MailHandler.save(mail);
 //SI SPACCA PERCHÈ MANCA IL WRITEOBJECT DEL SERVER
 
     }

@@ -14,28 +14,41 @@ import java.util.Objects;
 public class MailHandler {
   public synchronized static Email save(Email mail){
     Email newMail = null;
-    try{
+    try {
       Date date = new Date();
       long millis = date.getTime();
       String sender = mail.getSender();
       List<String> receivers = mail.getReceivers();
-      FileOutputStream file = new FileOutputStream("./file"+sender+"/"+"out"+millis+".txt");
+
+      // Create the directory for the sender
+      File senderDir = new File("src/main/java/com/example/mailServer/file/" + sender);
+      senderDir.mkdirs(); // Create directories recursively if they don't exist
+
+      FileOutputStream file = new FileOutputStream( senderDir + "/out" + millis + ".txt");
+      System.out.println("[save] file: " + file);
       ObjectOutputStream output = new ObjectOutputStream(file);
-      newMail=new Email(mail.getSender(),mail.getReceivers(),mail.getSubject(),mail.getText());
+
+      newMail = new Email(mail.getSender(), mail.getReceivers(), mail.getSubject(), mail.getText());
+      System.out.println("[save] newMail: " + newMail);
       newMail.setBin(false);
       output.writeObject(newMail);
       output.close();
       file.close();
-      for(String r: receivers){
-        System.out.println(r);
-        file = new FileOutputStream("./file"+r+"/"+"in/"+millis+".txt");
+
+      for (String r : receivers) {
+        // Create the directory for the receiver just in case it doesn't exist
+        File receiverDir = new File("src/main/java/com/example/mailServer/file/" + r + "/in");
+        receiverDir.mkdirs();
+
+        file = new FileOutputStream("src/main/java/com/example/mailServer/file/" + r + "/out/" + millis + ".txt");
         output = new ObjectOutputStream(file);
+
         newMail.setBin(false);
         output.writeObject(newMail);
         output.close();
         file.close();
       }
-    } catch (IOException e){
+    } catch (IOException e) {
       e.printStackTrace();
     }
     return newMail;
@@ -44,7 +57,7 @@ public class MailHandler {
 public synchronized static List<Mail> getUpdatedList(String user,String max){
     List<Mail> updatedList= new ArrayList<>();
     max=max+".txt";
-    File dir=new File("./file"+user+"/"+"in/");
+    File dir=new File("src/main/java/com/example/mailServer/file/"+user+"/"+"in/");
     ObjectOutputStream output=null;
     FileOutputStream files=null;
     for(File f: Objects.requireNonNull(dir.listFiles())){
@@ -65,7 +78,7 @@ public synchronized static List<Mail> getUpdatedList(String user,String max){
 public synchronized static List<Mail> loadOutBox(String user){
     List<Mail> out = new ArrayList<>();
     try{
-     File dir= new File("./file"+user+"/"+"out");
+     File dir= new File("src/main/java/com/example/mailServer/file/"+user+"/"+"out");
      ObjectInputStream output = null;
      FileInputStream files=null;
      for(File f: Objects.requireNonNull(dir.listFiles())) {
@@ -89,7 +102,7 @@ public synchronized static List<Mail> loadOutBox(String user){
 public synchronized static List<Mail> loadInBox(String user){
     List<Mail> inbox = new ArrayList<>();
     try{
-      File dir=new File("../file/"+user+"/"+"in");
+      File dir=new File("src/main/java/com/example/mailServer/file/"+user+"/"+"in");
       ObjectInputStream input = null;
       FileInputStream file = null;
       for(File f: Objects.requireNonNull(dir.listFiles())) {
@@ -114,9 +127,9 @@ public synchronized static List<Mail> loadInBox(String user){
 public synchronized void delete(Mail mail, String user){
     try{
       if(mail.isIsSent())
-        Files.delete(Paths.get("../file/"+user+"/out/"+mail.getMillis()+".txt"));
+        Files.delete(Paths.get("src/main/java/com/example/mailServer/file/"+user+"/out/"+mail.getMillis()+".txt"));
       else
-        Files.delete(Paths.get("../file/"+user+"/in/"+mail.getMillis()+".txt"));
+        Files.delete(Paths.get("src/main/java/com/example/mailServer/file/"+user+"/in/"+mail.getMillis()+".txt"));
     } catch (Exception e){
       e.printStackTrace();
     }
