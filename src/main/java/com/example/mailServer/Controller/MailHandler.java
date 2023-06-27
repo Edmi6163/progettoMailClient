@@ -20,22 +20,25 @@ public class MailHandler {
       String sender = mail.getSender();
       List<String> receivers = mail.getReceivers();
 
-      System.out.println("[MailHanlder] sender: " + mail.getSender());
-      File senderDir = new File("./src/main/java/com/example/mailServer/file/" + sender + "/out/" + millis + ".txt");
-      System.out.println("[save] senderDir: " + senderDir);
+      System.out.println("[MailHandler] sender: " + mail.getSender());
+
+      File senderDir = new File("./src/main/java/com/example/mailServer/file/" + sender + "/out/");
       senderDir.mkdirs(); // Create directories recursively if they don't exist
 
-      FileOutputStream file = new FileOutputStream(senderDir + "/" + millis + ".txt");
+      File file = new File(senderDir, millis + ".txt");
       System.out.println("[save] file: " + file);
 
-      ObjectOutputStream output = new ObjectOutputStream(file);
+      FileOutputStream fileOutputStream = new FileOutputStream(file);
+      System.out.println("[save] fileOutputStream: " + fileOutputStream);
+
+      ObjectOutputStream output = new ObjectOutputStream(fileOutputStream);
 
       newMail = new Email(mail.getSender(), mail.getReceivers(), mail.getSubject(), mail.getText());
       System.out.println("[save] newMail: " + newMail);
       newMail.setBin(false);
       output.writeObject(newMail);
       output.close();
-      file.close();
+      fileOutputStream.close();
 
       for (String r : receivers) {
         // Create the directory for the receiver just in case it doesn't exist
@@ -43,14 +46,16 @@ public class MailHandler {
         System.out.println("[save] receiverDir: " + receiverDir);
         receiverDir.mkdirs();
 
-        file = new FileOutputStream("src/main/java/com/example/mailServer/file/" + r + "/" + millis + ".txt");
+        file = new File(receiverDir, millis + ".txt");
 
-        output = new ObjectOutputStream(file);
+        fileOutputStream = new FileOutputStream(file);
+
+        output = new ObjectOutputStream(fileOutputStream);
 
         newMail.setBin(false);
         output.writeObject(newMail);
         output.close();
-        file.close();
+        fileOutputStream.close();
       }
     } catch (IOException e) {
       e.printStackTrace();
@@ -58,7 +63,8 @@ public class MailHandler {
     return newMail;
   }
 
-public synchronized static List<Mail> getUpdatedList(String user,String max){
+
+  public synchronized static List<Mail> getUpdatedList(String user,String max){
     List<Mail> updatedList= new ArrayList<>();
     max=max+".txt";
     File dir=new File("src/main/java/com/example/mailServer/file/"+user+"/"+"in/");
