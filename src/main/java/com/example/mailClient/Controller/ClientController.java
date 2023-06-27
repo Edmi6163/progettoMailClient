@@ -138,7 +138,6 @@ public class ClientController implements Serializable {
       out.flush();
       System.out.println("[send mail CC] mail written to server\n" + mail.toString());
 
-      System.out.println("in.available() = " + in.available()); // FIXME in.available() is always 0 and the program gets
                                                                 // stuck here due to EOF
       // Read the response from the server
       Object response = in.readObject();

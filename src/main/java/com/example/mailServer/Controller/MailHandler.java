@@ -21,13 +21,13 @@ public class MailHandler {
       List<String> receivers = mail.getReceivers();
 
       System.out.println("[MailHanlder] sender: " + mail.getSender());
-      // Create the directory for the sender
       File senderDir = new File("./src/main/java/com/example/mailServer/file/" + sender + "/out/" + millis + ".txt");
       System.out.println("[save] senderDir: " + senderDir);
       senderDir.mkdirs(); // Create directories recursively if they don't exist
 
-      FileOutputStream file = new FileOutputStream( senderDir + "/out/" + millis + ".txt");
+      FileOutputStream file = new FileOutputStream(senderDir + "/" + millis + ".txt");
       System.out.println("[save] file: " + file);
+
       ObjectOutputStream output = new ObjectOutputStream(file);
 
       newMail = new Email(mail.getSender(), mail.getReceivers(), mail.getSubject(), mail.getText());
@@ -39,10 +39,12 @@ public class MailHandler {
 
       for (String r : receivers) {
         // Create the directory for the receiver just in case it doesn't exist
-        File receiverDir = new File("src/main/java/com/example/mailServer/file/" + r + "/in");
+        File receiverDir = new File("src/main/java/com/example/mailServer/file/" + r + "/in/");
+        System.out.println("[save] receiverDir: " + receiverDir);
         receiverDir.mkdirs();
 
-        file = new FileOutputStream("src/main/java/com/example/mailServer/file/" + r + "/out/" + millis + ".txt");
+        file = new FileOutputStream("src/main/java/com/example/mailServer/file/" + r + "/" + millis + ".txt");
+
         output = new ObjectOutputStream(file);
 
         newMail.setBin(false);
