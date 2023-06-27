@@ -63,8 +63,8 @@ public class NewMessageController {
     ClientMain clientMain = new ClientMain();
     boolean mailExist = false;
 
-    String sender = clientMain.getUserMail();
-    System.out.println("[NMC] sender is: " + clientMain.getUserMail());
+    String sender = mail.getSender();
+    System.out.println("[NMC] sender is: " + mail.getSender());
     mail.setReceivers(receiversField.getText());
     System.out.println("[NMC] receiver field is: " + receiversField.getText());
     mail.setSubject(subjectField.getText());

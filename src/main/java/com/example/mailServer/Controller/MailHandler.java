@@ -20,11 +20,13 @@ public class MailHandler {
       String sender = mail.getSender();
       List<String> receivers = mail.getReceivers();
 
+      System.out.println("[MailHanlder] sender: " + mail.getSender());
       // Create the directory for the sender
-      File senderDir = new File("src/main/java/com/example/mailServer/file/" + sender);
+      File senderDir = new File("./src/main/java/com/example/mailServer/file/" + sender + "/out/" + millis + ".txt");
+      System.out.println("[save] senderDir: " + senderDir);
       senderDir.mkdirs(); // Create directories recursively if they don't exist
 
-      FileOutputStream file = new FileOutputStream( senderDir + "/out" + millis + ".txt");
+      FileOutputStream file = new FileOutputStream( senderDir + "/out/" + millis + ".txt");
       System.out.println("[save] file: " + file);
       ObjectOutputStream output = new ObjectOutputStream(file);
 
