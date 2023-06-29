@@ -1,10 +1,7 @@
 package com.example.mailClient;
 
-
+import com.example.Transmission.Email;
 import com.example.mailClient.Controller.*;
-import com.example.mailClient.Controller.LoginController;
-
-
 import com.example.mailServer.Model.Mail;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -18,8 +15,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -63,8 +60,9 @@ public class ClientMain extends Application {
     return outbox;
   }
 
-  public void addInbox(List<Mail> in) {
-    inbox.addAll(in);
+  public void addInbox(ArrayList<Email> in) {
+    this.inbox.addAll(0, inbox);
+    // TODO: Riguardare su progetto matteo per matteo
   }
 
   public void addOutbox(List<Mail> out) {
@@ -76,17 +74,17 @@ public class ClientMain extends Application {
     outbox.add(out);
   }
 
-  public void delete(Mail mail) {
-    if (mail.isIsSent())
-      outbox.remove(mail);
-    else
-      inbox.remove(mail);
+  public void delete(Email mail) {
+    // TODO:
+    // if (mail.isIsSent())
+    // outbox.remove(mail);
+    // else
+    // inbox.remove(mail);
   }
 
   public String getUserMail() {
     return userMail;
   }
-
 
   private void showServerUpNotification() {
     Platform.runLater(() -> {
@@ -98,13 +96,13 @@ public class ClientMain extends Application {
     });
   }
 
-  private void stopServerCheckTimer(Timer timer){
-    if(timer!=null)
+  private void stopServerCheckTimer(Timer timer) {
+    if (timer != null)
       timer.cancel();
     timer = null;
   }
 
-  private void startServerCheckTimer(){
+  private void startServerCheckTimer() {
     Timer timer = new Timer();
 
     timer.schedule(new TimerTask() {
@@ -136,59 +134,61 @@ public class ClientMain extends Application {
     startServerCheckTimer();
   }
 
-  public void showMailContainer(){
+  public void showMailContainer() {
     try {
       FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("MailContainer.fxml"));
       AnchorPane mailContainer = loader.load();
       rootLayout.setCenter(mailContainer);
       MailContainerController controller = loader.getController();
       controller.setClientMain(this);
-    } catch (IOException e){
+    } catch (IOException e) {
       e.printStackTrace();
     }
   }
-  public void showSendMailDialog(Mail mail, String title){
+
+  public void showSendMailDialog(Mail mail, String title) {
     try {
-    FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("NewMessage.fxml"));
-    AnchorPane page = (AnchorPane) loader.load();
-    Stage dialog = new Stage();
-    dialog.setTitle(title);
-    dialog.initModality(Modality.WINDOW_MODAL);
-    dialog.initOwner(topStage);
-    Scene scene = new Scene(page);
-    dialog.setScene(scene);
+      FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("NewMessage.fxml"));
+      AnchorPane page = (AnchorPane) loader.load();
+      Stage dialog = new Stage();
+      dialog.setTitle(title);
+      dialog.initModality(Modality.WINDOW_MODAL);
+      dialog.initOwner(topStage);
+      Scene scene = new Scene(page);
+      dialog.setScene(scene);
 
-    NewMessageController controller = loader.getController();
-    controller.setDialog(dialog);
-    controller.setMail(mail);
+      NewMessageController controller = loader.getController();
+      controller.setDialog(dialog);
+      controller.setMail(mail);
 
-    dialog.showAndWait();
-    } catch (IOException e){
+      dialog.showAndWait();
+    } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  public void showNewMailPopUp(int mail){
-    Alert popup=new Alert(Alert.AlertType.INFORMATION);
+  public void showNewMailPopUp(int mail) {
+    Alert popup = new Alert(Alert.AlertType.INFORMATION);
     popup.initOwner(topStage);
     popup.setTitle("Notifications");
-    if(mail>1)
-      popup.setContentText("You received "+mail+"new messages");
+    if (mail > 1)
+      popup.setContentText("You received " + mail + "new messages");
     else
       popup.setContentText("You received a new message");
 
     popup.show();
   }
 
-  public void showErrorPopUp(){
-      Alert popup = new Alert(Alert.AlertType.INFORMATION);
-      popup.initOwner(topStage);
-      popup.setTitle("Server error");
-      popup.setContentText("Server propably is offline or check your internet connection");
-      popup.show();
+  public void showErrorPopUp() {
+    Alert popup = new Alert(Alert.AlertType.INFORMATION);
+    popup.initOwner(topStage);
+    popup.setTitle("Server error");
+    popup.setContentText("Server propably is offline or check your internet connection");
+    popup.show();
   }
-  private void showLoginDialog(){
-    try{
+
+  private void showLoginDialog() {
+    try {
       FXMLLoader loader = new FXMLLoader(ClientMain.class.getResource("Login.fxml"));
       AnchorPane page = loader.load();
 
@@ -203,18 +203,18 @@ public class ClientMain extends Application {
       loginController.setClientMain(this, dialog);
 
       dialog.showAndWait();
-    } catch (IOException e){
+    } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  private void refresh(){
-    while(true){
+  private void refresh() {
+    while (true) {
       try {
         Thread.sleep(50000);
-        if(userMail.length()>0)
+        if (userMail.length() > 0)
           Platform.runLater(clientHandler::requestInbox);
-      } catch (InterruptedException e){
+      } catch (InterruptedException e) {
         e.printStackTrace();
       }
     }
@@ -229,25 +229,21 @@ public class ClientMain extends Application {
   }
 
   private boolean checkConnection() {
-    if(!clientHandler.checkConnection()){
+    if (!clientHandler.checkConnection()) {
       showErrorPopUp();
       return false;
     }
     return true;
   }
-  public Stage getTopStage(){
+
+  public Stage getTopStage() {
     return topStage;
   }
 
-
   @Override
-  public void start(Stage topStage){
+  public void start(Stage topStage) {
     this.topStage = topStage;
     this.topStage.setTitle("Client mail window @javamail");
-
-    Thread refresh = new Thread(this::refresh);
-    refresh.setDaemon(true);
-    refresh.start();
 
     showLoginDialog();
     initRootLayout();
@@ -255,9 +251,8 @@ public class ClientMain extends Application {
 
   }
 
-  public static void main(String[] args){
-    launch(args);
+  public static void main(String[] args) {
+    launch();
   }
-
 
 }

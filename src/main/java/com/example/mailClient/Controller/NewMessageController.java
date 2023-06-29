@@ -72,8 +72,8 @@ public class NewMessageController {
     ArrayList<String> receivers = new ArrayList<>();
 
     receivers.addAll(Arrays.asList(receiversField.getText().split(",")));
-
-    Mail m = new Mail(sender,subjectField.getText(), receiversField.getText(), 0L, messageBodyArea.getText()); //TODO figure out timestamp
+    // TODO figure out timestamp
+    Mail m = new Mail(sender, subjectField.getText(), receiversField.getText(), 0L, messageBodyArea.getText());
     System.out.println("[NewMessageController] handleOk() m: " + m);
     Email e = new Email(sender, receivers, subjectField.getText(), messageBodyArea.getText());
     System.out.println("[NewMessageController] handleOk() e: " + e);
@@ -81,9 +81,9 @@ public class NewMessageController {
       mailExist = true;
     }
     if (isInputOk(m) && mailExist) {
-    // send mail
-    ClientController.sendMail(e, clientMain);
-    okClicked = true;
+      // send mail
+      // ClientController.sendMail(e, clientMain);
+      okClicked = true;
     }
   }
 
@@ -132,7 +132,7 @@ public class NewMessageController {
     if (error.length() == 0) {
 
       return true;
-     } else {
+    } else {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.initOwner(dialog);
       alert.setTitle("Invalid fields");

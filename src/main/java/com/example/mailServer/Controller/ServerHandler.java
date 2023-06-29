@@ -6,7 +6,6 @@ import com.example.Transmission.LoginRes;
 import com.example.Transmission.UserModel;
 import com.example.mailServer.Model.LoggerModel;
 import com.example.mailServer.Model.UserService;
-import com.example.mailServer.ServerMain;
 import com.example.mailServer.Model.Mail;
 import com.example.mailServer.Model.UserList;
 import javafx.application.Platform;
@@ -23,11 +22,11 @@ public class ServerHandler implements Runnable {
   private ServerLayoutController logger = new ServerLayoutController();
   private final Socket incoming;
 
-  public UserService userService ;
+  public UserService userService;
 
   private LoggerModel log;
-  ObjectOutputStream out;
-  ObjectInputStream in;
+  private ObjectOutputStream out = null;
+  private ObjectInputStream in = null;
 
   public ServerHandler(Socket incoming, LoggerModel log) {
     this.incoming = incoming;
@@ -55,29 +54,44 @@ public class ServerHandler implements Runnable {
   }
 
   private void handleRequest() throws IOException, ClassNotFoundException {
-   UserList userList = this.getUserList();
-    assert userList != null;
+    try {
+      try {
+        UserList userList = this.getUserList();
+        assert userList != null;
 
-    out = new ObjectOutputStream(incoming.getOutputStream());
-    in = new ObjectInputStream(incoming.getInputStream());
+        in = new ObjectInputStream(incoming.getInputStream());
+        out = new ObjectOutputStream(incoming.getOutputStream());
 
-    System.out.println("in.readObject() = " + in.readObject().toString());
-    Communication c = (Communication) in.readObject();
+        try {
+          System.out.println("in.readObject() = " + in.readObject().toString());
+          Communication c = (Communication) in.readObject();
 
-    System.out.println("Action registered: " + c.getAction());
-    logger.setLog("Action registered: " + c.getAction());
-    switch (c.getAction()) {
-      case "login" -> handleLoginAction(((UserModel) c.getBody()).getEmail());
-      case "all" -> handleAllAction(in, out, userList);
-      case "inbox" -> handleInboxAction(in, out);
-      case "send" -> handleSendAction(userList, (Email) c.getBody());
-      default -> log("Unrecognized action"); // handle unrecognized action
+          System.out.println("Action registered: " + c.getAction());
+          logger.setLog("Action registered: " + c.getAction());
+          switch (c.getAction()) {
+            case "login" -> handleLoginAction(((UserModel) c.getBody()).getEmail());
+            case "all" -> handleAllAction(in, out, userList);
+            case "inbox" -> handleInboxAction(in, out);
+            case "send" -> handleSendAction(userList, (Email) c.getBody());
+            default -> logger.setLog("Unrecognized action"); // handle unrecognized action
+          }
+
+        } catch (ClassNotFoundException e) {
+          throw new RuntimeException(e);
+        }
+      } finally {
+        logger.setLog("Client disconnected");
+        incoming.close();
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
     }
+
   }
 
   private void handleLoginAction(String username) throws IOException {
     Set<String> set = userService.getUsernamesFromDirectory(username);
-    if(set.isEmpty())
+    if (set.isEmpty())
       userService.createUserFolders(username);
 
     logger.setLog("User " + username + " logged in");
@@ -93,7 +107,6 @@ public class ServerHandler implements Runnable {
     Communication c = new Communication("loginRes", responseBody);
     out.writeObject(c);
   }
-
 
   private void handleAllAction(ObjectInputStream in, ObjectOutputStream out, UserList userList)
       throws IOException, ClassNotFoundException {
@@ -114,7 +127,6 @@ public class ServerHandler implements Runnable {
     out.writeObject(MailHandler.getUpdatedList(user, max));
   }
 
-
   private void handleSendAction(UserList userList, Email mail) throws IOException, ClassNotFoundException {
     System.out.println("***handleSendAction***");
     // log("***handleSendAction***");
@@ -125,20 +137,20 @@ public class ServerHandler implements Runnable {
     for (String receiver : receivers) {
       if (!userList.userExist(receiver)) {
         Mail wrong = new Mail("System",
-          "Wrong email address", mail.getSender(),
-          0,
-          "It wasn't possible to send this email to " + receiver + ", wrong email  address + " +
-            "\n***********************\n" + mail
-            + "\n***********************\nTHIS IS AN AUTOMATED MESSAGE, PLEASE, DO NOT REPLY.");
+            "Wrong email address", mail.getSender(),
+            0,
+            "It wasn't possible to send this email to " + receiver + ", wrong email  address + " +
+                "\n***********************\n" + mail
+                + "\n***********************\nTHIS IS AN AUTOMATED MESSAGE, PLEASE, DO NOT REPLY.");
         mail.getReceivers().remove(receiver);
       }
-//   log(mail.getSender() + " sent an email to " + mail.getReceiversString());
+      // log(mail.getSender() + " sent an email to " + mail.getReceiversString());
       logger.setLog(mail.getSender() + " sent an email to " + mail.getReceivers());
       System.out.println(mail.getSender() + " sent an email to " + mail.getReceivers());
       mail.setBin(true);
       out.writeObject(mail);
       MailHandler.save(mail);
-//SI SPACCA PERCHÈ MANCA IL WRITEOBJECT DEL SERVER
+      // SI SPACCA PERCHÈ MANCA IL WRITEOBJECT DEL SERVER
 
     }
   }

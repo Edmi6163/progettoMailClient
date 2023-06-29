@@ -6,27 +6,24 @@ import javafx.application.Platform;
 
 import com.example.Transmission.Communication;
 import com.example.Transmission.Email;
+import com.example.Transmission.LoginRes;
 import com.example.mailClient.ClientMain;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClientController implements Serializable {
   private ClientMain clientMain;
   private transient boolean serverStatus = false;
   private Socket socket;
-  private static final String host = "127.0.0.1";
 
-  // private static LoggerModel logger;
-  private static ServerLayoutController logger;
-
-  ObjectOutputStream out;
-  ObjectInputStream in;
+  private ObjectOutputStream out = null;
+  private ObjectInputStream in = null;
 
   public ClientController(ClientMain clientMain) {
     this.clientMain = clientMain;
-    logger = new ServerLayoutController();
   }
 
   /*
@@ -40,14 +37,35 @@ public class ClientController implements Serializable {
     try {
       String hostName = InetAddress.getLocalHost().getHostName();
       socket = new Socket(hostName, 8189);
-      ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+      out = new ObjectOutputStream(socket.getOutputStream());
       out.flush();
-      ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+      in = new ObjectInputStream(socket.getInputStream());
       this.serverStatus = true;
     } catch (IOException e) {
       this.serverStatus = false;
     }
     return serverStatus;
+  }
+
+  private void closeSocketConnection() throws IOException {
+    if (socket != null) {
+      out.close();
+      in.close();
+      socket.close();
+    }
+  }
+
+  private Communication sendCommunicationToServer(Communication c) {
+    try {
+      if (out == null || in == null) {
+        return null;
+      }
+      out.writeObject(c);
+      return (Communication) in.readObject();
+    } catch (IOException | ClassNotFoundException e) {
+      return null;
+    }
+
   }
 
   public String getMaxTimeStamp(List<Mail> inbox) {
@@ -66,99 +84,116 @@ public class ClientController implements Serializable {
 
   public void requestInbox() {
     try {
-      try (Socket s = new Socket(host, 8189)) {
-        System.out.println("Socket opened"); // TODO debug
-        out = new ObjectOutputStream(s.getOutputStream());
-        in = new ObjectInputStream(s.getInputStream());
-        System.out.println("receiving data from server :)" + s);
-        out.writeObject("inbox");
-        out.writeObject(clientMain.getUserMail());
-        out.writeObject(getMaxTimeStamp(clientMain.getInbox()));
-        List<Mail> res = (List<Mail>) in.readObject();
-        in.close();
-        out.close();
-        if (res != null) {
-          if (res.size() > 0) {
-            clientMain.addInbox(res);
-            clientMain.showNewMailPopUp(res.size());
-          }
-        } else {
-          noMailPopUp();
-        }
-      } catch (ClassNotFoundException e) {
-        e.printStackTrace();
+      if (!connectToSocket()) {
+        // fai uscire il popup il server è offline
+        return;
       }
 
+      System.out.println("Socket opened"); // TODO debug
+      System.out.println("receiving data from server :)");
+
+      Communication request = new Communication("inbox", clientMain.getUserMail());
+
+      Communication response = sendCommunicationToServer(request);
+
+      ArrayList<Email> res = (ArrayList<Email>) response.getBody();
+
+      closeSocketConnection();
+
+      if (res != null) {
+        if (res.size() > 0) {
+          clientMain.addInbox(res);
+          clientMain.showNewMailPopUp(res.size());
+        }
+      } else {
+        noMailPopUp();
+      }
     } catch (IOException e) {
       e.printStackTrace();
     }
+
   }
 
-  public boolean requestAll() {
+  public void login() {
     try {
-      try (Socket s = new Socket(host, 8189)) {
-        System.out.println("[Client Controller] socket opened :)" + s); // TODO debug
-        in = new ObjectInputStream(s.getInputStream());
-        out = new ObjectOutputStream(s.getOutputStream());
-        String getInput;
-        out.writeObject("all");
-        out.writeObject(clientMain.getUserMail());
-        List<Mail> resIn = (List<Mail>) in.readObject();
-        List<Mail> resOut = (List<Mail>) in.readObject();
-        in.close();
-        out.close();
-        if (resIn != null && resOut != null) {
-          if (resIn.size() > 0) {
-            clientMain.addInbox(resIn);
-            clientMain.addOutbox(resOut);
-          }
-        } else {
-          return false;
-        }
-      } catch (ClassNotFoundException e) {
-        e.printStackTrace();
-        return false;
+      if (!connectToSocket()) {
+        // fai uscire il popup il server è offline
+        return;
       }
+
+      Communication request = new Communication("login", clientMain.getUserMail());
+
+      Communication response = sendCommunicationToServer(request);
+
+      LoginRes arrayLists = (LoginRes) response.getBody();
+
+      ArrayList<Email> inbox = arrayLists.getArrayLists().get(0);
+      ArrayList<Email> outbox = arrayLists.getArrayLists().get(1);
+
+      closeSocketConnection();
+
+      // TODO: settare inbox e outbox
+
+      // if (resIn != null && resOut != null) {
+      // if (resIn.size() > 0) {
+      // clientMain.addInbox(resIn);
+      // clientMain.addOutbox(resOut);
+      // }
+      // } else {
+      // }
     } catch (IOException e) {
       e.printStackTrace();
-      return false;
     }
-    return true;
   }
 
-  public static void sendMail(Email mail, ClientMain clientMain) {
+  public void sendMail(Email mail, ClientMain clientMain) {
     clientMain.setMailSent(false);
-    try (Socket s = new Socket(host, 8189)) {
-      ObjectInputStream in = new ObjectInputStream(s.getInputStream());
-      ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
+    try {
+      if (!connectToSocket()) {
+        // fai uscire il popup il server è offline
+        return;
+      }
+      if (!connectToSocket()) {
+        // fai uscire il popup il server è offline
+        return;
+      }
+
       System.out.println("action send written to server");
       System.out.println(mail);
-      Communication c = new Communication("send", mail);
-      out.writeObject(c);
-      out.flush();
+
+      Communication sendMail = new Communication("send", mail);
+
+      Communication response = sendCommunicationToServer(sendMail);
+
       System.out.println("[send mail CC] mail written to server\n" + mail.toString());
 
-                                                                // stuck here due to EOF
-      // Read the response from the server
-      Object response = in.readObject();
-      if (response instanceof Mail responseMail) {
+      // TODO: da capire cosa risponde il backend
+      if (response.getBody() instanceof Mail responseMail) {
         System.out.println("Received response mail: " + responseMail);
         clientMain.setMailSent(true);
         System.out.println("Received response mail: " + responseMail);
         Platform.runLater(() -> clientMain.addOut(responseMail));
       }
-    } catch (Exception e) {
+
+      closeSocketConnection();
+
+    } catch (IOException e) {
       e.printStackTrace();
     }
+
   }
 
-  public static void deleteMail(Mail mail, ClientMain clientMain) {
-    try (Socket s = new Socket(host, 8189)) {
-      ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
-      ObjectInputStream in = new ObjectInputStream(s.getInputStream());
-      out.writeObject("delete");
-      out.writeObject(clientMain.getUserMail());
-      out.writeObject(mail);
+  public void deleteMail(Email mail) {
+    try {
+      if (!connectToSocket()) {
+        // fai uscire il popup il server è offline
+        return;
+      }
+
+      Communication delete = new Communication("delete", mail);
+
+      Communication response = sendCommunicationToServer(delete);
+
       Platform.runLater(() -> clientMain.delete(mail));
 
     } catch (Exception e) {

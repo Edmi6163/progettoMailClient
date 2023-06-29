@@ -12,6 +12,6 @@
 				 AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="19.0"/>
 	<TextField fx:id="username" layoutX="68.0" layoutY="38.0" prefHeight="26.0" prefWidth="194.0"
 						 AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0"/>
-	<Button layoutX="234.0" layoutY="75.0" mnemonicParsing="false" onAction="#handle Login" text="Login"
+	<Button layoutX="234.0" layoutY="75.0" mnemonicParsing="false" onAction="#handleLogin" text="Login"
 					AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0"/>
 </AnchorPane>

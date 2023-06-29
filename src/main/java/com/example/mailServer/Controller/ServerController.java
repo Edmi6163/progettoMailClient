@@ -8,13 +8,16 @@ import java.net.Socket;
 
 public class ServerController implements Runnable {
 	public LoggerModel log;
-	public ServerController(LoggerModel log) {
-		this.log =  log;
-	}
-	@Override
 
+	public ServerController(LoggerModel log) {
+		this.log = log;
+	}
+
+	@Override
 	public void run() {
-		try (ServerSocket s = new ServerSocket(8189)) {
+
+		try {
+			ServerSocket s = new ServerSocket(8189);
 			while (true) {
 				Socket incoming = s.accept();
 				Runnable r = new ServerHandler(incoming, log);
