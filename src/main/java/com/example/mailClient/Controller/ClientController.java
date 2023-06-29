@@ -2,11 +2,13 @@ package com.example.mailClient.Controller;
 
 import com.example.mailServer.Model.Mail;
 import javafx.application.Platform;
+import com.example.mailClient.Controller.LoginController;
 
 import com.example.Transmission.Communication;
 import com.example.Transmission.Email;
 import com.example.Transmission.LoginRes;
 import com.example.mailClient.ClientMain;
+import javafx.scene.control.Alert;
 
 import java.io.*;
 import java.net.*;
@@ -53,6 +55,13 @@ public class ClientController implements Serializable {
       socket.close();
     }
   }
+  public void showErrorPopUp() {
+    Alert popup = new Alert(Alert.AlertType.INFORMATION);
+    popup.initOwner(topStage);
+    popup.setTitle("Server error");
+    popup.setContentText("Server propably is offline or check your internet connection");
+    popup.show();
+  }
 
   private Communication sendCommunicationToServer(Communication c) {
     try {
@@ -84,7 +93,9 @@ public class ClientController implements Serializable {
   public void requestInbox() {
     try {
       if (!connectToSocket()) {
-        // fai uscire il popup il server è offline
+        //TODO fai uscire il popup il server è offline
+        showErrorPopUp();
+
         return;
       }
 
@@ -186,6 +197,7 @@ public class ClientController implements Serializable {
     try {
       if (!connectToSocket()) {
         // fai uscire il popup il server è offline
+        showErrorPopUp();
         return;
       }
 

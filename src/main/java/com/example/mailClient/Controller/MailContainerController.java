@@ -45,7 +45,7 @@ public class MailContainerController {
   private Button buttonForward;
   @FXML
   private Button buttonDelete;
-  private ClientMain clientMain;
+  private LoginController clientMain;
   private Mail selectedMail;
 
   public MailContainerController() {
@@ -136,7 +136,7 @@ public class MailContainerController {
     // clientMain)).start();
   }
 
-  public void setClientMain(ClientMain clientMain) {
+  public void setClientMain(LoginController clientMain) {
     this.clientMain = clientMain;
     inTable.setItems(clientMain.getInbox());
     outTable.setItems(clientMain.getOutbox());

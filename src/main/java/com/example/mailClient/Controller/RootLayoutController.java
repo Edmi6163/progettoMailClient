@@ -10,7 +10,7 @@ public class RootLayoutController {
   public Label userNameLabel;
   private ClientMain clientMain;
 
-  public void setClientMain(ClientMain clientMain) {
+  public void setClientMain(LoginController clientMain) {
     this.clientMain = clientMain;
     userNameLabel.setText(clientMain.getUserMail());
   }

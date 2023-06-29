@@ -1,30 +1,12 @@
 package com.example.mailClient;
 
-import com.example.Transmission.Email;
-import com.example.mailClient.Controller.*;
-import com.example.mailServer.Model.Mail;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class ClientMain extends Application {
+
   private Stage topStage;
-  private BorderPane rootLayout;
-  private boolean mailSent;
+  /*private boolean mailSent;
 
   public boolean isMailSent() {
     return mailSent;
@@ -40,9 +22,9 @@ public class ClientMain extends Application {
   private String userMail = "";
   private ClientController clientHandler;
 
-  public ClientController getClientHandler() {
+*//*  public ClientController getClientHandler() {
     return clientHandler;
-  }
+  }*//*
 
   public void setUserMail(String userMail) {
     this.userMail = userMail;
@@ -92,13 +74,14 @@ public class ClientMain extends Application {
     });
   }
 
-  private void stopServerCheckTimer(Timer timer) {
+*//*  private void stopServerCheckTimer(Timer timer) {
     if (timer != null)
       timer.cancel();
     timer = null;
-  }
+  }*//*
 
-  private void startServerCheckTimer() {
+
+  *//*private void startServerCheckTimer() {
     Timer timer = new Timer();
 
     timer.schedule(new TimerTask() {
@@ -111,6 +94,7 @@ public class ClientMain extends Application {
       }
     }, 0, 10000);
   }
+*//*
 
   public void initRootLayout() {
     try {
@@ -175,13 +159,13 @@ public class ClientMain extends Application {
     popup.show();
   }
 
-  public void showErrorPopUp() {
+*//*  public void showErrorPopUp() {
     Alert popup = new Alert(Alert.AlertType.INFORMATION);
     popup.initOwner(topStage);
     popup.setTitle("Server error");
     popup.setContentText("Server propably is offline or check your internet connection");
     popup.show();
-  }
+  }*//*
 
   private void showLoginDialog() {
     try {
@@ -224,27 +208,28 @@ public class ClientMain extends Application {
     popup.show();
   }
 
+
   private boolean checkConnection() {
     if (!clientHandler.checkConnection()) {
       showErrorPopUp();
       return false;
     }
     return true;
-  }
+  }*/
 
-  public Stage getTopStage() {
-    return topStage;
-  }
+
 
   @Override
   public void start(Stage topStage) {
     this.topStage = topStage;
     this.topStage.setTitle("Client mail window @javamail");
-
+/*
     showLoginDialog();
     initRootLayout();
-    showMailContainer();
+    showMailContainer();*/
 
+
+//    loadGui(); //TODO make launch this function
   }
 
   public static void main(String[] args) {
