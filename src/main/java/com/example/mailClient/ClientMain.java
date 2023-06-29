@@ -44,10 +44,6 @@ public class ClientMain extends Application {
     return clientHandler;
   }
 
-  public ClientMain() {
-    clientHandler = new ClientController(this);
-  }
-
   public void setUserMail(String userMail) {
     this.userMail = userMail;
   }
@@ -200,7 +196,7 @@ public class ClientMain extends Application {
       dialog.setScene(scene);
       dialog.setOnCloseRequest(windowEvent -> Platform.exit());
       LoginController loginController = loader.getController();
-      loginController.setClientMain(this, dialog);
+      // loginController.setClientMain(this, dialog);
 
       dialog.showAndWait();
     } catch (IOException e) {

@@ -12,8 +12,6 @@ import javafx.scene.text.TextFlow;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
 
 public class ServerLayoutController {
 
@@ -22,24 +20,25 @@ public class ServerLayoutController {
 
 	public LoggerModel logModel;
 
-
-	public ServerLayoutController(){
+	public ServerLayoutController() {
 		logModel = new LoggerModel();
 		logModel.getLog().addListener((observable, oldValue, newValue) -> {
 			setLog(newValue);
 		});
 
-	  Runnable serverThread = new ServerController(logModel);
+		Runnable serverThread = new ServerController(logModel);
 		new Thread(serverThread).start();
 
 	}
+
 	public void initialize() {
 		System.out.println("ServerLayoutController initialized");
 		logModel.setLog("server started");
 	}
 
 	public void setLog(String log) {
-		Text fullLog= new Text("["+LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) +"]\t -- " + "  " + log+"\n");
+		Text fullLog = new Text("[" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "]\t -- "
+				+ "  " + log + "\n");
 		fullLog.setFill(Color.web("#ffffff"));
 		logFlow.getChildren().add(fullLog);
 	}

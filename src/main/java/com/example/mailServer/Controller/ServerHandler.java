@@ -8,7 +8,6 @@ import com.example.mailServer.Model.LoggerModel;
 import com.example.mailServer.Model.UserService;
 import com.example.mailServer.Model.Mail;
 import com.example.mailServer.Model.UserList;
-import javafx.application.Platform;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -19,14 +18,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ServerHandler implements Runnable {
-  private ServerLayoutController logger = new ServerLayoutController();
-  private final Socket incoming;
-
+  private Socket incoming;
   public UserService userService;
 
-  private LoggerModel log;
-  private ObjectOutputStream out = null;
-  private ObjectInputStream in = null;
+  LoggerModel log;
+  ObjectOutputStream out;
+  ObjectInputStream in;
 
   public ServerHandler(Socket incoming, LoggerModel log) {
     this.incoming = incoming;
@@ -45,16 +42,6 @@ public class ServerHandler implements Runnable {
   @Override
   public void run() {
     try {
-      handleRequest();
-    } catch (IOException | ClassNotFoundException e) {
-      e.printStackTrace();
-    } finally {
-      closeConnection();
-    }
-  }
-
-  private void handleRequest() throws IOException, ClassNotFoundException {
-    try {
       try {
         UserList userList = this.getUserList();
         assert userList != null;
@@ -67,34 +54,36 @@ public class ServerHandler implements Runnable {
           Communication c = (Communication) in.readObject();
 
           System.out.println("Action registered: " + c.getAction());
-          logger.setLog("Action registered: " + c.getAction());
+          log.setLog("Action registered: " + c.getAction());
           switch (c.getAction()) {
             case "login" -> handleLoginAction(((UserModel) c.getBody()).getEmail());
             case "all" -> handleAllAction(in, out, userList);
             case "inbox" -> handleInboxAction(in, out);
             case "send" -> handleSendAction(userList, (Email) c.getBody());
-            default -> logger.setLog("Unrecognized action"); // handle unrecognized action
+            default -> log.setLog("Unrecognized action");
           }
 
         } catch (ClassNotFoundException e) {
           throw new RuntimeException(e);
         }
+
       } finally {
-        logger.setLog("Client disconnected");
+        System.out.println("FINITO");
+        log.setLog("Client disconnected");
         incoming.close();
       }
     } catch (IOException e) {
       e.printStackTrace();
     }
-
   }
 
   private void handleLoginAction(String username) throws IOException {
+    System.out.println("login");
     Set<String> set = userService.getUsernamesFromDirectory(username);
     if (set.isEmpty())
       userService.createUserFolders(username);
 
-    logger.setLog("User " + username + " logged in");
+    log.setLog("User " + username + " logged in");
 
     ArrayList<Email> inbox = MailHandler.loadInBox(username);
 
@@ -145,7 +134,7 @@ public class ServerHandler implements Runnable {
         mail.getReceivers().remove(receiver);
       }
       // log(mail.getSender() + " sent an email to " + mail.getReceiversString());
-      logger.setLog(mail.getSender() + " sent an email to " + mail.getReceivers());
+      log.setLog(mail.getSender() + " sent an email to " + mail.getReceivers());
       System.out.println(mail.getSender() + " sent an email to " + mail.getReceivers());
       mail.setBin(true);
       out.writeObject(mail);
@@ -157,14 +146,11 @@ public class ServerHandler implements Runnable {
 
   private synchronized void closeConnection() {
     try {
-      logger.setLog("closing connection");
+      log.setLog("closing connection");
       incoming.close();
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  private void log(String message) {
-    Platform.runLater(() -> logger.setLog(message));
-  }
 }

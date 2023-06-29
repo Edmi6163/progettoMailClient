@@ -14,13 +14,7 @@ public class LoginController {
   @FXML
   private AnchorPane loginPane;
 
-  private ClientMain clientMain;
   private Stage stage;
-
-  public void setClientMain(ClientMain main, Stage stage) {
-    this.clientMain = main;
-    this.stage = stage;
-  }
 
   /*
    * @brief: using Set data structure for uniqueness of elements, avoiding the
@@ -35,9 +29,10 @@ public class LoginController {
     // logger.setLog("username is: " + username.getText());
     String usernameToCheck = this.username.getText() + "@javamail.it";
 
+    ClientController cc = new ClientController(this.username.getText());
+    cc.login();
     System.out.println(username.getText() + " logged in ");
-    clientMain.setUserMail(usernameToCheck);
-    stage.close();
 
+    stage.close();
   }
 }
