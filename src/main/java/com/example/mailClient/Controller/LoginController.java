@@ -1,5 +1,7 @@
-package com.example.mailServer.Controller;
+package com.example.mailClient.Controller;
 
+import com.example.Transmission.Communication;
+import com.example.mailServer.Controller.ServerController;
 import com.example.mailServer.Model.LoggerModel;
 import com.example.mailServer.Controller.ServerLayoutController;
 import javafx.application.Platform;
@@ -13,6 +15,9 @@ import javafx.stage.Stage;
 import com.example.mailClient.ClientMain;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,11 +26,15 @@ public class LoginController {
   private TextField username;
   @FXML
   private AnchorPane loginPane;
-@FXML
-private TextFlow logFlow;
-  private ServerLayoutController logger = new ServerLayoutController();
+
+  public LoggerModel logger = new LoggerModel();
   private ClientMain clientMain;
   private Stage stage;
+  private static final String host = "127.0.0.1";
+
+  
+  public LoginController() throws IOException {
+  }
 
 
   public void setClientMain(ClientMain main,Stage stage){
@@ -41,20 +50,22 @@ private TextFlow logFlow;
   * @note: the directory is hardcoded, it should be changed to a relative path
   */
   @FXML
-  private boolean handleLogin() {
+  private void handleLogin() throws IOException {
 //    logger.setLog("username is: " + username.getText());
     String usernameToCheck = this.username.getText() + "@javamail.it";
+//    try (Socket s = new Socket(host ,8189)) {
+      ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
+      Communication communication = new Communication("login", usernameToCheck);
+      System.out.println("[LoignController] communication: " + communication.getBody() + " " + communication.getAction());
+      out.writeObject(communication);
+      out.flush();
+//    }
+    logger.setLog(username.getText() + " logged in successfully");
 
-    Set<String> usernames = getUsernamesFromDirectory();
-
-    boolean loginSuccess = usernames.contains(usernameToCheck);
-
-    if (loginSuccess) {
-      logger.setLog(username.getText() + " logged in successfully");
-
-      System.out.println(username.getText() + " logged in ");
-      clientMain.setUserMail(usernameToCheck);
-      stage.close();
+    System.out.println(username.getText() + " logged in ");
+    clientMain.setUserMail(usernameToCheck);
+    stage.close();
+      /*
     } else {
       logger.setLog(username.getText() + " tried to login, but wasn't registered");
       Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -67,17 +78,7 @@ private TextFlow logFlow;
     }
 
     return loginSuccess;
-  }
+  }*/
 
-  private Set<String> getUsernamesFromDirectory() {
-    File directory = new File("./src/main/java/com/example/mailServer/file");
-    File[] files = directory.listFiles();
-    Set<String> usernames = new HashSet<>();
-
-    assert files != null;
-    for (File file : files) {
-      usernames.add(file.getName());
-    }
-    return usernames;
   }
 }

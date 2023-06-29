@@ -85,8 +85,8 @@ public class MailHandler {
     return updatedList;
 }
 
-public synchronized static List<Mail> loadOutBox(String user){
-    List<Mail> out = new ArrayList<>();
+public synchronized static ArrayList<Email> loadOutBox(String user){
+    ArrayList<Email> out = new ArrayList<>();
     try{
      File dir= new File("src/main/java/com/example/mailServer/file/"+user+"/"+"out");
      ObjectInputStream output = null;
@@ -94,7 +94,7 @@ public synchronized static List<Mail> loadOutBox(String user){
      for(File f: Objects.requireNonNull(dir.listFiles())) {
        files = new FileInputStream(f);
        output = new ObjectInputStream(files);
-       out.add((Mail) output.readObject());
+       out.add((Email) output.readObject());
        output.close();
        files.close();
      }
@@ -109,8 +109,8 @@ public synchronized static List<Mail> loadOutBox(String user){
     return out;
 }
 
-public synchronized static List<Mail> loadInBox(String user){
-    List<Mail> inbox = new ArrayList<>();
+public synchronized static ArrayList<Email> loadInBox(String user){
+    ArrayList<Email> inbox = new ArrayList<>();
     try{
       File dir=new File("src/main/java/com/example/mailServer/file/"+user+"/"+"in");
       ObjectInputStream input = null;
@@ -118,7 +118,7 @@ public synchronized static List<Mail> loadInBox(String user){
       for(File f: Objects.requireNonNull(dir.listFiles())) {
         file = new FileInputStream(f);
         input = new ObjectInputStream(file);
-        inbox.add((Mail) input.readObject());
+        inbox.add((Email) input.readObject());
         input.close();
         file.close();
       }

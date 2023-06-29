@@ -132,7 +132,7 @@ public class NewMessageController {
     if (error.length() == 0) {
 
       return true;
-    } else {
+     } else {
       Alert alert = new Alert(Alert.AlertType.ERROR);
       alert.initOwner(dialog);
       alert.setTitle("Invalid fields");

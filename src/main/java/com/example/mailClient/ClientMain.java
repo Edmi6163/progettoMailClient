@@ -2,8 +2,7 @@ package com.example.mailClient;
 
 
 import com.example.mailClient.Controller.*;
-import com.example.mailClient.Model.*;
-import com.example.mailServer.Controller.LoginController;
+import com.example.mailClient.Controller.LoginController;
 
 
 import com.example.mailServer.Model.Mail;
@@ -14,12 +13,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 
 import java.io.IOException;
@@ -242,14 +239,16 @@ public class ClientMain extends Application {
     return topStage;
   }
 
+
+  @Override
   public void start(Stage topStage){
     this.topStage = topStage;
     this.topStage.setTitle("Client mail window @javamail");
-/*
+
     Thread refresh = new Thread(this::refresh);
     refresh.setDaemon(true);
     refresh.start();
- */
+
     showLoginDialog();
     initRootLayout();
     showMailContainer();

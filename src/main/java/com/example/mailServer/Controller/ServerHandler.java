@@ -2,6 +2,10 @@ package com.example.mailServer.Controller;
 
 import com.example.Transmission.Communication;
 import com.example.Transmission.Email;
+import com.example.Transmission.LoginRes;
+import com.example.Transmission.UserModel;
+import com.example.mailServer.Model.LoggerModel;
+import com.example.mailServer.Model.UserService;
 import com.example.mailServer.ServerMain;
 import com.example.mailServer.Model.Mail;
 import com.example.mailServer.Model.UserList;
@@ -11,20 +15,32 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 public class ServerHandler implements Runnable {
-  private final ServerMain mail;
   private ServerLayoutController logger = new ServerLayoutController();
   private final Socket incoming;
 
+  public UserService userService ;
+
+  private LoggerModel log;
   ObjectOutputStream out;
   ObjectInputStream in;
 
-  public ServerHandler(ServerMain serverMain, Socket incoming, MailHandler mailHandler) {
-    this.mail = serverMain;
+  public ServerHandler(Socket incoming, LoggerModel log) {
     this.incoming = incoming;
+    this.log = log;
+    userService = new UserService();
+  }
+
+  public UserList getUserList() {
+    UserList userList = new UserList();
+    userList.addUser("francesco@javamail.it");
+    userList.addUser("mauro@javamail.it");
+    userList.addUser("something@javamail.it");
+    return userList;
   }
 
   @Override
@@ -39,21 +55,45 @@ public class ServerHandler implements Runnable {
   }
 
   private void handleRequest() throws IOException, ClassNotFoundException {
-    UserList userList = mail.getUserList();
+   UserList userList = this.getUserList();
     assert userList != null;
 
     out = new ObjectOutputStream(incoming.getOutputStream());
     in = new ObjectInputStream(incoming.getInputStream());
 
+    System.out.println("in.readObject() = " + in.readObject().toString());
     Communication c = (Communication) in.readObject();
-    System.out.println("Action: " + c.getAction());
+
+    System.out.println("Action registered: " + c.getAction());
+    logger.setLog("Action registered: " + c.getAction());
     switch (c.getAction()) {
+      case "login" -> handleLoginAction(((UserModel) c.getBody()).getEmail());
       case "all" -> handleAllAction(in, out, userList);
       case "inbox" -> handleInboxAction(in, out);
       case "send" -> handleSendAction(userList, (Email) c.getBody());
       default -> log("Unrecognized action"); // handle unrecognized action
     }
   }
+
+  private void handleLoginAction(String username) throws IOException {
+    Set<String> set = userService.getUsernamesFromDirectory(username);
+    if(set.isEmpty())
+      userService.createUserFolders(username);
+
+    logger.setLog("User " + username + " logged in");
+
+    ArrayList<Email> inbox = MailHandler.loadInBox(username);
+
+    ArrayList<Email> outbox = MailHandler.loadOutBox(username);
+
+    ArrayList<ArrayList<Email>> emails = new ArrayList<>();
+    emails.add(inbox);
+    emails.add(outbox);
+    LoginRes responseBody = new LoginRes(emails);
+    Communication c = new Communication("loginRes", responseBody);
+    out.writeObject(c);
+  }
+
 
   private void handleAllAction(ObjectInputStream in, ObjectOutputStream out, UserList userList)
       throws IOException, ClassNotFoundException {
@@ -73,6 +113,7 @@ public class ServerHandler implements Runnable {
     String max = (String) in.readObject();
     out.writeObject(MailHandler.getUpdatedList(user, max));
   }
+
 
   private void handleSendAction(UserList userList, Email mail) throws IOException, ClassNotFoundException {
     System.out.println("***handleSendAction***");

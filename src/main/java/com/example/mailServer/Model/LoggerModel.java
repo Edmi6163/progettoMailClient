@@ -6,7 +6,6 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class LoggerModel {
   public SimpleStringProperty log;
-  public ServerLayoutController logger;
 
   public LoggerModel() {
     log = new SimpleStringProperty("Start server mod \n");
@@ -15,6 +14,6 @@ public class LoggerModel {
     return log;
   }
  public void setLog(String logs) {
-    logger.setLog(logs);
+    Platform.runLater(()->log.set(logs));
   }
 }
