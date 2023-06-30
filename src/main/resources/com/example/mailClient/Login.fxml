@@ -8,8 +8,8 @@
   <center>
    <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="20.0">
       <children>
-         <Label text="Inserici la tua email" />
-         <TextField fx:id="loginTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="400.0" style="-fx-border-color: #212121; -fx-background-radius: 20; -fx-border-radius: 20;" />
+         <Label text="Type your mail" />
+         <TextField fx:id="username" text="\@javamail.it" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="400.0"/>
          <Button defaultButton="true" mnemonicParsing="false" onAction="#handleLogin" text="ACCEDI" styleClass="default-button"/>
       </children>
    </VBox>

@@ -76,8 +76,7 @@ public class ClientController implements Serializable {
       out.writeObject(c);
       out.flush();
       Communication response = (Communication) in.readObject();
-      System.out
-          .println("function sendCommunicationToServer returned: " + response.getAction() + " " + response.getBody());
+      System.out.println("function sendCommunicationToServer returned: " + response.getAction() + " " + response.getBody());
       return response;
     } catch (IOException | ClassNotFoundException e) {
       System.out.println("error in sendCommunicationToServer");
@@ -138,8 +137,8 @@ public class ClientController implements Serializable {
         return;
       }
 
-      Communication request = new Communication("login", username + "@javamail.it");
-      System.out.println("comunication request: " + request.getAction());
+      Communication request = new Communication("login", username);
+      System.out.println("communication request: " + request.getAction());
       System.out.println("communication request body: " + request.getBody());
 
       Communication response = sendCommunicationToServer(request);
@@ -170,13 +169,11 @@ public class ClientController implements Serializable {
   public static void sendMail(Email mail, LoginController clientMain) {
     // clientMain.setMailSent(false);
     try {
-      /*
-       * if (!connectToSocket()) {
-       * // fai uscire il popup il server è offline
-       * loginController.showErrorPopUp();
-       * return;
-       * }
-       */
+     /*   if (!connectToSocket()) {
+        // fai uscire il popup il server è offline
+        loginController.showErrorPopUp();
+        return;
+        }*/
       System.out.println("action send written to server");
       System.out.println(mail);
 

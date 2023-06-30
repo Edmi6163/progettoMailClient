@@ -48,17 +48,14 @@ public class LoginController {
 
 	@FXML
 	private void handleLogin() throws IOException {
-
 		try {
-
 			initRootLayout();
 			showMailContainer();
-			// ClientController cc = new ClientController(this.username.getText());
-			// cc.login();
-			// System.out.println(username.getText() + " logged in ");
-
+			ClientController cc = new ClientController(this.username.getText());
+			cc.login();
+			System.out.println(username.getText() + " logged in ");
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 
 	}
