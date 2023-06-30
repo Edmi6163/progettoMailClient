@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class MailHandler {
-  public synchronized static Email save(Email mail){
+  public synchronized static Email save(Email mail) {
     Email newMail = null;
     try {
       Date date = new Date();
@@ -63,86 +63,87 @@ public class MailHandler {
     return newMail;
   }
 
+  public synchronized static List<Email> getUpdatedList(String user, String max) {
+    List<Email> updatedList = new ArrayList<>();
+    max = max + ".txt";
+    File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "in/");
+    ObjectOutputStream output = null;
+    FileOutputStream files = null;
 
-  public synchronized static List<Mail> getUpdatedList(String user,String max){
-    List<Mail> updatedList= new ArrayList<>();
-    max=max+".txt";
-    File dir=new File("src/main/java/com/example/mailServer/file/"+user+"/"+"in/");
-    ObjectOutputStream output=null;
-    FileOutputStream files=null;
-    for(File f: Objects.requireNonNull(dir.listFiles())){
-      if(f.getName().compareTo(max)>0){
-        try{
-          files=new FileOutputStream(f);
-          output= new ObjectOutputStream(files);
+    for (File f : Objects.requireNonNull(dir.listFiles())) {
+      if (f.getName().compareTo(max) > 0) {
+        try {
+          files = new FileOutputStream(f);
+          output = new ObjectOutputStream(files);
           output.close();
           files.close();
-        } catch (IOException e){
+        } catch (IOException e) {
           e.printStackTrace();
         }
       }
     }
     return updatedList;
-}
+  }
 
-public synchronized static ArrayList<Email> loadOutBox(String user){
+  public synchronized static ArrayList<Email> loadOutBox(String user) {
     ArrayList<Email> out = new ArrayList<>();
-    try{
-     File dir= new File("src/main/java/com/example/mailServer/file/"+user+"/"+"out");
-     ObjectInputStream output = null;
-     FileInputStream files=null;
-     for(File f: Objects.requireNonNull(dir.listFiles())) {
-       files = new FileInputStream(f);
-       output = new ObjectInputStream(files);
-       out.add((Email) output.readObject());
-       output.close();
-       files.close();
-     }
-      if(files!=null) {
+    try {
+      File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "out");
+      ObjectInputStream output = null;
+      FileInputStream files = null;
+      for (File f : Objects.requireNonNull(dir.listFiles())) {
+        files = new FileInputStream(f);
+        output = new ObjectInputStream(files);
+        out.add((Email) output.readObject());
+        output.close();
+        files.close();
+      }
+      if (files != null) {
         output.close();
         files.close();
       }
 
-    } catch (Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
     }
     return out;
-}
+  }
 
-public synchronized static ArrayList<Email> loadInBox(String user){
+  public synchronized static ArrayList<Email> loadInBox(String user) {
     ArrayList<Email> inbox = new ArrayList<>();
-    try{
-      File dir=new File("src/main/java/com/example/mailServer/file/"+user+"/"+"in");
+    try {
+      File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "in");
       ObjectInputStream input = null;
       FileInputStream file = null;
-      for(File f: Objects.requireNonNull(dir.listFiles())) {
+      for (File f : Objects.requireNonNull(dir.listFiles())) {
         file = new FileInputStream(f);
         input = new ObjectInputStream(file);
         inbox.add((Email) input.readObject());
         input.close();
         file.close();
       }
-        if(file!=null){
-          input.close();
-          file.close();
-        }
+      if (file != null) {
+        input.close();
+        file.close();
+      }
 
-      } catch (Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
     }
     return inbox;
-    }
+  }
 
-
-public synchronized void delete(Mail mail, String user){
-    try{
-      if(mail.isIsSent())
-        Files.delete(Paths.get("src/main/java/com/example/mailServer/file/"+user+"/out/"+mail.getMillis()+".txt"));
+  public synchronized void delete(Mail mail, String user) {
+    try {
+      if (mail.isIsSent())
+        Files.delete(
+            Paths.get("src/main/java/com/example/mailServer/file/" + user + "/out/" + mail.getMillis() + ".txt"));
       else
-        Files.delete(Paths.get("src/main/java/com/example/mailServer/file/"+user+"/in/"+mail.getMillis()+".txt"));
-    } catch (Exception e){
+        Files.delete(
+            Paths.get("src/main/java/com/example/mailServer/file/" + user + "/in/" + mail.getMillis() + ".txt"));
+    } catch (Exception e) {
       e.printStackTrace();
     }
-}
+  }
 
 }

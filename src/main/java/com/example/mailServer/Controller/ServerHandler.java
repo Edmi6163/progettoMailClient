@@ -2,6 +2,7 @@ package com.example.mailServer.Controller;
 
 import com.example.Transmission.Communication;
 import com.example.Transmission.Email;
+import com.example.Transmission.InboxRequest;
 import com.example.Transmission.LoginRes;
 import com.example.Transmission.UserModel;
 import com.example.mailServer.Model.LoggerModel;
@@ -51,14 +52,14 @@ public class ServerHandler implements Runnable {
 
         try {
           Communication c = (Communication) in.readObject();
-//          System.out.println("in.readObject() = " + in.readObject().toString());
+          // System.out.println("in.readObject() = " + in.readObject().toString());
           System.out.println("Action registered: " + c.getAction());
           log.setLog("Action registered: " + c.getAction());
           log.setLog(c.getBody().toString());
           switch (c.getAction()) {
             case "login" -> handleLoginAction((String) c.getBody());
             case "all" -> handleAllAction(in, out, userList);
-            case "inbox" -> handleInboxAction(in, out);
+            case "inbox" -> handleInboxAction((InboxRequest) c.getBody());
             case "send" -> handleSendAction(userList, (Email) c.getBody());
             default -> log.setLog("Unrecognized action");
           }
@@ -68,7 +69,7 @@ public class ServerHandler implements Runnable {
         }
 
       } finally {
-//        System.out.println("FINITO");
+        // System.out.println("FINITO");
         log.setLog("Client disconnected");
         incoming.close();
       }
@@ -107,19 +108,17 @@ public class ServerHandler implements Runnable {
     if (userList.userExist(user)) {
       out.writeObject(MailHandler.loadOutBox(user));
       out.writeObject(MailHandler.loadInBox(user));
-//      System.out.println("outbox loaded: " + MailHandler.loadOutBox(user));
+      // System.out.println("outbox loaded: " + MailHandler.loadOutBox(user));
     } else {
       out.writeObject(null);
       out.writeObject(null);
     }
   }
 
-  private void handleInboxAction(ObjectInputStream in, ObjectOutputStream out)
+  private void handleInboxAction(InboxRequest body)
       throws IOException, ClassNotFoundException {
     System.out.println("***handleInboxAction***");
-    String user = (String) in.readObject();
-    String max = (String) in.readObject();
-    out.writeObject(MailHandler.getUpdatedList(user, max));
+    out.writeObject(MailHandler.getUpdatedList(body.getEmail(), body.getMax()));
   }
 
   private void handleSendAction(UserList userList, Email mail) throws IOException, ClassNotFoundException {
