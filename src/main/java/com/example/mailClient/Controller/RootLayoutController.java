@@ -8,7 +8,7 @@ import com.example.mailClient.ClientMain;
 public class RootLayoutController {
   @FXML
   public Label userNameLabel;
-  private ClientMain clientMain;
+  private LoginController clientMain;
 
   public void setClientMain(LoginController clientMain) {
     this.clientMain = clientMain;

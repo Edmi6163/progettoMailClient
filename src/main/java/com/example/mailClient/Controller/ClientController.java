@@ -9,6 +9,7 @@ import com.example.Transmission.Email;
 import com.example.Transmission.LoginRes;
 import com.example.mailClient.ClientMain;
 import javafx.scene.control.Alert;
+import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.*;
@@ -20,6 +21,7 @@ public class ClientController implements Serializable {
   private transient boolean serverStatus = false;
   private Socket socket;
 
+  Stage topStage;
   private ObjectOutputStream out = null;
   private ObjectInputStream in = null;
 
@@ -156,8 +158,8 @@ public class ClientController implements Serializable {
     }
   }
 
-  public void sendMail(Email mail, ClientMain clientMain) {
-    clientMain.setMailSent(false);
+  public void sendMail(Email mail, LoginController clientMain) {
+  //  clientMain.setMailSent(false);
     try {
       if (!connectToSocket()) {
         // fai uscire il popup il server è offline
@@ -180,7 +182,7 @@ public class ClientController implements Serializable {
       // TODO: da capire cosa risponde il backend
       if (response.getBody() instanceof Mail responseMail) {
         System.out.println("Received response mail: " + responseMail);
-        clientMain.setMailSent(true);
+      //  clientMain.setMailSent(true);
         System.out.println("Received response mail: " + responseMail);
         Platform.runLater(() -> clientMain.addOut(responseMail));
       }

@@ -1,11 +1,16 @@
 package com.example.mailClient;
 
+import com.example.mailClient.Controller.LoginController;
 import javafx.application.Application;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class ClientMain extends Application {
 
   private Stage topStage;
+
+  public LoginController loginController = new LoginController();
   /*private boolean mailSent;
 
   public boolean isMailSent() {
@@ -220,7 +225,7 @@ public class ClientMain extends Application {
 
 
   @Override
-  public void start(Stage topStage) {
+  public void start(Stage topStage) throws IOException {
     this.topStage = topStage;
     this.topStage.setTitle("Client mail window @javamail");
 /*
@@ -228,8 +233,7 @@ public class ClientMain extends Application {
     initRootLayout();
     showMailContainer();*/
 
-
-//    loadGui(); //TODO make launch this function
+    loginController.loadController();
   }
 
   public static void main(String[] args) {

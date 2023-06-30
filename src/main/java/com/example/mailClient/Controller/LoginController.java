@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import com.example.mailClient.ClientMain;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -44,6 +45,16 @@ public class LoginController {
 	public Stage getTopStage(Stage topStage) {
 		return topStage;
 	}
+
+	public void addOutbox(List<Mail> out) {
+		outbox.addAll(out);
+	}
+
+	public void addOut(Mail out) {
+		System.out.println("adding to outbox");
+		outbox.add(out);
+	}
+
 
 
 	@FXML
@@ -144,7 +155,7 @@ public class LoginController {
 
 	public void loadController() throws IOException {
 
-			FXMLLoader loaderLogin = new FXMLLoader(ClientMain.class.getResource("Login.fxml"));
+			FXMLLoader loaderLogin = new FXMLLoader(getClass().getResource("Login.fxml"));
 			AnchorPane page = loaderLogin.load();
 
 			//loading login dialog
@@ -163,7 +174,7 @@ public class LoginController {
 
 			//loading root layout
 
-			FXMLLoader loaderRoot = new FXMLLoader(ClientMain.class.getResource("RootLayout.fxml"));
+			FXMLLoader loaderRoot = new FXMLLoader(getClass().getResource("RootLayout.fxml"));
 			rootLayout = loaderRoot.load();
 			RootLayoutController controllerRoot = loaderRoot.getController();
 			controllerRoot.setClientMain(this);
@@ -173,7 +184,7 @@ public class LoginController {
 
 
 			//loading mail container
-			FXMLLoader loaderContainer = new FXMLLoader(ClientMain.class.getResource("MailContainer.fxml"));
+			FXMLLoader loaderContainer = new FXMLLoader(getClass().getResource("MailContainer.fxml"));
 			AnchorPane mailContainer = loaderContainer.load();
 			rootLayout.setCenter(mailContainer);
 			MailContainerController controller = loaderContainer.getController();
