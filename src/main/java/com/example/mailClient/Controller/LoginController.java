@@ -1,7 +1,5 @@
 package com.example.mailClient.Controller;
 
-import com.example.mailServer.Model.LoggerModel;
-import com.example.mailClient.Controller.ClientController;
 import com.example.mailServer.Model.Mail;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -25,25 +23,19 @@ import java.util.TimerTask;
 public class LoginController {
 	@FXML
 	private TextField username;
-	@FXML
-	private AnchorPane loginPane;
+	// @FXML
+	// private AnchorPane root;
 
-	private Stage stage;
-	private Stage topStage; private BorderPane rootLayout;
+	@FXML
+	public BorderPane root;
+
+	private Stage topStage;
 
 	private String userMail = "";
 	public ClientController clientHandler;
 
 	private ObservableList<Mail> inbox = FXCollections.observableArrayList();
 	private ObservableList<Mail> outbox = FXCollections.observableArrayList();
-	public ClientController getClientHandler() {
-		return clientHandler;
-	}
-
-
-	public Stage getTopStage(Stage topStage) {
-		return topStage;
-	}
 
 	public void addOutbox(List<Mail> out) {
 		outbox.addAll(out);
@@ -54,22 +46,21 @@ public class LoginController {
 		outbox.add(out);
 	}
 
-	public void setTopStage(Stage topStage) {
-		this.topStage = topStage;
-	}
-
-
 	@FXML
 	private void handleLogin() throws IOException {
-//		logger.setLog("username is: " + username.getText());
-//		String usernameToCheck = this.username.getText() + "@javamail.it";
 
-		ClientController cc = new ClientController(this.username.getText());
-		cc.login();
-		System.out.println(username.getText() + " logged in ");
+		try {
 
-//		initRootLayout();
-//    stage.close();
+			initRootLayout();
+			showMailContainer();
+			// ClientController cc = new ClientController(this.username.getText());
+			// cc.login();
+			// System.out.println(username.getText() + " logged in ");
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
 	}
 
 	public ObservableList<Mail> getInbox() {
@@ -80,11 +71,9 @@ public class LoginController {
 		return outbox;
 	}
 
-
 	public String getUserMail() {
 		return userMail;
 	}
-
 
 	public void showErrorPopUp() {
 		Alert popup = new Alert(Alert.AlertType.INFORMATION);
@@ -154,103 +143,33 @@ public class LoginController {
 		}
 	}
 
-	public void showLoginDialog(){
-	try {
-		FXMLLoader loaderLogin = new FXMLLoader(getClass().getResource("Login.fxml"));
-		AnchorPane page = loaderLogin.load();
-
-		//loading login dialog
-		Stage dialog = new Stage();
-		dialog.setTitle("Login");
-		dialog.initModality(Modality.WINDOW_MODAL);
-		dialog.initOwner(topStage);
-		Scene sceneLogin = new Scene(page);
-		dialog.setScene(sceneLogin);
-		dialog.setOnCloseRequest(windowEvent -> Platform.exit());
-		LoginController loginController = loaderLogin.getController();
-		// loginController.setClientMain(this, dialog);
-		dialog.showAndWait();
-		dialog.close();
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
-	}
-
-	public void initRootLayout(){
+	public void initRootLayout() {
 		try {
-			//loading root layout
-			FXMLLoader loaderRoot = new FXMLLoader(getClass().getResource("RootLayout.fxml"));
-			rootLayout = loaderRoot.load();
-			RootLayoutController controllerRoot = loaderRoot.getController();
-			controllerRoot.setClientMain(this);
-			Scene sceneRoot = new Scene(rootLayout);
-			topStage.setScene(sceneRoot);
-			topStage.show();
-		} catch (IOException e) {
+			topStage = (Stage) root.getScene().getWindow();
+			// loading root layout
+			FXMLLoader loaderRoot = new FXMLLoader(ClientMain.class.getResource("RootLayout.fxml"));
+			root.setTop(loaderRoot.load());
+
+			// RootLayoutController controllerRoot = loaderRoot.getController();
+			// controllerRoot.setClientMain(this);
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void showMailContainer(){
+	public void showMailContainer() {
 		try {
-			//loading mail container
-			FXMLLoader loaderContainer = new FXMLLoader(getClass().getResource("MailContainer.fxml"));
-			AnchorPane mailContainer = loaderContainer.load();
-			rootLayout.setCenter(mailContainer);
+			// loading mail container
+			FXMLLoader loaderContainer = new FXMLLoader(ClientMain.class.getResource("MailContainer.fxml"));
+			root.setCenter(loaderContainer.load());
+
 			MailContainerController controller = loaderContainer.getController();
 			controller.setClientMain(this);
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	public void loadController() throws IOException {
 
-			/*
-			showLoginDialog();
-			System.out.println("login things finished");
-			initRootLayout();
-			showMailContainer();
-			*/
-
-		//login dialog
-		FXMLLoader loaderLogin = new FXMLLoader(getClass().getResource("Login.fxml"));
-		AnchorPane page = loaderLogin.load();
-
-		//loading login dialog
-		Stage dialog = new Stage();
-		dialog.setTitle("Login");
-		dialog.initModality(Modality.WINDOW_MODAL);
-		dialog.initOwner(topStage);
-		Scene sceneLogin = new Scene(page);
-		dialog.setScene(sceneLogin);
-		dialog.setOnCloseRequest(windowEvent -> Platform.exit());
-//		LoginController loginController = loaderLogin.getController();
-		// loginController.setClientMain(this, dialog);
-		dialog.showAndWait();
-		dialog.close();
-
-		System.out.println("login things finished");
-	//loading root layout
-		FXMLLoader loaderRoot = new FXMLLoader(getClass().getResource("RootLayout.fxml"));
-		rootLayout = loaderRoot.load();
-		RootLayoutController controllerRoot = loaderRoot.getController();
-		controllerRoot.setClientMain(this);
-		Scene sceneRoot = new Scene(rootLayout);
-		topStage.setScene(sceneRoot);
-		topStage.show();
-
-		FXMLLoader loaderContainer = new FXMLLoader(getClass().getResource("MailContainer.fxml"));
-		AnchorPane mailContainer = loaderContainer.load();
-		rootLayout.setCenter(mailContainer);
-		MailContainerController controller = loaderContainer.getController();
-		controller.setClientMain(this);
-		//loading mail container
-
-
-			clientHandler.checkConnection();
-			if (!checkConnection()) {
-				showErrorPopUp();
-			}
-			startServerCheckTimer();
-	}
 }
