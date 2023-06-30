@@ -23,6 +23,7 @@ public class ClientController implements Serializable {
   private static ObjectOutputStream out = null;
   private static ObjectInputStream in = null;
   public static LoginController loginController = new LoginController();
+
   public ClientController(String username) {
     this.username = username;
   }
@@ -34,7 +35,7 @@ public class ClientController implements Serializable {
     return connectToSocket();
   }
 
-  private  boolean connectToSocket() {
+  private boolean connectToSocket() {
     try {
       String hostName = InetAddress.getLocalHost().getHostName();
       socket = new Socket(hostName, 8189);
@@ -55,6 +56,7 @@ public class ClientController implements Serializable {
       socket.close();
     }
   }
+
   public void showErrorPopUp() {
     Alert popup = new Alert(Alert.AlertType.INFORMATION);
     popup.initOwner(topStage);
@@ -63,7 +65,7 @@ public class ClientController implements Serializable {
     popup.show();
   }
 
- //TODO a lot of debug print to remove
+  // TODO a lot of debug print to remove
   private static Communication sendCommunicationToServer(Communication c) {
     System.out.println("sending communication to server: " + c.getAction() + " " + c.getBody());
     try {
@@ -74,7 +76,8 @@ public class ClientController implements Serializable {
       out.writeObject(c);
       out.flush();
       Communication response = (Communication) in.readObject();
-      System.out.println("function sendCommunicationToServer returned: " + response.getAction() + " " + response.getBody());
+      System.out
+          .println("function sendCommunicationToServer returned: " + response.getAction() + " " + response.getBody());
       return response;
     } catch (IOException | ClassNotFoundException e) {
       System.out.println("error in sendCommunicationToServer");
@@ -104,15 +107,12 @@ public class ClientController implements Serializable {
         return;
       }
 
-
       Communication request = new Communication("inbox", username);
 
       Communication response = sendCommunicationToServer(request);
 
-
-
       ArrayList<Email> res = (ArrayList<Email>) response.getBody();
-      //print res
+      // print res
       System.out.println("request info returned: " + res.toString());
 
       closeSocketConnection();
@@ -131,7 +131,6 @@ public class ClientController implements Serializable {
 
   }
 
-
   public void login() {
     try {
       if (!connectToSocket()) {
@@ -145,16 +144,13 @@ public class ClientController implements Serializable {
 
       Communication response = sendCommunicationToServer(request);
 
-      assert response != null; //FIXME here the program crashes because response is null
       System.out.println("communication response: " + response.getBody());
       System.out.println("communication response body: " + response.getAction());
+
       LoginRes arrayLists = (LoginRes) response.getBody();
 
       ArrayList<Email> inbox = arrayLists.getArrayLists().get(0);
       ArrayList<Email> outbox = arrayLists.getArrayLists().get(1);
-
-      System.out.println("requesting info");
-      requestInfo();
 
       closeSocketConnection();
 
@@ -172,14 +168,15 @@ public class ClientController implements Serializable {
   }
 
   public static void sendMail(Email mail, LoginController clientMain) {
-  //  clientMain.setMailSent(false);
+    // clientMain.setMailSent(false);
     try {
-    /*  if (!connectToSocket()) {
-        // fai uscire il popup il server è offline
-        loginController.showErrorPopUp();
-        return;
-      }
-*/
+      /*
+       * if (!connectToSocket()) {
+       * // fai uscire il popup il server è offline
+       * loginController.showErrorPopUp();
+       * return;
+       * }
+       */
       System.out.println("action send written to server");
       System.out.println(mail);
 
@@ -192,7 +189,7 @@ public class ClientController implements Serializable {
       // TODO: da capire cosa risponde il backend
       if (response.getBody() instanceof Mail responseMail) {
         System.out.println("Received response mail: " + responseMail);
-      //  clientMain.setMailSent(true);
+        // clientMain.setMailSent(true);
         System.out.println("Received response mail: " + responseMail);
         Platform.runLater(() -> clientMain.addOut(responseMail));
       }

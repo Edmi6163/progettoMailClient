@@ -94,8 +94,10 @@ public class ServerHandler implements Runnable {
     ArrayList<ArrayList<Email>> emails = new ArrayList<>();
     emails.add(inbox);
     emails.add(outbox);
+
     LoginRes responseBody = new LoginRes(emails);
     Communication c = new Communication("loginRes", responseBody);
+
     out.writeObject(c);
     out.flush();
     System.out.println("Communication c: " + c.getAction() + " " + c.getBody().toString());
