@@ -50,13 +50,13 @@ public class ServerHandler implements Runnable {
         out = new ObjectOutputStream(incoming.getOutputStream());
 
         try {
-          System.out.println("in.readObject() = " + in.readObject().toString());
           Communication c = (Communication) in.readObject();
-
+//          System.out.println("in.readObject() = " + in.readObject().toString());
           System.out.println("Action registered: " + c.getAction());
           log.setLog("Action registered: " + c.getAction());
+          log.setLog(c.getBody().toString());
           switch (c.getAction()) {
-            case "login" -> handleLoginAction(((UserModel) c.getBody()).getEmail());
+            case "login" -> handleLoginAction((String) c.getBody());
             case "all" -> handleAllAction(in, out, userList);
             case "inbox" -> handleInboxAction(in, out);
             case "send" -> handleSendAction(userList, (Email) c.getBody());
@@ -68,7 +68,7 @@ public class ServerHandler implements Runnable {
         }
 
       } finally {
-        System.out.println("FINITO");
+//        System.out.println("FINITO");
         log.setLog("Client disconnected");
         incoming.close();
       }
@@ -78,7 +78,8 @@ public class ServerHandler implements Runnable {
   }
 
   private void handleLoginAction(String username) throws IOException {
-    System.out.println("login");
+    System.out.println("handleLoginAction");
+
     Set<String> set = userService.getUsernamesFromDirectory(username);
     if (set.isEmpty())
       userService.createUserFolders(username);

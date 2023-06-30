@@ -1,5 +1,6 @@
 package com.example.mailClient.Controller;
 
+import com.example.Transmission.LoginRes;
 import com.example.mailServer.Model.Mail;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -60,8 +61,8 @@ public class NewMessageController {
    */
   @FXML
   private void handleOk() throws InterruptedException {
-    ClientMain clientMain = new ClientMain();
-    boolean mailExist = false;
+    LoginController clientMain = new LoginController();
+//    boolean mailExist = false;
 
     String sender = mail.getSender();
     System.out.println("[NMC] sender is: " + mail.getSender());
@@ -77,12 +78,12 @@ public class NewMessageController {
     System.out.println("[NewMessageController] handleOk() m: " + m);
     Email e = new Email(sender, receivers, subjectField.getText(), messageBodyArea.getText());
     System.out.println("[NewMessageController] handleOk() e: " + e);
-    if (checkIfMailExists(m, clientMain)) {
+  /*  if (checkIfMailExists(m, clientMain)) {
       mailExist = true;
-    }
-    if (isInputOk(m) && mailExist) {
+    }*/
+    if (isInputOk(m)) {
       // send mail
-      // ClientController.sendMail(e, clientMain);
+      ClientController.sendMail(e, clientMain);
       okClicked = true;
     }
   }
@@ -97,7 +98,7 @@ public class NewMessageController {
    * @param clientMain
    */
 
-  private boolean checkIfMailExists(Mail mail, ClientMain clientMain) {
+  private boolean checkIfMailExists(Mail mail, LoginController clientMain) {
     String error = "";
 
     File[] files = new File("src/main/java/com/example/mailServer/file").listFiles();

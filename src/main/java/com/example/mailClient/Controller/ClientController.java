@@ -2,7 +2,6 @@ package com.example.mailClient.Controller;
 
 import com.example.mailServer.Model.Mail;
 import javafx.application.Platform;
-import com.example.mailClient.Controller.LoginController;
 
 import com.example.Transmission.Communication;
 import com.example.Transmission.Email;
@@ -19,12 +18,12 @@ import java.util.List;
 public class ClientController implements Serializable {
   private String username;
   private transient boolean serverStatus = false;
-  private Socket socket;
+  private static Socket socket;
 
   Stage topStage;
-  private ObjectOutputStream out = null;
-  private ObjectInputStream in = null;
-
+  private static ObjectOutputStream out = null;
+  private static ObjectInputStream in = null;
+  public static LoginController loginController = new LoginController();
   public ClientController(String username) {
     this.username = username;
   }
@@ -36,7 +35,7 @@ public class ClientController implements Serializable {
     return connectToSocket();
   }
 
-  private boolean connectToSocket() {
+  private  boolean connectToSocket() {
     try {
       String hostName = InetAddress.getLocalHost().getHostName();
       socket = new Socket(hostName, 8189);
@@ -50,7 +49,7 @@ public class ClientController implements Serializable {
     return serverStatus;
   }
 
-  private void closeSocketConnection() throws IOException {
+  private static void closeSocketConnection() throws IOException {
     if (socket != null) {
       out.close();
       in.close();
@@ -65,9 +64,11 @@ public class ClientController implements Serializable {
     popup.show();
   }
 
-  private Communication sendCommunicationToServer(Communication c) {
+  private static Communication sendCommunicationToServer(Communication c) {
+    System.out.println("sending communication to server: " + c.getAction() + " " + c.getBody());
     try {
       if (out == null || in == null) {
+        System.out.println("out or in is null");
         return null;
       }
       out.writeObject(c);
@@ -129,14 +130,18 @@ public class ClientController implements Serializable {
   public void login() {
     try {
       if (!connectToSocket()) {
-        // fai uscire il popup il server è offline
+        loginController.showErrorPopUp();
         return;
       }
 
-      Communication request = new Communication("login", username);
+      Communication request = new Communication("login", username + "@javamail.it");
+      System.out.println("comunication request: " + request.getAction());
+      System.out.println("communication request body: " + request.getBody());
 
       Communication response = sendCommunicationToServer(request);
 
+      System.out.println("communication response: " + response.getBody());
+      System.out.println("communication response body: " + response.getAction());
       LoginRes arrayLists = (LoginRes) response.getBody();
 
       ArrayList<Email> inbox = arrayLists.getArrayLists().get(0);
@@ -158,18 +163,15 @@ public class ClientController implements Serializable {
     }
   }
 
-  public void sendMail(Email mail, LoginController clientMain) {
+  public static void sendMail(Email mail, LoginController clientMain) {
   //  clientMain.setMailSent(false);
     try {
-      if (!connectToSocket()) {
+    /*  if (!connectToSocket()) {
         // fai uscire il popup il server è offline
+        loginController.showErrorPopUp();
         return;
       }
-      if (!connectToSocket()) {
-        // fai uscire il popup il server è offline
-        return;
-      }
-
+*/
       System.out.println("action send written to server");
       System.out.println(mail);
 
