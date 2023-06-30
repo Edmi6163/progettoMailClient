@@ -63,6 +63,7 @@ public class ClientController implements Serializable {
     popup.show();
   }
 
+ //TODO a lot of debug print to remove
   private static Communication sendCommunicationToServer(Communication c) {
     System.out.println("sending communication to server: " + c.getAction() + " " + c.getBody());
     try {
@@ -71,11 +72,15 @@ public class ClientController implements Serializable {
         return null;
       }
       out.writeObject(c);
-      return (Communication) in.readObject();
+      out.flush();
+      Communication response = (Communication) in.readObject();
+      System.out.println("function sendCommunicationToServer returned: " + response.getAction() + " " + response.getBody());
+      return response;
     } catch (IOException | ClassNotFoundException e) {
+      System.out.println("error in sendCommunicationToServer");
+      e.printStackTrace();
       return null;
     }
-
   }
 
   public String getMaxTimeStamp(List<Mail> inbox) {
@@ -95,20 +100,20 @@ public class ClientController implements Serializable {
   public void requestInfo() {
     try {
       if (!connectToSocket()) {
-        //TODO fai uscire il popup il server è offline
         showErrorPopUp();
-
         return;
       }
 
-      System.out.println("Socket opened"); // TODO debug
-      System.out.println("receiving data from server :)");
 
-      Communication request = new Communication("all", username);
+      Communication request = new Communication("inbox", username);
 
       Communication response = sendCommunicationToServer(request);
 
+
+
       ArrayList<Email> res = (ArrayList<Email>) response.getBody();
+      //print res
+      System.out.println("request info returned: " + res.toString());
 
       closeSocketConnection();
 
@@ -140,7 +145,7 @@ public class ClientController implements Serializable {
 
       Communication response = sendCommunicationToServer(request);
 
-      assert response != null;
+      assert response != null; //FIXME here the program crashes because response is null
       System.out.println("communication response: " + response.getBody());
       System.out.println("communication response body: " + response.getAction());
       LoginRes arrayLists = (LoginRes) response.getBody();
@@ -148,6 +153,7 @@ public class ClientController implements Serializable {
       ArrayList<Email> inbox = arrayLists.getArrayLists().get(0);
       ArrayList<Email> outbox = arrayLists.getArrayLists().get(1);
 
+      System.out.println("requesting info");
       requestInfo();
 
       closeSocketConnection();

@@ -37,7 +37,7 @@ public class ServerLayoutController {
 	}
 
 	public void setLog(String log) {
-		Text fullLog = new Text("[" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "]\t -- "
+		Text fullLog = new Text("[" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "]\t ---> "
 				+ "  " + log + "\n");
 		fullLog.setFill(Color.web("#ffffff"));
 		logFlow.getChildren().add(fullLog);

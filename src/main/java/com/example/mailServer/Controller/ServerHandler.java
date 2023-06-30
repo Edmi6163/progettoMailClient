@@ -96,15 +96,18 @@ public class ServerHandler implements Runnable {
     LoginRes responseBody = new LoginRes(emails);
     Communication c = new Communication("loginRes", responseBody);
     out.writeObject(c);
-    System.out.println("Communication c sent:" + c.getAction() + " " + c.getBody().toString());
+    out.flush();
+    System.out.println("Communication c: " + c.getAction() + " " + c.getBody().toString());
   }
 
   private void handleAllAction(ObjectInputStream in, ObjectOutputStream out, UserList userList)
       throws IOException, ClassNotFoundException {
+    System.out.println("***handleAllAction***");
     String user = (String) in.readObject();
     if (userList.userExist(user)) {
       out.writeObject(MailHandler.loadOutBox(user));
       out.writeObject(MailHandler.loadInBox(user));
+//      System.out.println("outbox loaded: " + MailHandler.loadOutBox(user));
     } else {
       out.writeObject(null);
       out.writeObject(null);
@@ -113,6 +116,7 @@ public class ServerHandler implements Runnable {
 
   private void handleInboxAction(ObjectInputStream in, ObjectOutputStream out)
       throws IOException, ClassNotFoundException {
+    System.out.println("***handleInboxAction***");
     String user = (String) in.readObject();
     String max = (String) in.readObject();
     out.writeObject(MailHandler.getUpdatedList(user, max));

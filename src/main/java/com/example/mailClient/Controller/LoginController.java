@@ -29,8 +29,7 @@ public class LoginController {
 	private AnchorPane loginPane;
 
 	private Stage stage;
-	private Stage topStage;
-	private BorderPane rootLayout;
+	private Stage topStage; private BorderPane rootLayout;
 
 	private String userMail = "";
 	public ClientController clientHandler;
@@ -206,10 +205,12 @@ public class LoginController {
 	}
 	public void loadController() throws IOException {
 
-/*			showLoginDialog();
+			/*
+			showLoginDialog();
 			System.out.println("login things finished");
 			initRootLayout();
-			showMailContainer();*/
+			showMailContainer();
+			*/
 
 		//login dialog
 		FXMLLoader loaderLogin = new FXMLLoader(getClass().getResource("Login.fxml"));
@@ -223,11 +224,12 @@ public class LoginController {
 		Scene sceneLogin = new Scene(page);
 		dialog.setScene(sceneLogin);
 		dialog.setOnCloseRequest(windowEvent -> Platform.exit());
-		LoginController loginController = loaderLogin.getController();
+//		LoginController loginController = loaderLogin.getController();
 		// loginController.setClientMain(this, dialog);
 		dialog.showAndWait();
 		dialog.close();
 
+		System.out.println("login things finished");
 	//loading root layout
 		FXMLLoader loaderRoot = new FXMLLoader(getClass().getResource("RootLayout.fxml"));
 		rootLayout = loaderRoot.load();

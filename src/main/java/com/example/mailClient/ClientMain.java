@@ -11,6 +11,8 @@ public class ClientMain extends Application {
   private Stage topStage;
 
   public LoginController loginController = new LoginController();
+
+  // all this part is moved to LoginController
   /*private boolean mailSent;
 
   public boolean isMailSent() {
@@ -27,9 +29,9 @@ public class ClientMain extends Application {
   private String userMail = "";
   private ClientController clientHandler;
 
-*//*  public ClientController getClientHandler() {
+ public ClientController getClientHandler() {
     return clientHandler;
-  }*//*
+  }
 
   public void setUserMail(String userMail) {
     this.userMail = userMail;
@@ -79,14 +81,14 @@ public class ClientMain extends Application {
     });
   }
 
-*//*  private void stopServerCheckTimer(Timer timer) {
+  private void stopServerCheckTimer(Timer timer) {
     if (timer != null)
       timer.cancel();
     timer = null;
-  }*//*
+  }
 
 
-  *//*private void startServerCheckTimer() {
+  private void startServerCheckTimer() {
     Timer timer = new Timer();
 
     timer.schedule(new TimerTask() {
@@ -99,7 +101,7 @@ public class ClientMain extends Application {
       }
     }, 0, 10000);
   }
-*//*
+
 
   public void initRootLayout() {
     try {
@@ -164,13 +166,13 @@ public class ClientMain extends Application {
     popup.show();
   }
 
-*//*  public void showErrorPopUp() {
+  public void showErrorPopUp() {
     Alert popup = new Alert(Alert.AlertType.INFORMATION);
     popup.initOwner(topStage);
     popup.setTitle("Server error");
     popup.setContentText("Server propably is offline or check your internet connection");
     popup.show();
-  }*//*
+  }
 
   private void showLoginDialog() {
     try {

@@ -5,11 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2377a5de-9e43-4dcf-9ac1-a86384a20d0c" name="Changes" comment="login work, also logger, still not loading RootLayout after login succes">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/ClientMain.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/ClientController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/LoginController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/ServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/ServerHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/ServerLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/ServerLayoutController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -169,6 +171,7 @@
       <workItem from="1688071370363" duration="259000" />
       <workItem from="1688077517138" duration="3271000" />
       <workItem from="1688112266250" duration="10714000" />
+      <workItem from="1688128676332" duration="5883000" />
     </task>
     <task id="LOCAL-00001" summary="very small changes">
       <created>1683894254514</created>
