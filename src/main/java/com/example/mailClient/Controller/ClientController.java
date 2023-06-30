@@ -6,7 +6,6 @@ import javafx.application.Platform;
 import com.example.Transmission.Communication;
 import com.example.Transmission.Email;
 import com.example.Transmission.LoginRes;
-import com.example.mailClient.ClientMain;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
@@ -93,7 +92,7 @@ public class ClientController implements Serializable {
   // Platform.runLater(() -> clientMain.noMailPopUp());
   // }
 
-  public void requestInbox() {
+  public void requestInfo() {
     try {
       if (!connectToSocket()) {
         //TODO fai uscire il popup il server è offline
@@ -105,7 +104,7 @@ public class ClientController implements Serializable {
       System.out.println("Socket opened"); // TODO debug
       System.out.println("receiving data from server :)");
 
-      Communication request = new Communication("inbox", username);
+      Communication request = new Communication("all", username);
 
       Communication response = sendCommunicationToServer(request);
 
@@ -127,6 +126,7 @@ public class ClientController implements Serializable {
 
   }
 
+
   public void login() {
     try {
       if (!connectToSocket()) {
@@ -140,6 +140,7 @@ public class ClientController implements Serializable {
 
       Communication response = sendCommunicationToServer(request);
 
+      assert response != null;
       System.out.println("communication response: " + response.getBody());
       System.out.println("communication response body: " + response.getAction());
       LoginRes arrayLists = (LoginRes) response.getBody();
@@ -147,10 +148,11 @@ public class ClientController implements Serializable {
       ArrayList<Email> inbox = arrayLists.getArrayLists().get(0);
       ArrayList<Email> outbox = arrayLists.getArrayLists().get(1);
 
+      requestInfo();
+
       closeSocketConnection();
 
       // TODO: settare inbox e outbox
-
       // if (resIn != null && resOut != null) {
       // if (resIn.size() > 0) {
       // clientMain.addInbox(resIn);

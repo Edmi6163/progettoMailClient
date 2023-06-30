@@ -228,8 +228,8 @@ public class ClientMain extends Application {
   public void start(Stage topStage) throws IOException {
     this.topStage = topStage;
     this.topStage.setTitle("Client mail window @javamail");
-/*
-    showLoginDialog();
+
+/*    showLoginDialog();
     initRootLayout();
     showMailContainer();*/
 

@@ -4,17 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2377a5de-9e43-4dcf-9ac1-a86384a20d0c" name="Changes" comment="server now is kinda good,client still not working">
+    <list default="true" id="2377a5de-9e43-4dcf-9ac1-a86384a20d0c" name="Changes" comment="login work, also logger, still not loading RootLayout after login succes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Transmission/LoginRes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Transmission/LoginRes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/ClientMain.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/ClientController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/NewMessageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/NewMessageController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/ServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/ServerHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/mailClient/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/mailClient/Controller/Login.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/mailClient/MailContainer.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/mailClient/Controller/MailContainer.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/mailClient/NewMessage.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/mailClient/Controller/NewMessage.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/mailClient/RootLayout.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/mailClient/Controller/RootLayout.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -173,7 +168,7 @@
       <workItem from="1688061430623" duration="6562000" />
       <workItem from="1688071370363" duration="259000" />
       <workItem from="1688077517138" duration="3271000" />
-      <workItem from="1688112266250" duration="8486000" />
+      <workItem from="1688112266250" duration="10714000" />
     </task>
     <task id="LOCAL-00001" summary="very small changes">
       <created>1683894254514</created>
@@ -366,7 +361,15 @@
       <option name="project" value="LOCAL" />
       <updated>1688113008198</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="login work, also logger, still not loading RootLayout after login succes">
+      <option name="closed" value="true" />
+      <created>1688123294225</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1688123294225</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -384,7 +387,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="view is loaded :D" />
     <MESSAGE value="login still not working" />
     <MESSAGE value="login works now" />
     <MESSAGE value="small changes, send mail broken and log on server gui" />
@@ -409,7 +411,8 @@
     <MESSAGE value="now save() works as expected" />
     <MESSAGE value="most thing adapted to new refactor, need to check ClientController and showErrorPpop" />
     <MESSAGE value="server now is kinda good,client still not working" />
-    <option name="LAST_COMMIT_MESSAGE" value="server now is kinda good,client still not working" />
+    <MESSAGE value="login work, also logger, still not loading RootLayout after login succes" />
+    <option name="LAST_COMMIT_MESSAGE" value="login work, also logger, still not loading RootLayout after login succes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

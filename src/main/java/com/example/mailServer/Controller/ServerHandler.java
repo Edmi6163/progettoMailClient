@@ -96,6 +96,7 @@ public class ServerHandler implements Runnable {
     LoginRes responseBody = new LoginRes(emails);
     Communication c = new Communication("loginRes", responseBody);
     out.writeObject(c);
+    System.out.println("Communication c sent:" + c.getAction() + " " + c.getBody().toString());
   }
 
   private void handleAllAction(ObjectInputStream in, ObjectOutputStream out, UserList userList)

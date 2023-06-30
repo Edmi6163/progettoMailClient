@@ -55,6 +55,9 @@ public class LoginController {
 		outbox.add(out);
 	}
 
+	public void setTopStage(Stage topStage) {
+		this.topStage = topStage;
+	}
 
 
 	@FXML
@@ -66,7 +69,7 @@ public class LoginController {
 		cc.login();
 		System.out.println(username.getText() + " logged in ");
 
-
+//		initRootLayout();
 //    stage.close();
 	}
 
@@ -203,9 +206,43 @@ public class LoginController {
 	}
 	public void loadController() throws IOException {
 
-			showLoginDialog();
+/*			showLoginDialog();
+			System.out.println("login things finished");
 			initRootLayout();
-			showMailContainer();
+			showMailContainer();*/
+
+		//login dialog
+		FXMLLoader loaderLogin = new FXMLLoader(getClass().getResource("Login.fxml"));
+		AnchorPane page = loaderLogin.load();
+
+		//loading login dialog
+		Stage dialog = new Stage();
+		dialog.setTitle("Login");
+		dialog.initModality(Modality.WINDOW_MODAL);
+		dialog.initOwner(topStage);
+		Scene sceneLogin = new Scene(page);
+		dialog.setScene(sceneLogin);
+		dialog.setOnCloseRequest(windowEvent -> Platform.exit());
+		LoginController loginController = loaderLogin.getController();
+		// loginController.setClientMain(this, dialog);
+		dialog.showAndWait();
+		dialog.close();
+
+	//loading root layout
+		FXMLLoader loaderRoot = new FXMLLoader(getClass().getResource("RootLayout.fxml"));
+		rootLayout = loaderRoot.load();
+		RootLayoutController controllerRoot = loaderRoot.getController();
+		controllerRoot.setClientMain(this);
+		Scene sceneRoot = new Scene(rootLayout);
+		topStage.setScene(sceneRoot);
+		topStage.show();
+
+		FXMLLoader loaderContainer = new FXMLLoader(getClass().getResource("MailContainer.fxml"));
+		AnchorPane mailContainer = loaderContainer.load();
+		rootLayout.setCenter(mailContainer);
+		MailContainerController controller = loaderContainer.getController();
+		controller.setClientMain(this);
+		//loading mail container
 
 
 			clientHandler.checkConnection();
