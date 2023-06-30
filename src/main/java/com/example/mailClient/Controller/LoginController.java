@@ -28,12 +28,9 @@ public class LoginController {
 
 	@FXML
 	public BorderPane root;
-
 	private Stage topStage;
-
-	private String userMail = "";
+	public String userMail;
 	public ClientController clientHandler;
-
 	private ObservableList<Mail> inbox = FXCollections.observableArrayList();
 	private ObservableList<Mail> outbox = FXCollections.observableArrayList();
 
@@ -49,10 +46,14 @@ public class LoginController {
 	@FXML
 	private void handleLogin() throws IOException {
 		try {
+			userMail = username.getText();
+
 			initRootLayout();
 			showMailContainer();
-			ClientController cc = new ClientController(this.username.getText());
+
+			ClientController cc = new ClientController(username.getText());
 			cc.login();
+
 			System.out.println(username.getText() + " logged in ");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,10 +67,6 @@ public class LoginController {
 
 	public ObservableList<Mail> getOutbox() {
 		return outbox;
-	}
-
-	public String getUserMail() {
-		return userMail;
 	}
 
 	public void showErrorPopUp() {
@@ -147,8 +144,10 @@ public class LoginController {
 			FXMLLoader loaderRoot = new FXMLLoader(ClientMain.class.getResource("RootLayout.fxml"));
 			root.setTop(loaderRoot.load());
 
+			System.out.println(userMail);
+			// QUI
 			RootLayoutController controllerRoot = loaderRoot.getController();
-			controllerRoot.setClientMain(this);
+			controllerRoot.setClientMain(this, userMail);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -161,8 +160,9 @@ public class LoginController {
 			FXMLLoader loaderContainer = new FXMLLoader(ClientMain.class.getResource("MailContainer.fxml"));
 			root.setCenter(loaderContainer.load());
 
+			System.out.println(userMail);
 			MailContainerController controller = loaderContainer.getController();
-			controller.setClientMain(this);
+			controller.setClientMain(this, userMail);
 
 		} catch (IOException e) {
 			e.printStackTrace();

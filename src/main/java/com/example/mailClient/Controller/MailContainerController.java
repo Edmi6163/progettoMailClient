@@ -47,6 +47,7 @@ public class MailContainerController {
   private Button buttonDelete;
   private LoginController clientMain;
   private Mail selectedMail;
+  private String username;
 
   public MailContainerController() {
 
@@ -84,7 +85,7 @@ public class MailContainerController {
 
   @FXML
   private void forward() {
-    clientMain.showSendMailDialog(new Mail(clientMain.getUserMail(),
+    clientMain.showSendMailDialog(new Mail(username,
         "[FWD] " + selectedMail.getSubject(),
         " ",
         0L,
@@ -94,15 +95,15 @@ public class MailContainerController {
 
   @FXML
   private void reply() {
-    if (!selectedMail.getSender().equals(clientMain.getUserMail())) {
-      clientMain.showSendMailDialog(new Mail(clientMain.getUserMail(),
+    if (!selectedMail.getSender().equals(username)) {
+      clientMain.showSendMailDialog(new Mail(username,
           "[RE]" + selectedMail.getSubject(),
           selectedMail.getSender(),
           0L,
           "\n---\n" + selectedMail.getSender() + ":\n\n" + selectedMail.getMessage()),
           "Reply Email");
     } else {
-      clientMain.showSendMailDialog(new Mail(clientMain.getUserMail(),
+      clientMain.showSendMailDialog(new Mail(username,
           "[RE]" + selectedMail.getSubject(),
           selectedMail.getSender(),
           0L,
@@ -113,15 +114,15 @@ public class MailContainerController {
 
   @FXML
   private void replyAll() {
-    if (!selectedMail.getSender().equals(clientMain.getUserMail())) {
-      clientMain.showSendMailDialog(new Mail(clientMain.getUserMail(),
+    if (!selectedMail.getSender().equals(username)) {
+      clientMain.showSendMailDialog(new Mail(username,
           "[RE]" + selectedMail.getSubject(),
           selectedMail.getSender(),
           0L,
           "\n---\n" + selectedMail.getSender() + ":\n\n" + selectedMail.getMessage()),
           "Reply Email");
     } else {
-      clientMain.showSendMailDialog(new Mail(clientMain.getUserMail(),
+      clientMain.showSendMailDialog(new Mail(username,
           "[RE]" + selectedMail.getSubject(),
           selectedMail.getSender(),
           0L,
@@ -136,8 +137,9 @@ public class MailContainerController {
     // clientMain)).start();
   }
 
-  public void setClientMain(LoginController clientMain) {
-    this.clientMain = clientMain;
+  public void setClientMain(LoginController loginController, String username) {
+    this.clientMain = loginController;
+    this.username = username;
     inTable.setItems(clientMain.getInbox());
     outTable.setItems(clientMain.getOutbox());
   }

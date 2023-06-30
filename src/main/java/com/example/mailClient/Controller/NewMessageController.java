@@ -62,7 +62,7 @@ public class NewMessageController {
   @FXML
   private void handleOk() throws InterruptedException {
     LoginController clientMain = new LoginController();
-//    boolean mailExist = false;
+    // boolean mailExist = false;
 
     String sender = mail.getSender();
     System.out.println("[NMC] sender is: " + mail.getSender());
@@ -78,9 +78,11 @@ public class NewMessageController {
     System.out.println("[NewMessageController] handleOk() m: " + m);
     Email e = new Email(sender, receivers, subjectField.getText(), messageBodyArea.getText());
     System.out.println("[NewMessageController] handleOk() e: " + e);
-  /*  if (checkIfMailExists(m, clientMain)) {
-      mailExist = true;
-    }*/
+    /*
+     * if (checkIfMailExists(m, clientMain)) {
+     * mailExist = true;
+     * }
+     */
     if (isInputOk(m)) {
       // send mail
       ClientController.sendMail(e, clientMain);
