@@ -34,6 +34,8 @@ public class LoginController {
 	private ObservableList<Mail> inbox = FXCollections.observableArrayList();
 	private ObservableList<Mail> outbox = FXCollections.observableArrayList();
 
+	public ClientController cc;
+
 	public void addOutbox(List<Mail> out) {
 		outbox.addAll(out);
 	}
@@ -51,7 +53,7 @@ public class LoginController {
 			initRootLayout();
 			showMailContainer();
 
-			ClientController cc = new ClientController(username.getText());
+			cc = new ClientController(username.getText());
 			cc.login();
 
 			System.out.println(username.getText() + " logged in ");
@@ -128,6 +130,7 @@ public class LoginController {
 			dialog.setScene(scene);
 
 			NewMessageController controller = loader.getController();
+			controller.setController(cc);
 			controller.setDialog(dialog);
 			controller.setMail(mail);
 

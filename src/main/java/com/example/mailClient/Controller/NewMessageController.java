@@ -28,10 +28,14 @@ public class NewMessageController {
   private Stage dialog;
   private Mail mail;
   private boolean okClicked = false;
+  private ClientController cc;
+
+  public void setController(ClientController cc) {
+    this.cc = cc;
+  }
 
   @FXML
   private void initialize() {
-
   }
 
   public void setDialog(Stage dialog) {
@@ -85,7 +89,7 @@ public class NewMessageController {
      */
     if (isInputOk(m)) {
       // send mail
-      ClientController.sendMail(e, clientMain);
+      cc.sendMail(e, clientMain);
       okClicked = true;
     }
   }
