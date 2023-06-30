@@ -150,8 +150,8 @@ public class LoginController {
 			FXMLLoader loaderRoot = new FXMLLoader(ClientMain.class.getResource("RootLayout.fxml"));
 			root.setTop(loaderRoot.load());
 
-			// RootLayoutController controllerRoot = loaderRoot.getController();
-			// controllerRoot.setClientMain(this);
+			RootLayoutController controllerRoot = loaderRoot.getController();
+			controllerRoot.setClientMain(this);
 
 		} catch (Exception e) {
 			e.printStackTrace();
