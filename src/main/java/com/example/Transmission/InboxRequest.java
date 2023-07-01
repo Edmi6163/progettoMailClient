@@ -1,6 +1,8 @@
 package com.example.Transmission;
 
-public class InboxRequest {
+import java.io.Serializable;
+
+public class InboxRequest implements Serializable {
 
     String email;
     String max;

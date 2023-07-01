@@ -45,6 +45,8 @@ public class LoginController {
 		outbox.add(out);
 	}
 
+
+
 	@FXML
 	private void handleLogin() throws IOException {
 		try {
@@ -57,6 +59,7 @@ public class LoginController {
 			cc.login();
 
 			System.out.println(username.getText() + " logged in ");
+			cc.requestInfo();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -134,7 +137,7 @@ public class LoginController {
 			controller.setDialog(dialog);
 			controller.setMail(mail);
 
-			dialog.showAndWait();
+			dialog.show();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -163,7 +166,7 @@ public class LoginController {
 			FXMLLoader loaderContainer = new FXMLLoader(ClientMain.class.getResource("MailContainer.fxml"));
 			root.setCenter(loaderContainer.load());
 
-			System.out.println(userMail);
+//			System.out.println(userMail);
 			MailContainerController controller = loaderContainer.getController();
 			controller.setClientMain(this, userMail);
 

@@ -63,7 +63,7 @@ public class MailHandler {
     return newMail;
   }
 
-  public synchronized static List<Email> getUpdatedList(String user, String max) {
+  /*public synchronized static List<Email> getUpdatedList(String user, String max) {
     List<Email> updatedList = new ArrayList<>();
     max = max + ".txt";
     File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "in/");
@@ -84,8 +84,46 @@ public class MailHandler {
     }
     return updatedList;
   }
+*/
+  public synchronized static List<Email> getUpdatedList(String user, String max) {
+    List<Email> updatedList = new ArrayList<>();
+    max = max + ".txt";
+    File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "in/");
+    ObjectOutputStream output = null;
+    FileOutputStream files = null;
+
+    for (File f : Objects.requireNonNull(dir.listFiles())) {
+      if (f.getName().compareTo(max) > 0) {
+        try {
+          files = new FileOutputStream(f);
+          output = new ObjectOutputStream(files);
+
+          // Assuming the file contains Email data that can be read and deserialized
+          Email email = null;
+          try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(f))) {
+            email = (Email) input.readObject();
+          } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+          }
+
+          // If the email object was successfully deserialized, add it to the updatedList
+          if (email != null) {
+            updatedList.add(email);
+          }
+
+          output.close();
+          files.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    return updatedList;
+  }
+
 
   public synchronized static ArrayList<Email> loadOutBox(String user) {
+    System.out.println("[loadOutBox] user: " + user);
     ArrayList<Email> out = new ArrayList<>();
     try {
       File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "out");
@@ -110,6 +148,7 @@ public class MailHandler {
   }
 
   public synchronized static ArrayList<Email> loadInBox(String user) {
+    System.out.println("[loadInBox] user: " + user);
     ArrayList<Email> inbox = new ArrayList<>();
     try {
       File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "in");

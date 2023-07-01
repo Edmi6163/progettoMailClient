@@ -66,7 +66,7 @@ public class ClientController implements Serializable {
   }
 
   // TODO a lot of debug print to remove
-  private static Communication sendCommunicationToServer(Communication c) {
+  /*private static Communication sendCommunicationToServer(Communication c) {
     System.out.println("sending communication to server: " + c.getAction() + " " + c.getBody());
     try {
       if (out == null || in == null) {
@@ -76,9 +76,29 @@ public class ClientController implements Serializable {
       out.writeObject(c);
       out.flush();
       Communication response = (Communication) in.readObject();
-      System.out
-          .println("function sendCommunicationToServer returned: " + response.getAction() + " " + response.getBody());
+      System.out.println("function sendCommunicationToServer returned: " + response.getAction() + " " + response.getBody());
       return response;
+    } catch (IOException | ClassNotFoundException e) {
+      System.out.println("error in sendCommunicationToServer");
+      e.printStackTrace();
+      return null;
+    }
+  }*/
+
+  private static Communication sendCommunicationToServer(Communication c) {
+    System.out.println("sending communication to server: " + c.getAction() + " " + c.getBody());
+    try {
+      if (out == null || in == null) {
+        System.out.println("out or in is null");
+        return null;
+      }
+      out.writeObject(c);
+      out.flush();
+      Communication response = (Communication) in.readObject(); //FIXME response null
+      System.out.println("function sendCommunicationToServer returned: " + response.getClass().getSimpleName() + " " + response);
+
+      return response;
+
     } catch (IOException | ClassNotFoundException e) {
       System.out.println("error in sendCommunicationToServer");
       e.printStackTrace();
@@ -96,9 +116,9 @@ public class ClientController implements Serializable {
     return " " + maxTimeStamp;
   }
 
-  // public void noMailPopUp() {
-  // Platform.runLater(() -> clientMain.noMailPopUp());
-  // }
+//   public void noMailPopUp() {
+//   Platform.runLater(() -> loginController.noMailPopUp());
+//   }
 
   public void requestInfo() {
     try {
@@ -109,7 +129,7 @@ public class ClientController implements Serializable {
 
       Communication request = new Communication("inbox", username);
 
-      Communication response = sendCommunicationToServer(request);
+      Communication response = (Communication) sendCommunicationToServer(request);
 
       ArrayList<Email> res = (ArrayList<Email>) response.getBody();
       // print res
@@ -117,14 +137,14 @@ public class ClientController implements Serializable {
 
       closeSocketConnection();
 
-      // if (res != null) {
-      // if (res.size() > 0) {
-      // clientMain.addInbox(res);
-      // clientMain.showNewMailPopUp(res.size());
-      // }
-      // } else {
-      // noMailPopUp();
-      // }
+/*       if (res != null) {
+       if (res.size() > 0) {
+       clientMain.addInbox(res);
+       clientMain.showNewMailPopUp(res.size());
+       }
+       } else {
+       noMailPopUp();
+       }*/
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -142,7 +162,7 @@ public class ClientController implements Serializable {
       System.out.println("communication request: " + request.getAction());
       System.out.println("communication request body: " + request.getBody());
 
-      Communication response = sendCommunicationToServer(request);
+      Communication response = (Communication) sendCommunicationToServer(request);
 
       System.out.println("communication response: " + response.getBody());
       System.out.println("communication response body: " + response.getAction());
@@ -180,7 +200,7 @@ public class ClientController implements Serializable {
 
       Communication sendMail = new Communication("send", mail);
 
-      Communication response = sendCommunicationToServer(sendMail);
+      Communication response = (Communication) sendCommunicationToServer(sendMail);
 
       System.out.println("[send mail CC] mail written to server\n" + mail.toString());
 
@@ -200,6 +220,7 @@ public class ClientController implements Serializable {
 
   }
 
+
   public void deleteMail(Email mail) {
     try {
       if (!connectToSocket()) {
@@ -210,7 +231,7 @@ public class ClientController implements Serializable {
 
       Communication delete = new Communication("delete", mail);
 
-      Communication response = sendCommunicationToServer(delete);
+      Communication response = (Communication) sendCommunicationToServer(delete);
 
       // Platform.runLater(() -> clientMain.delete(mail));
 

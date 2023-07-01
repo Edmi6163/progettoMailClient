@@ -55,7 +55,7 @@ public class ServerHandler implements Runnable {
           // System.out.println("in.readObject() = " + in.readObject().toString());
           System.out.println("Action registered: " + c.getAction());
           log.setLog("Action registered: " + c.getAction());
-          log.setLog(c.getBody().toString());
+//          log.setLog(c.getBody().toString());
           switch (c.getAction()) {
             case "login" -> handleLoginAction((String) c.getBody());
             case "all" -> handleAllAction(in, out, userList);
@@ -89,8 +89,9 @@ public class ServerHandler implements Runnable {
 
     ArrayList<Email> inbox = MailHandler.loadInBox(username);
 
+    log.setLog(username + "'s inbox loaded, size is " + inbox.size());
     ArrayList<Email> outbox = MailHandler.loadOutBox(username);
-
+    log.setLog(username + "'s outbox loaded, size is " + outbox.size());
     ArrayList<ArrayList<Email>> emails = new ArrayList<>();
     emails.add(inbox);
     emails.add(outbox);

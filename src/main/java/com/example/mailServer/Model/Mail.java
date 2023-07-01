@@ -17,13 +17,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Mail implements Serializable {
-  //ObjectProopery<LocalDateTime> is not serializable, so must be transient
-  private transient   StringProperty sender;
-  private  transient StringProperty subject;
-  private transient ListProperty<String> receivers;
-  private transient ObjectProperty<LocalDateTime> date; //needed transient beacause ObjectProperty<LocalDateTime> is not serializable
-  private  transient StringProperty message;
-  private transient BooleanProperty isSent;
+  private    StringProperty sender;
+  private   StringProperty subject;
+  private  ListProperty<String> receivers;
+  private  ObjectProperty<LocalDateTime> date;
+  private   StringProperty message;
+  private  BooleanProperty isSent;
 
 
   public Mail(String sender,String subject,String receivers,long timestamp,String message) {

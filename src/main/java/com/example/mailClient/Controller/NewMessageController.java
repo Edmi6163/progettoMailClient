@@ -104,7 +104,7 @@ public class NewMessageController {
    * @param clientMain
    */
 
-  private boolean checkIfMailExists(Mail mail, LoginController clientMain) {
+/*  private boolean checkIfMailExists(Mail mail, LoginController clientMain) {
     String error = "";
 
     File[] files = new File("src/main/java/com/example/mailServer/file").listFiles();
@@ -124,7 +124,7 @@ public class NewMessageController {
     alert.showAndWait();
 
     return false;
-  }
+  }*/
 
   public boolean isInputOk(Mail mail) {
     String error = "";

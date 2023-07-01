@@ -22,8 +22,6 @@ public class RootLayoutController {
 
   @FXML
   private void handleNew() {
-
-    System.out.println(username);
     loginController.showSendMailDialog(new Mail(
         username,
         "",
