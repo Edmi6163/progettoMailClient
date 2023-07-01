@@ -1,6 +1,6 @@
 package com.example.mailClient.Controller;
 
-import com.example.mailServer.Model.Mail;
+import com.example.mailClient.Model.Mail;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import com.example.mailClient.ClientMain;
+import com.example.mailClient.Model.User;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,6 +35,7 @@ public class LoginController {
 	private ObservableList<Mail> inbox = FXCollections.observableArrayList();
 	private ObservableList<Mail> outbox = FXCollections.observableArrayList();
 
+	public User userModel;
 	public ClientController cc;
 
 	public void addOutbox(List<Mail> out) {
@@ -45,21 +47,21 @@ public class LoginController {
 		outbox.add(out);
 	}
 
-
-
 	@FXML
 	private void handleLogin() throws IOException {
 		try {
 			userMail = username.getText();
+			userModel = new User(userMail);
 
 			initRootLayout();
-			showMailContainer();
 
-			cc = new ClientController(username.getText());
+			cc = new ClientController(userModel);
 			cc.login();
 
+			showMailContainer();
+
 			System.out.println(username.getText() + " logged in ");
-			cc.requestInfo();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -129,6 +131,7 @@ public class LoginController {
 			dialog.setTitle(title);
 			dialog.initModality(Modality.WINDOW_MODAL);
 			dialog.initOwner(topStage);
+
 			Scene scene = new Scene(page);
 			dialog.setScene(scene);
 
@@ -166,9 +169,9 @@ public class LoginController {
 			FXMLLoader loaderContainer = new FXMLLoader(ClientMain.class.getResource("MailContainer.fxml"));
 			root.setCenter(loaderContainer.load());
 
-//			System.out.println(userMail);
 			MailContainerController controller = loaderContainer.getController();
-			controller.setClientMain(this, userMail);
+
+			controller.setClientMain(this, this.userModel);
 
 		} catch (IOException e) {
 			e.printStackTrace();

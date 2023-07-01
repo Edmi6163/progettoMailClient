@@ -1,11 +1,13 @@
 package com.example.mailClient.Controller;
 
-import com.example.mailServer.Model.Mail;
+import com.example.mailClient.Model.Mail;
 import javafx.application.Platform;
 
 import com.example.Transmission.Communication;
 import com.example.Transmission.Email;
 import com.example.Transmission.LoginRes;
+import com.example.mailClient.Model.User;
+
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
@@ -19,13 +21,15 @@ public class ClientController implements Serializable {
   private transient boolean serverStatus = false;
   private static Socket socket;
 
+  private User userModel;
   Stage topStage;
   private static ObjectOutputStream out = null;
   private static ObjectInputStream in = null;
   public static LoginController loginController = new LoginController();
 
-  public ClientController(String username) {
-    this.username = username;
+  public ClientController(User userModel) {
+    this.username = userModel.getUsername();
+    this.userModel = userModel;
   }
 
   /*
@@ -65,26 +69,6 @@ public class ClientController implements Serializable {
     popup.show();
   }
 
-  // TODO a lot of debug print to remove
-  /*private static Communication sendCommunicationToServer(Communication c) {
-    System.out.println("sending communication to server: " + c.getAction() + " " + c.getBody());
-    try {
-      if (out == null || in == null) {
-        System.out.println("out or in is null");
-        return null;
-      }
-      out.writeObject(c);
-      out.flush();
-      Communication response = (Communication) in.readObject();
-      System.out.println("function sendCommunicationToServer returned: " + response.getAction() + " " + response.getBody());
-      return response;
-    } catch (IOException | ClassNotFoundException e) {
-      System.out.println("error in sendCommunicationToServer");
-      e.printStackTrace();
-      return null;
-    }
-  }*/
-
   private static Communication sendCommunicationToServer(Communication c) {
     System.out.println("sending communication to server: " + c.getAction() + " " + c.getBody());
     try {
@@ -94,8 +78,9 @@ public class ClientController implements Serializable {
       }
       out.writeObject(c);
       out.flush();
-      Communication response = (Communication) in.readObject(); //FIXME response null
-      System.out.println("function sendCommunicationToServer returned: " + response.getClass().getSimpleName() + " " + response);
+      Communication response = (Communication) in.readObject();
+      System.out.println(
+          "function sendCommunicationToServer returned: " + response.getClass().getSimpleName() + " " + response);
 
       return response;
 
@@ -116,9 +101,9 @@ public class ClientController implements Serializable {
     return " " + maxTimeStamp;
   }
 
-//   public void noMailPopUp() {
-//   Platform.runLater(() -> loginController.noMailPopUp());
-//   }
+  // public void noMailPopUp() {
+  // Platform.runLater(() -> loginController.noMailPopUp());
+  // }
 
   public void requestInfo() {
     try {
@@ -132,19 +117,21 @@ public class ClientController implements Serializable {
       Communication response = (Communication) sendCommunicationToServer(request);
 
       ArrayList<Email> res = (ArrayList<Email>) response.getBody();
-      // print res
+
       System.out.println("request info returned: " + res.toString());
 
       closeSocketConnection();
 
-/*       if (res != null) {
-       if (res.size() > 0) {
-       clientMain.addInbox(res);
-       clientMain.showNewMailPopUp(res.size());
-       }
-       } else {
-       noMailPopUp();
-       }*/
+      /*
+       * if (res != null) {
+       * if (res.size() > 0) {
+       * clientMain.addInbox(res);
+       * clientMain.showNewMailPopUp(res.size());
+       * }
+       * } else {
+       * noMailPopUp();
+       * }
+       */
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -172,16 +159,12 @@ public class ClientController implements Serializable {
       ArrayList<Email> inbox = arrayLists.getArrayLists().get(0);
       ArrayList<Email> outbox = arrayLists.getArrayLists().get(1);
 
+      // Set delle email restituite dal backend in Inbox e Outbox
+      this.userModel.setInbox(inbox);
+      this.userModel.setOutbox(outbox);
+
       closeSocketConnection();
 
-      // TODO: settare inbox e outbox
-      // if (resIn != null && resOut != null) {
-      // if (resIn.size() > 0) {
-      // clientMain.addInbox(resIn);
-      // clientMain.addOutbox(resOut);
-      // }
-      // } else {
-      // }
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -219,7 +202,6 @@ public class ClientController implements Serializable {
     }
 
   }
-
 
   public void deleteMail(Email mail) {
     try {

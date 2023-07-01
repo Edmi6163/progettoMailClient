@@ -1,7 +1,7 @@
 package com.example.mailClient.Controller;
 
 import com.example.Transmission.LoginRes;
-import com.example.mailServer.Model.Mail;
+import com.example.mailClient.Model.Mail;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
@@ -46,7 +46,7 @@ public class NewMessageController {
     this.mail = mail;
 
     if (mail == null) {
-      this.mail = new Mail("", "", null, 0L, "");
+      this.mail = new Mail("", "", null, LocalDateTime.now(), "");
     }
     receiversField.setText(this.mail.getReceiversString());
     subjectField.setText(this.mail.getSubject());
@@ -78,7 +78,8 @@ public class NewMessageController {
 
     receivers.addAll(Arrays.asList(receiversField.getText().split(",")));
     // TODO figure out timestamp
-    Mail m = new Mail(sender, subjectField.getText(), receiversField.getText(), 0L, messageBodyArea.getText());
+    Mail m = new Mail(sender, subjectField.getText(), receiversField.getText(), LocalDateTime.now(),
+        messageBodyArea.getText());
     System.out.println("[NewMessageController] handleOk() m: " + m);
     Email e = new Email(sender, receivers, subjectField.getText(), messageBodyArea.getText());
     System.out.println("[NewMessageController] handleOk() e: " + e);
@@ -104,27 +105,32 @@ public class NewMessageController {
    * @param clientMain
    */
 
-/*  private boolean checkIfMailExists(Mail mail, LoginController clientMain) {
-    String error = "";
-
-    File[] files = new File("src/main/java/com/example/mailServer/file").listFiles();
-    if (files != null) {
-      for (File file : files) {
-        if (file.getName().equals(receiversField.getText())) {
-          return true;
-        }
-      }
-    }
-
-    Alert alert = new Alert(Alert.AlertType.WARNING);
-    alert.initOwner(dialog);
-    alert.setTitle("Mail not exists");
-    alert.setHeaderText("Sorry,receiver doesn't exist or the email address is not valid");
-    alert.setContentText(error);
-    alert.showAndWait();
-
-    return false;
-  }*/
+  /*
+   * private boolean checkIfMailExists(Mail mail, LoginController clientMain) {
+   * String error = "";
+   * 
+   * File[] files = new
+   * File("src/main/java/com/example/mailServer/file").listFiles();
+   * if (files != null) {
+   * for (File file : files) {
+   * if (file.getName().equals(receiversField.getText())) {
+   * return true;
+   * }
+   * }
+   * }
+   * 
+   * Alert alert = new Alert(Alert.AlertType.WARNING);
+   * alert.initOwner(dialog);
+   * alert.setTitle("Mail not exists");
+   * alert.
+   * setHeaderText("Sorry,receiver doesn't exist or the email address is not valid"
+   * );
+   * alert.setContentText(error);
+   * alert.showAndWait();
+   * 
+   * return false;
+   * }
+   */
 
   public boolean isInputOk(Mail mail) {
     String error = "";

@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -55,7 +56,7 @@ public class ServerHandler implements Runnable {
           // System.out.println("in.readObject() = " + in.readObject().toString());
           System.out.println("Action registered: " + c.getAction());
           log.setLog("Action registered: " + c.getAction());
-//          log.setLog(c.getBody().toString());
+          // log.setLog(c.getBody().toString());
           switch (c.getAction()) {
             case "login" -> handleLoginAction((String) c.getBody());
             case "all" -> handleAllAction(in, out, userList);
@@ -134,7 +135,7 @@ public class ServerHandler implements Runnable {
       if (!userList.userExist(receiver)) {
         Mail wrong = new Mail("System",
             "Wrong email address", mail.getSender(),
-            0,
+            LocalDateTime.now(),
             "It wasn't possible to send this email to " + receiver + ", wrong email  address + " +
                 "\n***********************\n" + mail
                 + "\n***********************\nTHIS IS AN AUTOMATED MESSAGE, PLEASE, DO NOT REPLY.");

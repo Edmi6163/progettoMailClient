@@ -1,53 +1,42 @@
 package com.example.mailClient.Model;
 
-import com.example.mailServer.Model.Mail;
+import com.example.Transmission.Email;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-  private String email;
-//  private String password;
-  private List<Mail> inbox;
-  private List<Mail> outbox;
+  private String username;
+  private List<Email> inbox;
+  private List<Email> outbox;
 
-
-  public User(String email, List<Mail> inbox, List<Mail> outbox) {
-    this.email = email;
-    this.inbox = inbox;
-    this.outbox = outbox;
+  public User(String username) {
+    this.username = username;
+    this.inbox = new ArrayList<Email>();
+    this.outbox = new ArrayList<Email>();
   }
 
-  public String getEmail() {
-    return email;
+  public String getUsername() {
+    return username;
   }
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
-/*
-
-  public String getPassword() {
-    return password;
+  public void setUsername(String username) {
+    this.username = username;
   }
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
-*/
-
-  public List<Mail> getInbox() {
+  public List<Email> getInbox() {
     return inbox;
   }
 
-  public void setInbox(List<Mail> inbox) {
+  public void setInbox(List<Email> inbox) {
     this.inbox = inbox;
   }
 
-  public List<Mail> getOutbox() {
+  public List<Email> getOutbox() {
     return outbox;
   }
 
-  public void setOutbox(List<Mail> outbox) {
+  public void setOutbox(List<Email> outbox) {
     this.outbox = outbox;
   }
 }

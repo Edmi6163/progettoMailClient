@@ -1,11 +1,9 @@
 package com.example.mailClient.Controller;
 
-import com.example.mailServer.Model.Mail;
+import com.example.mailClient.Model.Mail;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-
-import com.example.Transmission.Email;
-import com.example.mailClient.ClientMain;
+import java.time.LocalDateTime;
 
 public class RootLayoutController {
 
@@ -26,7 +24,7 @@ public class RootLayoutController {
         username,
         "",
         null,
-        0L,
+        LocalDateTime.now(),
         ""), "Send new email");
   }
 
