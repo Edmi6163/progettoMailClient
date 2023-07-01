@@ -118,8 +118,7 @@ public class ServerHandler implements Runnable {
     }
   }
 
-  private void handleInboxAction(InboxRequest body)
-      throws IOException, ClassNotFoundException {
+  private void handleInboxAction(InboxRequest body) throws IOException, ClassNotFoundException {
     System.out.println("***handleInboxAction***");
     out.writeObject(MailHandler.getUpdatedList(body.getEmail(), body.getMax()));
   }
