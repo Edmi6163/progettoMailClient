@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2377a5de-9e43-4dcf-9ac1-a86384a20d0c" name="Changes" comment=" clean up with prettier comment, implemented multiple receivers, mail are not appearing in other inbox">
+    <list default="true" id="2377a5de-9e43-4dcf-9ac1-a86384a20d0c" name="Changes" comment="corrected handleOk synchronized,">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/ClientMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/MailContainerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/MailContainerController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/NewMessageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/NewMessageController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -396,7 +396,15 @@
       <option name="project" value="LOCAL" />
       <updated>1688314692889</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="corrected handleOk synchronized,">
+      <option name="closed" value="true" />
+      <created>1688315480089</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1688315480089</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -414,7 +422,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="small changes, send mail broken and log on server gui also" />
     <MESSAGE value="small changes trying to send an email" />
     <MESSAGE value="log &quot;a mail is sent&quot; :DDD" />
     <MESSAGE value="added check if mail exist or not" />
@@ -439,7 +446,8 @@
     <MESSAGE value="no idea, added some check" />
     <MESSAGE value="button reply, forward and reply all now works" />
     <MESSAGE value=" clean up with prettier comment, implemented multiple receivers, mail are not appearing in other inbox" />
-    <option name="LAST_COMMIT_MESSAGE" value=" clean up with prettier comment, implemented multiple receivers, mail are not appearing in other inbox" />
+    <MESSAGE value="corrected handleOk synchronized," />
+    <option name="LAST_COMMIT_MESSAGE" value="corrected handleOk synchronized," />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

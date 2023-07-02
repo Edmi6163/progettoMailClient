@@ -87,6 +87,8 @@ public class MailContainerController {
 
   private ExecutorService emailUpdater;
 
+  private final Object lock = new Object();
+
   public void setClientMain(LoginController loginController, User userModel) {
     this.loginController = loginController;
     this.userModel = userModel;
@@ -139,28 +141,54 @@ public class MailContainerController {
 
   private  void updateInboxEmails() {
     this.userModel.getInbox().stream().forEach((inboxEmail) -> {
-      emailUpdater.submit(() -> {
-        String receivers = inboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining(";"));
+        if (!emailUpdater.isTerminated() && !emailUpdater.isShutdown()) {
 
-        Mail m = new Mail(inboxEmail.getSender(), inboxEmail.getSubject(), receivers, inboxEmail.getTimestamp(),
-          inboxEmail.getText());
-        Platform.runLater(() -> inTable.getItems().add(m));
-      });
+          emailUpdater.submit(() -> {
+            String receivers = inboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining("/ "));
+
+            Mail m = new Mail(inboxEmail.getSender(), inboxEmail.getSubject(), receivers, inboxEmail.getTimestamp(),
+              inboxEmail.getText());
+            synchronized (lock) {
+              Platform.runLater(() -> inTable.getItems().add(m));
+            }
+          });
+        }
     });
   }
 
-  private  void updateOutboxEmails() {
+/*  private  void updateOutboxEmails() {
     this.userModel.getOutbox().stream().forEach((outboxEmail) -> {
+      if(!emailUpdater.isTerminated() && !emailUpdater.isShutdown()){
       emailUpdater.submit(() -> {
-        String receivers = outboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining(";"));
+        String receivers = outboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining("/ "));
 
         Mail m = new Mail(outboxEmail.getSender(), outboxEmail.getSubject(), receivers, outboxEmail.getTimestamp(),
           outboxEmail.getText());
-
-        Platform.runLater(() -> outTable.getItems().add(m));
+        synchronized (lock) {
+          Platform.runLater(() -> outTable.getItems().add(m));
+        }
       });
     });
+
+    }
+  }*/
+
+  private void updateOutboxEmails() {
+    this.userModel.getOutbox().stream().forEach((outboxEmail) -> {
+      if (!emailUpdater.isTerminated() && !emailUpdater.isShutdown()) {
+        emailUpdater.submit(() -> {
+          String receivers = outboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining("/ "));
+
+          Mail m = new Mail(outboxEmail.getSender(), outboxEmail.getSubject(), receivers, outboxEmail.getTimestamp(),
+            outboxEmail.getText());
+          synchronized (lock) {
+            Platform.runLater(() -> outTable.getItems().add(m));
+          }
+        });
+      }
+    });
   }
+
 
   private void updateAllEmails() {
     System.out.println("refreshing gui");

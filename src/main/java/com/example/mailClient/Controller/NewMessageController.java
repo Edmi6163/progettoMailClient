@@ -1,6 +1,5 @@
 package com.example.mailClient.Controller;
 
-import com.example.Transmission.UserModel;
 import com.example.mailClient.Model.Mail;
 import com.example.mailClient.Model.User;
 import javafx.fxml.FXML;
