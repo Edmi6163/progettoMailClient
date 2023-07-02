@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2377a5de-9e43-4dcf-9ac1-a86384a20d0c" name="Changes" comment="fix">
+    <list default="true" id="2377a5de-9e43-4dcf-9ac1-a86384a20d0c" name="Changes" comment="button reply, forward and reply all now works">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/MailContainerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/MailContainerController.java" afterDir="false" />
     </list>
@@ -170,7 +170,7 @@
       <workItem from="1688154568669" duration="443000" />
       <workItem from="1688204379958" duration="6991000" />
       <workItem from="1688219509837" duration="17812000" />
-      <workItem from="1688284447592" duration="1158000" />
+      <workItem from="1688284447592" duration="3556000" />
     </task>
     <task id="LOCAL-00001" summary="very small changes">
       <created>1683894254514</created>
@@ -379,7 +379,15 @@
       <option name="project" value="LOCAL" />
       <updated>1688237969594</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="button reply, forward and reply all now works">
+      <option name="closed" value="true" />
+      <created>1688285827952</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1688285827952</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -397,7 +405,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="login works now" />
     <MESSAGE value="small changes, send mail broken and log on server gui" />
     <MESSAGE value="small changes, send mail broken and log on server gui also" />
     <MESSAGE value="small changes trying to send an email" />
@@ -422,7 +429,8 @@
     <MESSAGE value="server now is kinda good,client still not working" />
     <MESSAGE value="login work, also logger, still not loading RootLayout after login succes" />
     <MESSAGE value="no idea, added some check" />
-    <option name="LAST_COMMIT_MESSAGE" value="no idea, added some check" />
+    <MESSAGE value="button reply, forward and reply all now works" />
+    <option name="LAST_COMMIT_MESSAGE" value="button reply, forward and reply all now works" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

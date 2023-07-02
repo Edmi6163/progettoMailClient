@@ -1,14 +1,16 @@
 package com.example.mailClient.Controller;
 
-import com.example.Transmission.Email;
 import com.example.mailClient.Model.User;
 import com.example.mailServer.Controller.MailHandler;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import com.example.mailClient.Model.Mail;
 import javafx.scene.control.cell.PropertyValueFactory;
 import java.time.LocalDateTime;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class MailContainerController {
@@ -75,30 +77,60 @@ public class MailContainerController {
   private User userModel;
   MailHandler mailHandler = new MailHandler();
 
+  private ExecutorService mailUpdater;
+
+
   public void setClientMain(LoginController loginController, User userModel) {
     this.loginController = loginController;
     this.userModel = userModel;
     this.username = this.userModel.getUsername();
-
     this.updateAllEmails();
+    startMailUpdater();
   }
 
+  private void startMailUpdater() {
+    mailUpdater = Executors.newSingleThreadExecutor();
+    mailUpdater.execute(() -> {
+      while(true){
+        try{
+          Thread.sleep(5000);
+          Platform.runLater(this::updateAllEmails);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+    });
+
+  }
   private void updateAllEmails() {
-    this.userModel.getInbox().stream().forEach((inboxEmail) -> {
+    System.out.println("refreshing gui");
+    inTable.getItems().clear();
+    outTable.getItems().clear();
+
+    ExecutorService emailUpdater = Executors.newFixedThreadPool(5);
+
+
+    this.userModel.getInbox().stream().forEach((inboxEmail) -> { emailUpdater.submit(() -> {
       String receivers = inboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining(";"));
 
       Mail m = new Mail(inboxEmail.getSender(), inboxEmail.getSubject(), receivers,
           inboxEmail.getTimestamp(), inboxEmail.getText());
       inTable.getItems().add(m);
+      Platform.runLater(() -> inTable.getItems().add(m));
+    });
     });
 
-    this.userModel.getOutbox().stream().forEach((outboxEmail) -> {
+    this.userModel.getOutbox().stream().forEach((outboxEmail) -> { emailUpdater.submit(() -> {
       String receivers = outboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining(";"));
 
       Mail m = new Mail(outboxEmail.getSender(), outboxEmail.getSubject(), receivers,
           outboxEmail.getTimestamp(), outboxEmail.getText());
       outTable.getItems().add(m);
+      Platform.runLater(() -> outTable.getItems().add(m));
     });
+    });
+
+    emailUpdater.shutdown();
   }
 
   @FXML
