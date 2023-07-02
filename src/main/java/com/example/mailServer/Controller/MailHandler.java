@@ -1,7 +1,6 @@
 package com.example.mailServer.Controller;
 
 import com.example.Transmission.Email;
-import com.example.mailServer.Model.Mail;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -172,14 +171,10 @@ public class MailHandler {
     return inbox;
   }
 
-  public synchronized void delete(Mail mail, String user) {
+  public static synchronized void delete(Email mail) {
     try {
-      if (mail.isIsSent())
-        Files.delete(
-            Paths.get("src/main/java/com/example/mailServer/file/" + user + "/out/" + mail.getMillis() + ".txt"));
-      else
-        Files.delete(
-            Paths.get("src/main/java/com/example/mailServer/file/" + user + "/in/" + mail.getMillis() + ".txt"));
+        Files.delete(Paths.get("src/main/java/com/example/mailServer/file/" + mail.getReceivers() + "/out/" + mail.getTimestamp() + ".txt"));
+        Files.delete(Paths.get("src/main/java/com/example/mailServer/file/" + mail.getSender() + "/in/" + mail.getTimestamp() + ".txt"));
     } catch (Exception e) {
       e.printStackTrace();
     }

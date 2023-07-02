@@ -62,6 +62,8 @@ public class ServerHandler implements Runnable {
             case "all" -> handleAllAction(in, out, userList);
             case "inbox" -> handleInboxAction((InboxRequest) c.getBody());
             case "send" -> handleSendAction(userList, (Email) c.getBody());
+case "delete" -> handleDeleteAction(userList, (Email) c.getBody());
+
             default -> log.setLog("Unrecognized action");
           }
 
@@ -77,6 +79,17 @@ public class ServerHandler implements Runnable {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  private void handleDeleteAction(UserList userList, Email body) {
+    System.out.println("handleDeleteAction");
+    String username = body.getSender();
+    ArrayList<String> receiver = body.getReceivers();
+    String subject = body.getSubject();
+    LocalDateTime date = LocalDateTime.now();
+    String content = body.getText();
+    Email mail = new Email(username, receiver, subject,content);
+    MailHandler.delete(mail);
   }
 
   private void handleLoginAction(String username) throws IOException {

@@ -20,6 +20,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class LoginController {
 	@FXML
@@ -41,6 +44,8 @@ public class LoginController {
 	public void addOutbox(List<Mail> out) {
 		outbox.addAll(out);
 	}
+	private ScheduledExecutorService serverCheckExecutor;
+
 
 	public void addOut(Mail out) {
 		System.out.println("adding to outbox");
@@ -58,9 +63,11 @@ public class LoginController {
 			cc = new ClientController(userModel);
 			cc.login();
 
+			startServerCheckTimer();
+
 			showMailContainer();
 
-			System.out.println(username.getText() + " logged in ");
+//			System.out.println(username.getText() + " logged in ");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -102,25 +109,17 @@ public class LoginController {
 		});
 	}
 
-	private void stopServerCheckTimer(Timer timer) {
-		if (timer != null)
-			timer.cancel();
-		timer = null;
-	}
+
 
 	/**/
 	private void startServerCheckTimer() {
-		Timer timer = new Timer();
+		serverCheckExecutor = Executors.newSingleThreadScheduledExecutor();
 
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				if (clientHandler.checkConnection()) {
-					showServerUpNotification();
-					stopServerCheckTimer(timer);
-				}
+		serverCheckExecutor.scheduleAtFixedRate(() -> {
+			if (!checkConnection()) {
+				Platform.runLater(this::showErrorPopUp);
 			}
-		}, 0, 10000);
+		}, 0, 30, TimeUnit.SECONDS);
 	}
 
 	public void showSendMailDialog(Mail mail, String title) {

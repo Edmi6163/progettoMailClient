@@ -203,10 +203,9 @@ public class ClientController implements Serializable {
 
   }
 
-  public void deleteMail(Email mail) {
+  public  void deleteMail(Mail mail) {
     try {
       if (!connectToSocket()) {
-        // fai uscire il popup il server è offline
         showErrorPopUp();
         return;
       }

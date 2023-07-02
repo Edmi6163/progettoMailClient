@@ -1,5 +1,6 @@
 package com.example.mailClient.Controller;
 
+import com.example.Transmission.Email;
 import com.example.mailClient.Model.User;
 import com.example.mailServer.Controller.MailHandler;
 import javafx.application.Platform;
@@ -8,7 +9,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import com.example.mailClient.Model.Mail;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -68,6 +72,8 @@ public class MailContainerController {
   @FXML
   private TabPane tabPane;
 
+  private Stage topStage;
+
   public Mail selectedMail = new Mail("", "", "", LocalDateTime.now(), "");
   private String username;
   LoginController loginController = new LoginController();
@@ -88,6 +94,10 @@ public class MailContainerController {
     startMailUpdater();
   }
 
+  public void setTopStage(Stage topStage) {
+    this.topStage = topStage;
+  }
+
   private void startMailUpdater() {
     mailUpdater = Executors.newSingleThreadExecutor();
     mailUpdater.execute(() -> {
@@ -102,69 +112,87 @@ public class MailContainerController {
     });
 
   }
+
+  public void showNewMailPopUp(int mailCount) {
+    Platform.runLater(() -> {
+      Alert popup = new Alert(Alert.AlertType.INFORMATION);
+      popup.initOwner(topStage);
+      popup.setTitle("Notifications");
+
+      if (mailCount > 1)
+        popup.setContentText("You received " + mailCount + " new messages");
+      else
+        popup.setContentText("You received a new message");
+
+      popup.show();
+    });
+  }
+
+
   private void updateAllEmails() {
     System.out.println("refreshing gui");
     inTable.getItems().clear();
     outTable.getItems().clear();
 
-    ExecutorService emailUpdater = Executors.newFixedThreadPool(5);
+    ExecutorService emailUpdater = Executors.newFixedThreadPool(10);
 
 
     this.userModel.getInbox().stream().forEach((inboxEmail) -> { emailUpdater.submit(() -> {
       String receivers = inboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining(";"));
 
-      Mail m = new Mail(inboxEmail.getSender(), inboxEmail.getSubject(), receivers,
-          inboxEmail.getTimestamp(), inboxEmail.getText());
+      Mail m = new Mail(inboxEmail.getSender(), inboxEmail.getSubject(), receivers, inboxEmail.getTimestamp(), inboxEmail.getText());
       inTable.getItems().add(m);
       Platform.runLater(() -> inTable.getItems().add(m));
     });
     });
 
-    this.userModel.getOutbox().stream().forEach((outboxEmail) -> { emailUpdater.submit(() -> {
-      String receivers = outboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining(";"));
+    this.userModel.getOutbox().stream().forEach((outboxEmail) -> {
+        emailUpdater.submit(() -> {
+          String receivers = outboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining(";"));
 
-      Mail m = new Mail(outboxEmail.getSender(), outboxEmail.getSubject(), receivers,
-          outboxEmail.getTimestamp(), outboxEmail.getText());
-      outTable.getItems().add(m);
-      Platform.runLater(() -> outTable.getItems().add(m));
-    });
-    });
+          Mail m = new Mail(outboxEmail.getSender(), outboxEmail.getSubject(), receivers, outboxEmail.getTimestamp(), outboxEmail.getText());
+          outTable.getItems().add(m);
+
+          Platform.runLater(() -> outTable.getItems().add(m));
+        });
+      });
+
 
     emailUpdater.shutdown();
+
   }
+
+
+
+
 
   @FXML
   private void initialize() {
 
-//    System.out.println("[MCC] initialize");
-    // System.out.println("inboxMailList size: " + inboxMailsList.size());
-    // System.out.println("outboxMailList size: " + outboxMailsList.size());
 
-    // Set up the columns in the inbox table
-    inSenderColumn.setCellValueFactory(new PropertyValueFactory<>("sender"));
-    inSubjectColumn.setCellValueFactory(new PropertyValueFactory<>("subject"));
-    inDateColumn.setCellValueFactory(new PropertyValueFactory<>("formattedDate"));
+      // Set up the columns in the inbox table
+      inSenderColumn.setCellValueFactory(new PropertyValueFactory<>("sender"));
+      inSubjectColumn.setCellValueFactory(new PropertyValueFactory<>("subject"));
+      inDateColumn.setCellValueFactory(new PropertyValueFactory<>("formattedDate"));
 
-    // Set up the columns in the outbox table
-    outReceiverColumn.setCellValueFactory(new PropertyValueFactory<>("receiversString"));
-    outSubjectColumn.setCellValueFactory(new PropertyValueFactory<>("subject"));
-    outDateColumn.setCellValueFactory(new PropertyValueFactory<>("formattedDate"));
+      // Set up the columns in the outbox table
+      outReceiverColumn.setCellValueFactory(new PropertyValueFactory<>("receiversString"));
+      outSubjectColumn.setCellValueFactory(new PropertyValueFactory<>("subject"));
+      outDateColumn.setCellValueFactory(new PropertyValueFactory<>("formattedDate"));
 
-    // Set up the selection listeners for the inbox and outbox tables
-    inTable.getSelectionModel().selectedItemProperty().addListener((obs,
-        oldSelection, newSelection) -> {
-      if (newSelection != null) {
-        showMailDetails(newSelection);
-      }
-    });
+      // Set up the selection listeners for the inbox and outbox tables
+      inTable.getSelectionModel().selectedItemProperty().addListener((obs,oldSelection, newSelection) -> {
+        if (newSelection != null) {
+          showMailDetails(newSelection);
+        }
+      });
 
-    outTable.getSelectionModel().selectedItemProperty().addListener((obs,
-        oldSelection, newSelection) -> {
-      if (newSelection != null) {
-        showMailDetails(newSelection);
-      }
-    });
-  }
+   outTable.getSelectionModel().selectedItemProperty().addListener((obs,oldSelection, newSelection) -> {
+    if (newSelection != null) {
+      showMailDetails(newSelection);
+    }
+  });
+}
 
   private void showMailDetails(Mail mail) {
     System.out.println("[MCC] showMailDetails");
@@ -182,10 +210,10 @@ public class MailContainerController {
   @FXML
   public void forward() {
     loginController.showSendMailDialog(new Mail(this.userModel.getUsername(),
-        "[FWD] " + selectedMail.getSubject(),
+        "[FWD] " + this.selectedMail.getSubject(),
         " ",
         LocalDateTime.now(),
-        selectedMail.getMessage() + "\n--forwarded from" + selectedMail.getSender()),
+        this.selectedMail.getMessage() + "\n--forwarded from" + this.selectedMail.getSender()),
         "Forward Email");
   }
 
@@ -194,7 +222,7 @@ public class MailContainerController {
 //    if (!selectedMail.getSender().equals(username)) {
       loginController.showSendMailDialog(new Mail(this.userModel.getUsername(),
           "[RE]" + selectedMail.getSubject(),
-          selectedMail.getSender(),
+          selectedMail.getSender().toString(),
           LocalDateTime.now(),
           "\n---\n" + selectedMail.getSender() + ":\n\n" + selectedMail.getMessage()),
           "Reply Email");
@@ -220,9 +248,8 @@ public class MailContainerController {
   }
 
   @FXML
-  private void delete() {
-//     new Thread(() -> ClientController.deleteMail(selectedMail,
-//     clientMain)).start();
+  public void delete() {
+//     ClientController.deleteMail(selectedMail));
   }
 
   // public static List<Mail> convertLinesToMails(List<String> lines) {

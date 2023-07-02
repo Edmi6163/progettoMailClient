@@ -1,6 +1,5 @@
 package com.example.mailClient.Controller;
 
-import com.example.Transmission.LoginRes;
 import com.example.mailClient.Model.Mail;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -9,10 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import com.example.Transmission.Email;
-import com.example.mailClient.ClientMain;
 
-import java.io.File;
-import java.security.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -74,12 +70,10 @@ public class NewMessageController {
     System.out.println("[NMC] receiver field is: " + receiversField.getText());
     mail.setSubject(subjectField.getText());
     mail.setMessage(messageBodyArea.getText());
-    ArrayList<String> receivers = new ArrayList<>();
+    ArrayList<String> receivers = new ArrayList<>(Arrays.asList(receiversField.getText().split("/")));
 
-    receivers.addAll(Arrays.asList(receiversField.getText().split(",")));
-    // TODO figure out timestamp
-    Mail m = new Mail(sender, subjectField.getText(), receiversField.getText(), LocalDateTime.now(),
-        messageBodyArea.getText());
+    receivers.addAll(Arrays.asList(receiversField.getText().split("/ ")));
+    Mail m = new Mail(sender, subjectField.getText(), receiversField.getText(), LocalDateTime.now(), messageBodyArea.getText());
     System.out.println("[NewMessageController] handleOk() m: " + m);
     Email e = new Email(sender, receivers, subjectField.getText(), messageBodyArea.getText());
     System.out.println("[NewMessageController] handleOk() e: " + e);
@@ -90,11 +84,20 @@ public class NewMessageController {
      */
     if (isInputOk(m)) {
       // send mail
+      mailSendedFeedback();
       cc.sendMail(e, clientMain);
+
       okClicked = true;
     }
   }
+  public void mailSendedFeedback(){
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    alert.setTitle("Mail sent");
+    alert.setHeaderText("Mail sent to " + receiversField.getText());
+    alert.setContentText("Mail sent to " + receiversField.getText());
+    alert.showAndWait();
 
+  }
   /*
    * @brief: Check if the receiversField is a valid email address it's a subfolder
    * name in folder "src/com/examlpe/mailServer/file, if not, display an error

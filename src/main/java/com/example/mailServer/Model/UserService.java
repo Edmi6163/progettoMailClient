@@ -31,7 +31,7 @@ public class UserService {
 
 	public Set<String> createUserFolders(String username) {
 		File directory = new File(PATH + username);
-		directory.mkdir(); // create also in and out folder
+		directory.mkdir();
 		File inbox = new File(PATH + username + "/in");
 		inbox.mkdir();
 		File outbox = new File(PATH + username + "/out");
