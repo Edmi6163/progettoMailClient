@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/*
+* @brief: this class is the email object that is used to send emails between client and server
+* it differs with Mail class because this is the one that occur in backend, while Mail is the one that occur in frontend
+* */
 public class Email implements Serializable {
 
     private String id;

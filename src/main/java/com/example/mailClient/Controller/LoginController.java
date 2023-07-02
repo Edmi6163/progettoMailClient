@@ -18,8 +18,6 @@ import com.example.mailClient.Model.User;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -27,8 +25,7 @@ import java.util.concurrent.TimeUnit;
 public class LoginController {
 	@FXML
 	private TextField username;
-	// @FXML
-	// private AnchorPane root;
+
 
 	@FXML
 	public BorderPane root;
@@ -48,6 +45,10 @@ public class LoginController {
 		outbox.addAll(out);
 	}
 
+	/*
+	* @brief this method is called when user clicks on login button, and kinda is the base of the program
+	* it sends to server the username, that has to check
+	*/
 	@FXML
 	private void handleLogin() throws IOException {
 		try {
@@ -63,7 +64,6 @@ public class LoginController {
 
 			showMailContainer();
 
-			// System.out.println(username.getText() + " logged in ");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,6 +79,9 @@ public class LoginController {
 		return outbox;
 	}
 
+	/*
+	* @brief: when server return some connection error, this method is called
+	* */
 	public void showErrorPopUp() {
 		Alert popup = new Alert(Alert.AlertType.INFORMATION);
 		popup.initOwner(topStage);

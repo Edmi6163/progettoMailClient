@@ -67,10 +67,13 @@ public class Mail implements Serializable {
     return receivers;
   }
 
+  /*
+  * @brief: parser to use the receivers string as a list of receivers, use isValidEmail to check if the email is valid using regex
+  * */
   public void setReceivers(String r) {
     ArrayList<String> list = new ArrayList<>();
 
-    String[] receiverArray = r.split(",");
+    String[] receiverArray = r.split("/ ");
     for (String receiver : receiverArray) {
       String trimmedReceiver = receiver.trim();
       if (isValidEmail(trimmedReceiver)) {

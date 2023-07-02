@@ -41,6 +41,10 @@ public class ServerHandler implements Runnable {
     return userList;
   }
 
+
+  /*
+  @brief: method run, is the first things called, so here in base of the request we call the right method
+   */
   @Override
   public void run() {
     try {
@@ -53,10 +57,8 @@ public class ServerHandler implements Runnable {
 
         try {
           Communication c = (Communication) in.readObject();
-          // System.out.println("in.readObject() = " + in.readObject().toString());
           System.out.println("Action registered: " + c.getAction());
           log.setLog("Action registered: " + c.getAction());
-          // log.setLog(c.getBody().toString());
           switch (c.getAction()) {
             case "login" -> handleLoginAction((String) c.getBody());
             case "all" -> handleAllAction(in, out, userList);
@@ -72,7 +74,6 @@ public class ServerHandler implements Runnable {
         }
 
       } finally {
-        // System.out.println("FINITO");
         log.setLog("Client disconnected");
         incoming.close();
       }
@@ -125,7 +126,6 @@ public class ServerHandler implements Runnable {
     if (userList.userExist(user)) {
       out.writeObject(MailHandler.loadOutBox(user));
       out.writeObject(MailHandler.loadInBox(user));
-      // System.out.println("outbox loaded: " + MailHandler.loadOutBox(user));
     } else {
       out.writeObject(null);
       out.writeObject(null);

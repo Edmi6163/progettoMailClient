@@ -68,7 +68,7 @@ public class NewMessageController {
    * @throws InterruptedException
    */
   @FXML
-  private void handleOk() throws InterruptedException {
+  private synchronized void handleOk() throws InterruptedException {
     LoginController clientMain = new LoginController();
     // boolean mailExist = false;
 

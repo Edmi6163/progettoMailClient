@@ -36,6 +36,10 @@ public class ServerLayoutController {
 		logModel.setLog("server started");
 	}
 
+	/*
+	* @brief: here the program write on hte TextFlow the log,it adds to the string the time of the log
+	* @param: log, the string useful to log
+	* */
 	public void setLog(String log) {
 		Text fullLog = new Text("[" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")) + "]\t ---> "
 				+ "  " + log + "\n");
