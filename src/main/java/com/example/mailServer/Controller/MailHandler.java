@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class MailHandler {
-
   public synchronized static boolean save(Email mail) {
     Email newMail = null;
     try {
@@ -55,31 +54,6 @@ public class MailHandler {
     return true;
   }
 
-  /*
-   * public synchronized static List<Email> getUpdatedList(String user, String
-   * max) {
-   * List<Email> updatedList = new ArrayList<>();
-   * max = max + ".txt";
-   * File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/"
-   * + "in/");
-   * ObjectOutputStream output = null;
-   * FileOutputStream files = null;
-   * 
-   * for (File f : Objects.requireNonNull(dir.listFiles())) {
-   * if (f.getName().compareTo(max) > 0) {
-   * try {
-   * files = new FileOutputStream(f);
-   * output = new ObjectOutputStream(files);
-   * output.close();
-   * files.close();
-   * } catch (IOException e) {
-   * e.printStackTrace();
-   * }
-   * }
-   * }
-   * return updatedList;
-   * }
-   */
   public synchronized static List<Email> getUpdatedList(String user, String max) {
     List<Email> updatedList = new ArrayList<>();
     max = max + ".txt";

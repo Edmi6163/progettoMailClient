@@ -15,6 +15,7 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ClientController implements Serializable {
   private String username;
@@ -123,22 +124,15 @@ public class ClientController implements Serializable {
 
       closeSocketConnection();
 
-      /*
-       * if (res != null) {
-       * if (res.size() > 0) {
-       * clientMain.addInbox(res);
-       * clientMain.showNewMailPopUp(res.size());
-       * }
-       * } else {
-       * noMailPopUp();
-       * }
-       */
     } catch (IOException e) {
       e.printStackTrace();
     }
 
   }
 
+  /*
+   * @brief: send information to server through Communication object and socket
+   */
   public void login() {
     try {
       if (!connectToSocket()) {
@@ -160,7 +154,6 @@ public class ClientController implements Serializable {
       ArrayList<Email> inbox = arrayLists.getArrayLists().get(0);
       ArrayList<Email> outbox = arrayLists.getArrayLists().get(1);
 
-      // Set delle email restituite dal backend in Inbox e Outbox
       this.userModel.setInbox(inbox);
       this.userModel.setOutbox(outbox);
 
@@ -172,10 +165,8 @@ public class ClientController implements Serializable {
   }
 
   public boolean sendMail(Email mail, LoginController clientMain) {
-    // clientMain.setMailSent(false);
     try {
       if (!connectToSocket()) {
-        // fai uscire il popup il server è offline
         loginController.showErrorPopUp();
         return false;
       }
@@ -183,7 +174,6 @@ public class ClientController implements Serializable {
       System.out.println(mail);
 
       Communication sendMail = new Communication("send", mail);
-
       Communication response = sendCommunicationToServer(sendMail);
 
       System.out.println("[send mail CC] mail written to server\n" + mail.toString());
@@ -214,11 +204,16 @@ public class ClientController implements Serializable {
         return;
       }
 
-      Communication delete = new Communication("delete", mail);
+      ArrayList<String> receivers = (ArrayList<String>) mail.getReceivers().stream().map(receiver -> receiver)
+          .collect(Collectors.toList());
+
+      Email e = new Email(mail.getSender(), receivers, mail.getSubject(), mail.getMessage());
+
+      Communication delete = new Communication("delete", e);
 
       Communication response = (Communication) sendCommunicationToServer(delete);
 
-      // Platform.runLater(() -> clientMain.delete(mail));
+      System.out.println(response);
 
     } catch (Exception e) {
       e.printStackTrace();

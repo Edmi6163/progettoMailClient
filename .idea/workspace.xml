@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2377a5de-9e43-4dcf-9ac1-a86384a20d0c" name="Changes" comment="button reply, forward and reply all now works">
+    <list default="true" id="2377a5de-9e43-4dcf-9ac1-a86384a20d0c" name="Changes" comment="corrected handleOk synchronized,">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/MailContainerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/MailContainerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/NewMessageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/NewMessageController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,29 +50,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/francesco/Documents/Università/3_Anno/Prog3/progetto_gdrive&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.09803921&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.43218392&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Downloaded.Files.Path.Enabled": "false",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "testing",
+    "last_opened_file_path": "/home/francesco/Documents/Università/3_Anno/Prog3/progetto_gdrive",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.09803921",
+    "project.structure.side.proportion": "0.43218392",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources/com/example/mailClient/Controller" />
@@ -387,7 +388,23 @@
       <option name="project" value="LOCAL" />
       <updated>1688285827952</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary=" clean up with prettier comment, implemented multiple receivers, mail are not appearing in other inbox">
+      <option name="closed" value="true" />
+      <created>1688314692889</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1688314692889</updated>
+    </task>
+    <task id="LOCAL-00031" summary="corrected handleOk synchronized,">
+      <option name="closed" value="true" />
+      <created>1688315480089</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1688315480089</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -405,8 +422,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="small changes, send mail broken and log on server gui" />
-    <MESSAGE value="small changes, send mail broken and log on server gui also" />
     <MESSAGE value="small changes trying to send an email" />
     <MESSAGE value="log &quot;a mail is sent&quot; :DDD" />
     <MESSAGE value="added check if mail exist or not" />
@@ -430,7 +445,9 @@
     <MESSAGE value="login work, also logger, still not loading RootLayout after login succes" />
     <MESSAGE value="no idea, added some check" />
     <MESSAGE value="button reply, forward and reply all now works" />
-    <option name="LAST_COMMIT_MESSAGE" value="button reply, forward and reply all now works" />
+    <MESSAGE value=" clean up with prettier comment, implemented multiple receivers, mail are not appearing in other inbox" />
+    <MESSAGE value="corrected handleOk synchronized," />
+    <option name="LAST_COMMIT_MESSAGE" value="corrected handleOk synchronized," />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
