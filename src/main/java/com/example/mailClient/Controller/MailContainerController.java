@@ -85,6 +85,8 @@ public class MailContainerController {
 
   private ExecutorService mailUpdater;
 
+  private ExecutorService emailUpdater;
+
   public void setClientMain(LoginController loginController, User userModel) {
     this.loginController = loginController;
     this.userModel = userModel;
@@ -132,7 +134,32 @@ public class MailContainerController {
     List<Email> emails = this.userModel.getOutbox();
     emails.add(0, newEmail);
     this.userModel.setOutbox(emails);
-    this.updateAllEmails();
+    this.updateOutboxEmails();
+  }
+
+  private void updateInboxEmails() {
+    this.userModel.getInbox().stream().forEach((inboxEmail) -> {
+      emailUpdater.submit(() -> {
+        String receivers = inboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining(";"));
+
+        Mail m = new Mail(inboxEmail.getSender(), inboxEmail.getSubject(), receivers, inboxEmail.getTimestamp(),
+            inboxEmail.getText());
+        Platform.runLater(() -> inTable.getItems().add(m));
+      });
+    });
+  }
+
+  private void updateOutboxEmails() {
+    this.userModel.getOutbox().stream().forEach((outboxEmail) -> {
+      emailUpdater.submit(() -> {
+        String receivers = outboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining(";"));
+
+        Mail m = new Mail(outboxEmail.getSender(), outboxEmail.getSubject(), receivers, outboxEmail.getTimestamp(),
+            outboxEmail.getText());
+
+        Platform.runLater(() -> outTable.getItems().add(m));
+      });
+    });
   }
 
   private void updateAllEmails() {
@@ -140,30 +167,10 @@ public class MailContainerController {
     inTable.getItems().clear();
     outTable.getItems().clear();
 
-    ExecutorService emailUpdater = Executors.newFixedThreadPool(10);
+    emailUpdater = Executors.newFixedThreadPool(10);
 
-    this.userModel.getInbox().stream().forEach((inboxEmail) -> {
-      emailUpdater.submit(() -> {
-        String receivers = inboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining(";"));
-
-        Mail m = new Mail(inboxEmail.getSender(), inboxEmail.getSubject(), receivers, inboxEmail.getTimestamp(),
-            inboxEmail.getText());
-        // inTable.getItems().add(m);
-        Platform.runLater(() -> inTable.getItems().add(m));
-      });
-    });
-
-    this.userModel.getOutbox().stream().forEach((outboxEmail) -> {
-      emailUpdater.submit(() -> {
-        String receivers = outboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining(";"));
-
-        Mail m = new Mail(outboxEmail.getSender(), outboxEmail.getSubject(), receivers, outboxEmail.getTimestamp(),
-            outboxEmail.getText());
-        // outTable.getItems().add(m);
-
-        Platform.runLater(() -> outTable.getItems().add(m));
-      });
-    });
+    this.updateInboxEmails();
+    this.updateOutboxEmails();
 
     emailUpdater.shutdown();
 

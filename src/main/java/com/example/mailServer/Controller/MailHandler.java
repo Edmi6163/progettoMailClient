@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class MailHandler {
+
   public synchronized static boolean save(Email mail) {
     Email newMail = null;
     try {
@@ -30,8 +31,6 @@ public class MailHandler {
       FileOutputStream fileOutputStream = new FileOutputStream(file);
       System.out.println("[save] fileOutputStream: " + fileOutputStream);
 
-      ObjectOutputStream output = new ObjectOutputStream(fileOutputStream);
-
       newMail = new Email(mail.getSender(), mail.getReceivers(), mail.getSubject(), mail.getText());
       System.out.println("[save] newMail: " + newMail);
 
@@ -46,8 +45,6 @@ public class MailHandler {
         file = new File(receiverDir, millis + ".txt");
 
         fileOutputStream = new FileOutputStream(file);
-
-        output = new ObjectOutputStream(fileOutputStream);
 
         fileOutputStream.close();
       }
