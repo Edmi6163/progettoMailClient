@@ -15,6 +15,7 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ClientController implements Serializable {
   private String username;
@@ -123,16 +124,15 @@ public class ClientController implements Serializable {
 
       closeSocketConnection();
 
-
     } catch (IOException e) {
       e.printStackTrace();
     }
 
   }
 
-   /*
+  /*
    * @brief: send information to server through Communication object and socket
-   * */
+   */
   public void login() {
     try {
       if (!connectToSocket()) {
@@ -153,7 +153,6 @@ public class ClientController implements Serializable {
 
       ArrayList<Email> inbox = arrayLists.getArrayLists().get(0);
       ArrayList<Email> outbox = arrayLists.getArrayLists().get(1);
-
 
       this.userModel.setInbox(inbox);
       this.userModel.setOutbox(outbox);
@@ -205,11 +204,16 @@ public class ClientController implements Serializable {
         return;
       }
 
-      Communication delete = new Communication("delete", mail);
+      ArrayList<String> receivers = (ArrayList<String>) mail.getReceivers().stream().map(receiver -> receiver)
+          .collect(Collectors.toList());
+
+      Email e = new Email(mail.getSender(), receivers, mail.getSubject(), mail.getMessage());
+
+      Communication delete = new Communication("delete", e);
 
       Communication response = (Communication) sendCommunicationToServer(delete);
 
-      // Platform.runLater(() -> clientMain.delete(mail));
+      System.out.println(response);
 
     } catch (Exception e) {
       e.printStackTrace();

@@ -74,25 +74,23 @@ public class MailContainerController {
 
   private Stage topStage;
 
-  public Mail selectedMail = new Mail("", "", "", LocalDateTime.now(), "");
+  public Mail selectedMail;
   private String username;
   LoginController loginController = new LoginController();
   ObservableList<Mail> inboxMailsList;
   ObservableList<Mail> outboxMailsList;
-
-  private User userModel;
   MailHandler mailHandler = new MailHandler();
-
+  private User userModel;
   private ExecutorService mailUpdater;
-
+  private ClientController cc;
   private ExecutorService emailUpdater;
-
   private final Object lock = new Object();
 
-  public void setClientMain(LoginController loginController, User userModel) {
+  public void setClientMain(LoginController loginController, User userModel, ClientController cc) {
     this.loginController = loginController;
     this.userModel = userModel;
     this.username = this.userModel.getUsername();
+    this.cc = cc;
     this.updateAllEmails();
     startMailUpdater();
   }
@@ -107,7 +105,7 @@ public class MailContainerController {
       while (true) {
         try {
           Thread.sleep(5000);
-          Platform.runLater(this::updateAllEmails);
+          Platform.runLater(this::updateInboxEmails);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
@@ -139,48 +137,33 @@ public class MailContainerController {
     this.updateOutboxEmails();
   }
 
-  private  void updateInboxEmails() {
+  private void updateInboxEmails() {
+    System.out.println("update inbox email");
     this.userModel.getInbox().stream().forEach((inboxEmail) -> {
-        if (!emailUpdater.isTerminated() && !emailUpdater.isShutdown()) {
+      if (!emailUpdater.isTerminated() && !emailUpdater.isShutdown()) {
 
-          emailUpdater.submit(() -> {
-            String receivers = inboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining("/ "));
+        emailUpdater.submit(() -> {
+          String receivers = inboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining("/ "));
 
-            Mail m = new Mail(inboxEmail.getSender(), inboxEmail.getSubject(), receivers, inboxEmail.getTimestamp(),
+          Mail m = new Mail(inboxEmail.getSender(), inboxEmail.getSubject(), receivers, inboxEmail.getTimestamp(),
               inboxEmail.getText());
-            synchronized (lock) {
-              Platform.runLater(() -> inTable.getItems().add(m));
-            }
-          });
-        }
+          synchronized (lock) {
+            Platform.runLater(() -> inTable.getItems().add(m));
+          }
+        });
+      }
     });
   }
-
-/*  private  void updateOutboxEmails() {
-    this.userModel.getOutbox().stream().forEach((outboxEmail) -> {
-      if(!emailUpdater.isTerminated() && !emailUpdater.isShutdown()){
-      emailUpdater.submit(() -> {
-        String receivers = outboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining("/ "));
-
-        Mail m = new Mail(outboxEmail.getSender(), outboxEmail.getSubject(), receivers, outboxEmail.getTimestamp(),
-          outboxEmail.getText());
-        synchronized (lock) {
-          Platform.runLater(() -> outTable.getItems().add(m));
-        }
-      });
-    });
-
-    }
-  }*/
 
   private void updateOutboxEmails() {
     this.userModel.getOutbox().stream().forEach((outboxEmail) -> {
       if (!emailUpdater.isTerminated() && !emailUpdater.isShutdown()) {
         emailUpdater.submit(() -> {
-          String receivers = outboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining("/ "));
+          String receivers = outboxEmail.getReceivers().stream().map(Object::toString)
+              .collect(Collectors.joining("/ "));
 
           Mail m = new Mail(outboxEmail.getSender(), outboxEmail.getSubject(), receivers, outboxEmail.getTimestamp(),
-            outboxEmail.getText());
+              outboxEmail.getText());
           synchronized (lock) {
             Platform.runLater(() -> outTable.getItems().add(m));
           }
@@ -188,7 +171,6 @@ public class MailContainerController {
       }
     });
   }
-
 
   private void updateAllEmails() {
     System.out.println("refreshing gui");
@@ -221,12 +203,14 @@ public class MailContainerController {
     inTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
       if (newSelection != null) {
         showMailDetails(newSelection);
+        this.selectedMail = newSelection;
       }
     });
 
     outTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
       if (newSelection != null) {
         showMailDetails(newSelection);
+        this.selectedMail = newSelection;
       }
     });
   }
@@ -251,7 +235,7 @@ public class MailContainerController {
         " ",
         LocalDateTime.now(),
         this.selectedMail.getMessage() + "\n--forwarded from" + this.selectedMail.getSender()),
-      "Forward Email");
+        "Forward Email");
   }
 
   @FXML
@@ -262,7 +246,7 @@ public class MailContainerController {
         selectedMail.getSender().toString(),
         LocalDateTime.now(),
         "\n---\n" + selectedMail.getSender() + ":\n\n" + selectedMail.getMessage()),
-      "Reply Email");
+        "Reply Email");
   }
 
   @FXML
@@ -273,19 +257,19 @@ public class MailContainerController {
           selectedMail.getSender(),
           LocalDateTime.now(),
           "\n---\n" + selectedMail.getSender() + ":\n\n" + selectedMail.getMessage()),
-        "Reply Email");
+          "Reply Email");
     } else {
       loginController.showSendMailDialog(new Mail(username,
           "[RE]" + selectedMail.getSubject(),
           selectedMail.getSender(),
           LocalDateTime.now(),
           "\n---\n" + selectedMail.getSender() + ":\n\n" + selectedMail.getMessage()),
-        "Reply Email");
+          "Reply Email");
     }
   }
 
   @FXML
   public void delete() {
-    // ClientController.deleteMail(selectedMail));
+    cc.deleteMail(selectedMail);
   }
 }

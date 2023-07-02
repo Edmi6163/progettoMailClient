@@ -41,9 +41,9 @@ public class ServerHandler implements Runnable {
     return userList;
   }
 
-
   /*
-  @brief: method run, is the first things called, so here in base of the request we call the right method
+   * @brief: method run, is the first things called, so here in base of the
+   * request we call the right method
    */
   @Override
   public void run() {
@@ -65,7 +65,6 @@ public class ServerHandler implements Runnable {
             case "inbox" -> handleInboxAction((InboxRequest) c.getBody());
             case "send" -> handleSendAction(userList, (Email) c.getBody());
             case "delete" -> handleDeleteAction(userList, (Email) c.getBody());
-
             default -> log.setLog("Unrecognized action");
           }
 
@@ -83,14 +82,20 @@ public class ServerHandler implements Runnable {
   }
 
   private void handleDeleteAction(UserList userList, Email body) {
-    System.out.println("handleDeleteAction");
-    String username = body.getSender();
-    ArrayList<String> receiver = body.getReceivers();
-    String subject = body.getSubject();
-    LocalDateTime date = LocalDateTime.now();
-    String content = body.getText();
-    Email mail = new Email(username, receiver, subject, content);
-    MailHandler.delete(mail);
+    try {
+      System.out.println("***handleDeleteAction***");
+
+      MailHandler.delete(body);
+
+      Communication response = new Communication("delete_ok", body);
+
+      out.writeObject(response);
+      out.flush();
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
   }
 
   private void handleLoginAction(String username) throws IOException {
