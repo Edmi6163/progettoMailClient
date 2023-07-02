@@ -68,7 +68,7 @@ public class NewMessageController {
    * @throws InterruptedException
    */
   @FXML
-  private synchronized void handleOk() throws InterruptedException {
+  private  void handleOk() throws InterruptedException {
     LoginController clientMain = new LoginController();
     // boolean mailExist = false;
 
@@ -110,42 +110,7 @@ public class NewMessageController {
     alert.showAndWait();
 
   }
-  /*
-   * @brief: Check if the receiversField is a valid email address it's a subfolder
-   * name in folder "src/com/examlpe/mailServer/file, if not, display an error
-   * messager
-   * 
-   * @param mail
-   * 
-   * @param clientMain
-   */
 
-  /*
-   * private boolean checkIfMailExists(Mail mail, LoginController clientMain) {
-   * String error = "";
-   * 
-   * File[] files = new
-   * File("src/main/java/com/example/mailServer/file").listFiles();
-   * if (files != null) {
-   * for (File file : files) {
-   * if (file.getName().equals(receiversField.getText())) {
-   * return true;
-   * }
-   * }
-   * }
-   * 
-   * Alert alert = new Alert(Alert.AlertType.WARNING);
-   * alert.initOwner(dialog);
-   * alert.setTitle("Mail not exists");
-   * alert.
-   * setHeaderText("Sorry,receiver doesn't exist or the email address is not valid"
-   * );
-   * alert.setContentText(error);
-   * alert.showAndWait();
-   * 
-   * return false;
-   * }
-   */
 
   public boolean isInputOk(Mail mail) {
     String error = "";
