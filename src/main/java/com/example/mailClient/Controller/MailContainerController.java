@@ -128,7 +128,13 @@ public class MailContainerController {
     });
   }
 
+  public void UpdateOutboxEmails(Email newEmail) {
+    List<Email> emails = this.userModel.getOutbox().stream().map((outboxEmail) -> outboxEmail).collect(Collectors.toList());
 
+    // emails.add(0, MAIL NUOVA CHE MANDI);
+    this.userModel.setOutbox(emails);
+    this.updateAllEmails();
+  }
   private void updateAllEmails() {
     System.out.println("refreshing gui");
     inTable.getItems().clear();
@@ -141,7 +147,7 @@ public class MailContainerController {
       String receivers = inboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining(";"));
 
       Mail m = new Mail(inboxEmail.getSender(), inboxEmail.getSubject(), receivers, inboxEmail.getTimestamp(), inboxEmail.getText());
-      inTable.getItems().add(m);
+//      inTable.getItems().add(m);
       Platform.runLater(() -> inTable.getItems().add(m));
     });
     });
@@ -151,7 +157,7 @@ public class MailContainerController {
           String receivers = outboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining(";"));
 
           Mail m = new Mail(outboxEmail.getSender(), outboxEmail.getSubject(), receivers, outboxEmail.getTimestamp(), outboxEmail.getText());
-          outTable.getItems().add(m);
+//          outTable.getItems().add(m);
 
           Platform.runLater(() -> outTable.getItems().add(m));
         });

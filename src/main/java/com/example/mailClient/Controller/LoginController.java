@@ -38,8 +38,9 @@ public class LoginController {
 	private ObservableList<Mail> inbox = FXCollections.observableArrayList();
 	private ObservableList<Mail> outbox = FXCollections.observableArrayList();
 
-	public User userModel;
+	public User user;
 	public ClientController cc;
+	public MailContainerController mailContainerController;
 
 	public void addOutbox(List<Mail> out) {
 		outbox.addAll(out);
@@ -56,11 +57,11 @@ public class LoginController {
 	private void handleLogin() throws IOException {
 		try {
 			userMail = username.getText();
-			userModel = new User(userMail);
+			user = new User(userMail);
 
 			initRootLayout();
 
-			cc = new ClientController(userModel);
+			cc = new ClientController(user);
 			cc.login();
 
 			startServerCheckTimer();
@@ -135,7 +136,7 @@ public class LoginController {
 			dialog.setScene(scene);
 
 			NewMessageController controller = loader.getController();
-			controller.setController(cc);
+			controller.setController(cc,user,mailContainerController);
 			controller.setDialog(dialog);
 			controller.setMail(mail);
 
@@ -168,9 +169,9 @@ public class LoginController {
 			FXMLLoader loaderContainer = new FXMLLoader(ClientMain.class.getResource("MailContainer.fxml"));
 			root.setCenter(loaderContainer.load());
 
-			MailContainerController controller = loaderContainer.getController();
+			 mailContainerController = loaderContainer.getController();
 
-			controller.setClientMain(this, this.userModel);
+			mailContainerController.setClientMain(this, this.user);
 
 		} catch (IOException e) {
 			e.printStackTrace();

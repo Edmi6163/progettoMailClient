@@ -158,8 +158,8 @@ case "delete" -> handleDeleteAction(userList, (Email) c.getBody());
       log.setLog(mail.getSender() + " sent an email to " + mail.getReceivers());
       System.out.println(mail.getSender() + " sent an email to " + mail.getReceivers());
       mail.setBin(true);
-      out.writeObject(mail);
       MailHandler.save(mail);
+      out.writeObject(mail);
       // SI SPACCA PERCHÈ MANCA IL WRITEOBJECT DEL SERVER
 
     }

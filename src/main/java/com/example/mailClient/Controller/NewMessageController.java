@@ -1,6 +1,8 @@
 package com.example.mailClient.Controller;
 
+import com.example.Transmission.UserModel;
 import com.example.mailClient.Model.Mail;
+import com.example.mailClient.Model.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
@@ -25,13 +27,19 @@ public class NewMessageController {
   private Mail mail;
   private boolean okClicked = false;
   private ClientController cc;
+  public User user;
 
-  public void setController(ClientController cc) {
+  public MailContainerController mailContainerController;
+
+  public void setController(ClientController cc,User user,MailContainerController mailContainerController) {
     this.cc = cc;
+    this.user = user;
+    this.mailContainerController = mailContainerController;
   }
 
   @FXML
   private void initialize() {
+
   }
 
   public void setDialog(Stage dialog) {
@@ -70,12 +78,13 @@ public class NewMessageController {
     System.out.println("[NMC] receiver field is: " + receiversField.getText());
     mail.setSubject(subjectField.getText());
     mail.setMessage(messageBodyArea.getText());
-    ArrayList<String> receivers = new ArrayList<>(Arrays.asList(receiversField.getText().split("/")));
+    ArrayList<String> receivers = new ArrayList<>();
 
     receivers.addAll(Arrays.asList(receiversField.getText().split("/ ")));
     Mail m = new Mail(sender, subjectField.getText(), receiversField.getText(), LocalDateTime.now(), messageBodyArea.getText());
     System.out.println("[NewMessageController] handleOk() m: " + m);
     Email e = new Email(sender, receivers, subjectField.getText(), messageBodyArea.getText());
+
     System.out.println("[NewMessageController] handleOk() e: " + e);
     /*
      * if (checkIfMailExists(m, clientMain)) {
@@ -86,7 +95,7 @@ public class NewMessageController {
       // send mail
       mailSendedFeedback();
       cc.sendMail(e, clientMain);
-
+      this.mailContainerController.UpdateOutboxEmails(e);
       okClicked = true;
     }
   }
