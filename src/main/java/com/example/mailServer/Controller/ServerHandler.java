@@ -62,7 +62,7 @@ public class ServerHandler implements Runnable {
             case "all" -> handleAllAction(in, out, userList);
             case "inbox" -> handleInboxAction((InboxRequest) c.getBody());
             case "send" -> handleSendAction(userList, (Email) c.getBody());
-case "delete" -> handleDeleteAction(userList, (Email) c.getBody());
+            case "delete" -> handleDeleteAction(userList, (Email) c.getBody());
 
             default -> log.setLog("Unrecognized action");
           }
@@ -88,7 +88,7 @@ case "delete" -> handleDeleteAction(userList, (Email) c.getBody());
     String subject = body.getSubject();
     LocalDateTime date = LocalDateTime.now();
     String content = body.getText();
-    Email mail = new Email(username, receiver, subject,content);
+    Email mail = new Email(username, receiver, subject, content);
     MailHandler.delete(mail);
   }
 
@@ -158,10 +158,15 @@ case "delete" -> handleDeleteAction(userList, (Email) c.getBody());
       log.setLog(mail.getSender() + " sent an email to " + mail.getReceivers());
       System.out.println(mail.getSender() + " sent an email to " + mail.getReceivers());
       mail.setBin(true);
-      MailHandler.save(mail);
-      out.writeObject(mail);
-      // SI SPACCA PERCHÈ MANCA IL WRITEOBJECT DEL SERVER
 
+      if (!MailHandler.save(mail)) {
+        Communication response = new Communication("send_not_ok", mail);
+        out.writeObject(response);
+        return;
+      }
+
+      Communication response = new Communication("send_ok", mail);
+      out.writeObject(response);
     }
   }
 

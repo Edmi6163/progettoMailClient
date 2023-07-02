@@ -42,15 +42,10 @@ public class LoginController {
 	public ClientController cc;
 	public MailContainerController mailContainerController;
 
-	public void addOutbox(List<Mail> out) {
-		outbox.addAll(out);
-	}
 	private ScheduledExecutorService serverCheckExecutor;
 
-
-	public void addOut(Mail out) {
-		System.out.println("adding to outbox");
-		outbox.add(out);
+	public void addOutbox(List<Mail> out) {
+		outbox.addAll(out);
 	}
 
 	@FXML
@@ -68,7 +63,7 @@ public class LoginController {
 
 			showMailContainer();
 
-//			System.out.println(username.getText() + " logged in ");
+			// System.out.println(username.getText() + " logged in ");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -110,8 +105,6 @@ public class LoginController {
 		});
 	}
 
-
-
 	/**/
 	private void startServerCheckTimer() {
 		serverCheckExecutor = Executors.newSingleThreadScheduledExecutor();
@@ -136,7 +129,7 @@ public class LoginController {
 			dialog.setScene(scene);
 
 			NewMessageController controller = loader.getController();
-			controller.setController(cc,user,mailContainerController);
+			controller.setController(cc, user, mailContainerController);
 			controller.setDialog(dialog);
 			controller.setMail(mail);
 
@@ -169,7 +162,7 @@ public class LoginController {
 			FXMLLoader loaderContainer = new FXMLLoader(ClientMain.class.getResource("MailContainer.fxml"));
 			root.setCenter(loaderContainer.load());
 
-			 mailContainerController = loaderContainer.getController();
+			mailContainerController = loaderContainer.getController();
 
 			mailContainerController.setClientMain(this, this.user);
 

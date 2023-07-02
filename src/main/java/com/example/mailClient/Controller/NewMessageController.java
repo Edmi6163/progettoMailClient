@@ -31,7 +31,7 @@ public class NewMessageController {
 
   public MailContainerController mailContainerController;
 
-  public void setController(ClientController cc,User user,MailContainerController mailContainerController) {
+  public void setController(ClientController cc, User user, MailContainerController mailContainerController) {
     this.cc = cc;
     this.user = user;
     this.mailContainerController = mailContainerController;
@@ -81,7 +81,8 @@ public class NewMessageController {
     ArrayList<String> receivers = new ArrayList<>();
 
     receivers.addAll(Arrays.asList(receiversField.getText().split("/ ")));
-    Mail m = new Mail(sender, subjectField.getText(), receiversField.getText(), LocalDateTime.now(), messageBodyArea.getText());
+    Mail m = new Mail(sender, subjectField.getText(), receiversField.getText(), LocalDateTime.now(),
+        messageBodyArea.getText());
     System.out.println("[NewMessageController] handleOk() m: " + m);
     Email e = new Email(sender, receivers, subjectField.getText(), messageBodyArea.getText());
 
@@ -94,12 +95,14 @@ public class NewMessageController {
     if (isInputOk(m)) {
       // send mail
       mailSendedFeedback();
-      cc.sendMail(e, clientMain);
-      this.mailContainerController.UpdateOutboxEmails(e);
+      boolean response = cc.sendMail(e, clientMain);
+      if (response)
+        this.mailContainerController.updateOutboxEmails(e);
       okClicked = true;
     }
   }
-  public void mailSendedFeedback(){
+
+  public void mailSendedFeedback() {
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
     alert.setTitle("Mail sent");
     alert.setHeaderText("Mail sent to " + receiversField.getText());

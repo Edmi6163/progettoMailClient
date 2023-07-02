@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class MailHandler {
-  public synchronized static Email save(Email mail) {
+  public synchronized static boolean save(Email mail) {
     Email newMail = null;
     try {
       Date date = new Date();
@@ -34,9 +34,7 @@ public class MailHandler {
 
       newMail = new Email(mail.getSender(), mail.getReceivers(), mail.getSubject(), mail.getText());
       System.out.println("[save] newMail: " + newMail);
-      newMail.setBin(false);
-      output.writeObject(newMail);
-      output.close();
+
       fileOutputStream.close();
 
       for (String r : receivers) {
@@ -51,39 +49,40 @@ public class MailHandler {
 
         output = new ObjectOutputStream(fileOutputStream);
 
-        newMail.setBin(false);
-        output.writeObject(newMail);
-        output.close();
         fileOutputStream.close();
       }
     } catch (IOException e) {
       e.printStackTrace();
+      return false;
     }
-    return newMail;
+    return true;
   }
 
-  /*public synchronized static List<Email> getUpdatedList(String user, String max) {
-    List<Email> updatedList = new ArrayList<>();
-    max = max + ".txt";
-    File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "in/");
-    ObjectOutputStream output = null;
-    FileOutputStream files = null;
-
-    for (File f : Objects.requireNonNull(dir.listFiles())) {
-      if (f.getName().compareTo(max) > 0) {
-        try {
-          files = new FileOutputStream(f);
-          output = new ObjectOutputStream(files);
-          output.close();
-          files.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
-    }
-    return updatedList;
-  }
-*/
+  /*
+   * public synchronized static List<Email> getUpdatedList(String user, String
+   * max) {
+   * List<Email> updatedList = new ArrayList<>();
+   * max = max + ".txt";
+   * File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/"
+   * + "in/");
+   * ObjectOutputStream output = null;
+   * FileOutputStream files = null;
+   * 
+   * for (File f : Objects.requireNonNull(dir.listFiles())) {
+   * if (f.getName().compareTo(max) > 0) {
+   * try {
+   * files = new FileOutputStream(f);
+   * output = new ObjectOutputStream(files);
+   * output.close();
+   * files.close();
+   * } catch (IOException e) {
+   * e.printStackTrace();
+   * }
+   * }
+   * }
+   * return updatedList;
+   * }
+   */
   public synchronized static List<Email> getUpdatedList(String user, String max) {
     List<Email> updatedList = new ArrayList<>();
     max = max + ".txt";
@@ -119,7 +118,6 @@ public class MailHandler {
     }
     return updatedList;
   }
-
 
   public synchronized static ArrayList<Email> loadOutBox(String user) {
     System.out.println("[loadOutBox] user: " + user);
@@ -173,8 +171,10 @@ public class MailHandler {
 
   public static synchronized void delete(Email mail) {
     try {
-        Files.delete(Paths.get("src/main/java/com/example/mailServer/file/" + mail.getReceivers() + "/out/" + mail.getTimestamp() + ".txt"));
-        Files.delete(Paths.get("src/main/java/com/example/mailServer/file/" + mail.getSender() + "/in/" + mail.getTimestamp() + ".txt"));
+      Files.delete(Paths.get(
+          "src/main/java/com/example/mailServer/file/" + mail.getReceivers() + "/out/" + mail.getTimestamp() + ".txt"));
+      Files.delete(Paths.get(
+          "src/main/java/com/example/mailServer/file/" + mail.getSender() + "/in/" + mail.getTimestamp() + ".txt"));
     } catch (Exception e) {
       e.printStackTrace();
     }

@@ -78,6 +78,7 @@ public class ClientController implements Serializable {
       }
       out.writeObject(c);
       out.flush();
+
       Communication response = (Communication) in.readObject();
       System.out.println(
           "function sendCommunicationToServer returned: " + response.getClass().getSimpleName() + " " + response);
@@ -170,40 +171,43 @@ public class ClientController implements Serializable {
     }
   }
 
-  public void sendMail(Email mail, LoginController clientMain) {
+  public boolean sendMail(Email mail, LoginController clientMain) {
     // clientMain.setMailSent(false);
     try {
       if (!connectToSocket()) {
         // fai uscire il popup il server è offline
         loginController.showErrorPopUp();
-        return;
+        return false;
       }
       System.out.println("action send written to server");
       System.out.println(mail);
 
       Communication sendMail = new Communication("send", mail);
 
-      Communication response = (Communication) sendCommunicationToServer(sendMail);
+      Communication response = sendCommunicationToServer(sendMail);
 
       System.out.println("[send mail CC] mail written to server\n" + mail.toString());
 
-      // TODO: da capire cosa risponde il backend
-      if (response.getBody() instanceof Mail responseMail) {
-        System.out.println("Received response mail: " + responseMail);
-        // clientMain.setMailSent(true);
-        System.out.println("Received response mail: " + responseMail);
-        Platform.runLater(() -> clientMain.addOut(responseMail));
+      if (response.getAction().equals("send_not_ok")) {
+        showErrorPopUp();
+        closeSocketConnection();
+        return false;
       }
+
+      System.out.println("Received response action: " + response.getAction());
+      System.out.println("Received response body: " + response.getBody());
 
       closeSocketConnection();
 
     } catch (IOException e) {
       e.printStackTrace();
+      return false;
     }
 
+    return true;
   }
 
-  public  void deleteMail(Mail mail) {
+  public void deleteMail(Mail mail) {
     try {
       if (!connectToSocket()) {
         showErrorPopUp();
