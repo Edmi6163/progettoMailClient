@@ -5,6 +5,7 @@ import javafx.application.Platform;
 
 import com.example.Transmission.Communication;
 import com.example.Transmission.Email;
+import com.example.Transmission.InboxRequest;
 import com.example.Transmission.LoginRes;
 import com.example.mailClient.Model.User;
 
@@ -121,6 +122,8 @@ public class ClientController implements Serializable {
       ArrayList<Email> res = (ArrayList<Email>) response.getBody();
 
       System.out.println("request info returned: " + res.toString());
+
+      this.userModel.setInbox(res);
 
       closeSocketConnection();
 

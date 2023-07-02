@@ -79,11 +79,15 @@ public class MailContainerController {
   LoginController loginController = new LoginController();
   ObservableList<Mail> inboxMailsList;
   ObservableList<Mail> outboxMailsList;
-  MailHandler mailHandler = new MailHandler();
+
   private User userModel;
+  MailHandler mailHandler = new MailHandler();
+
   private ExecutorService mailUpdater;
-  private ClientController cc;
+
   private ExecutorService emailUpdater;
+
+  private ClientController cc;
   private final Object lock = new Object();
 
   public void setClientMain(LoginController loginController, User userModel, ClientController cc) {
@@ -105,6 +109,7 @@ public class MailContainerController {
       while (true) {
         try {
           Thread.sleep(5000);
+          Platform.runLater(() -> this.cc.requestInfo());
           Platform.runLater(this::updateInboxEmails);
         } catch (InterruptedException e) {
           e.printStackTrace();
@@ -138,51 +143,46 @@ public class MailContainerController {
   }
 
   private void updateInboxEmails() {
-    System.out.println("update inbox email");
+    inTable.getItems().clear();
+
+    System.out.println("refresh inbox");
     this.userModel.getInbox().stream().forEach((inboxEmail) -> {
-      if (!emailUpdater.isTerminated() && !emailUpdater.isShutdown()) {
+      emailUpdater.submit(() -> {
+        String receivers = inboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining(";"));
 
-        emailUpdater.submit(() -> {
-          String receivers = inboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining("/ "));
-
-          Mail m = new Mail(inboxEmail.getSender(), inboxEmail.getSubject(), receivers, inboxEmail.getTimestamp(),
-              inboxEmail.getText());
-          synchronized (lock) {
-            Platform.runLater(() -> inTable.getItems().add(m));
-          }
-        });
-      }
+        Mail m = new Mail(inboxEmail.getSender(), inboxEmail.getSubject(), receivers, inboxEmail.getTimestamp(),
+            inboxEmail.getText());
+        synchronized (lock) {
+          Platform.runLater(() -> inTable.getItems().add(m));
+        }
+      });
     });
   }
 
   private void updateOutboxEmails() {
-    this.userModel.getOutbox().stream().forEach((outboxEmail) -> {
-      if (!emailUpdater.isTerminated() && !emailUpdater.isShutdown()) {
-        emailUpdater.submit(() -> {
-          String receivers = outboxEmail.getReceivers().stream().map(Object::toString)
-              .collect(Collectors.joining("/ "));
 
-          Mail m = new Mail(outboxEmail.getSender(), outboxEmail.getSubject(), receivers, outboxEmail.getTimestamp(),
-              outboxEmail.getText());
-          synchronized (lock) {
-            Platform.runLater(() -> outTable.getItems().add(m));
-          }
-        });
-      }
+    outTable.getItems().clear();
+
+    this.userModel.getOutbox().stream().forEach((outboxEmail) -> {
+      emailUpdater.submit(() -> {
+        String receivers = outboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining(";"));
+
+        Mail m = new Mail(outboxEmail.getSender(), outboxEmail.getSubject(), receivers, outboxEmail.getTimestamp(),
+            outboxEmail.getText());
+        synchronized (lock) {
+          Platform.runLater(() -> outTable.getItems().add(m));
+        }
+      });
     });
   }
 
   private void updateAllEmails() {
     System.out.println("refreshing gui");
-    inTable.getItems().clear();
-    outTable.getItems().clear();
 
     emailUpdater = Executors.newFixedThreadPool(10);
 
     this.updateInboxEmails();
     this.updateOutboxEmails();
-
-    emailUpdater.shutdown();
 
   }
 

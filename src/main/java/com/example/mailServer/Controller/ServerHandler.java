@@ -61,8 +61,7 @@ public class ServerHandler implements Runnable {
           log.setLog("Action registered: " + c.getAction());
           switch (c.getAction()) {
             case "login" -> handleLoginAction((String) c.getBody());
-            case "all" -> handleAllAction(in, out, userList);
-            case "inbox" -> handleInboxAction((InboxRequest) c.getBody());
+            case "inbox" -> handleInboxAction((String) c.getBody());
             case "send" -> handleSendAction(userList, (Email) c.getBody());
             case "delete" -> handleDeleteAction(userList, (Email) c.getBody());
             default -> log.setLog("Unrecognized action");
@@ -124,22 +123,12 @@ public class ServerHandler implements Runnable {
     System.out.println("Communication c: " + c.getAction() + " " + c.getBody().toString());
   }
 
-  private void handleAllAction(ObjectInputStream in, ObjectOutputStream out, UserList userList)
-      throws IOException, ClassNotFoundException {
-    System.out.println("***handleAllAction***");
-    String user = (String) in.readObject();
-    if (userList.userExist(user)) {
-      out.writeObject(MailHandler.loadOutBox(user));
-      out.writeObject(MailHandler.loadInBox(user));
-    } else {
-      out.writeObject(null);
-      out.writeObject(null);
-    }
-  }
-
-  private void handleInboxAction(InboxRequest body) throws IOException, ClassNotFoundException {
+  private void handleInboxAction(String body) throws IOException, ClassNotFoundException {
     System.out.println("***handleInboxAction***");
-    out.writeObject(MailHandler.getUpdatedList(body.getEmail(), body.getMax()));
+
+    Communication response = new Communication("sent_email",
+        MailHandler.getUpdatedList(body));
+    out.writeObject(response);
   }
 
   private void handleSendAction(UserList userList, Email mail) throws IOException, ClassNotFoundException {

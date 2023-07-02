@@ -54,40 +54,64 @@ public class MailHandler {
     return true;
   }
 
-  public synchronized static List<Email> getUpdatedList(String user, String max) {
-    List<Email> updatedList = new ArrayList<>();
-    max = max + ".txt";
-    File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "in/");
-    ObjectOutputStream output = null;
-    FileOutputStream files = null;
+  // public synchronized static List<Email> getUpdatedList(String user) {
+  // List<Email> updatedList = new ArrayList<>();
+  // File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/"
+  // + "in/");
+  // FileOutputStream files = null;
 
-    for (File f : Objects.requireNonNull(dir.listFiles())) {
-      if (f.getName().compareTo(max) > 0) {
-        try {
-          files = new FileOutputStream(f);
-          output = new ObjectOutputStream(files);
+  // for (File f : Objects.requireNonNull(dir.listFiles())) {
+  // try {
+  // files = new FileOutputStream(f);
 
-          // Assuming the file contains Email data that can be read and deserialized
-          Email email = null;
-          try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(f))) {
-            email = (Email) input.readObject();
-          } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-          }
+  // // Assuming the file contains Email data that can be read and deserialized
+  // Email email = null;
+  // try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(f)))
+  // {
+  // email = (Email) input.readObject();
+  // } catch (ClassNotFoundException e) {
+  // e.printStackTrace();
+  // }
 
-          // If the email object was successfully deserialized, add it to the updatedList
-          if (email != null) {
-            updatedList.add(email);
-          }
+  // // If the email object was successfully deserialized, add it to the
+  // updatedList
+  // if (email != null) {
+  // updatedList.add(email);
+  // }
 
-          output.close();
-          files.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
+  // files.close();
+  // } catch (IOException e) {
+  // e.printStackTrace();
+  // }
+  // }
+
+  // return updatedList;
+  // }
+
+  public synchronized static List<Email> getUpdatedList(String user) {
+
+    System.out.println("[loadOutBox] user: " + user);
+    ArrayList<Email> out = new ArrayList<>();
+    try {
+      File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/in/");
+      ObjectInputStream output = null;
+      FileInputStream files = null;
+      for (File f : Objects.requireNonNull(dir.listFiles())) {
+        files = new FileInputStream(f);
+        output = new ObjectInputStream(files);
+        out.add((Email) output.readObject());
+        output.close();
+        files.close();
       }
+      if (files != null) {
+        output.close();
+        files.close();
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-    return updatedList;
+    return out;
   }
 
   public synchronized static ArrayList<Email> loadOutBox(String user) {

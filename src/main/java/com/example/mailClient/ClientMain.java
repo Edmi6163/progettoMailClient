@@ -12,8 +12,6 @@ import java.io.IOException;
 
 public class ClientMain extends Application {
 
-
-
   @Override
   public void start(Stage topStage) throws IOException {
     topStage.setTitle("Client mail window @javamail");
