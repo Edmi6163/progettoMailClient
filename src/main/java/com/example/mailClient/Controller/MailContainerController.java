@@ -66,7 +66,7 @@ public class MailContainerController {
   @FXML
   private TabPane tabPane;
 
-  private Mail selectedMail;
+  public Mail selectedMail = new Mail("", "", "", LocalDateTime.now(), "");
   private String username;
   LoginController loginController = new LoginController();
   ObservableList<Mail> inboxMailsList;
@@ -104,7 +104,7 @@ public class MailContainerController {
   @FXML
   private void initialize() {
 
-    System.out.println("[MCC] initialize");
+//    System.out.println("[MCC] initialize");
     // System.out.println("inboxMailList size: " + inboxMailsList.size());
     // System.out.println("outboxMailList size: " + outboxMailsList.size());
 
@@ -121,7 +121,6 @@ public class MailContainerController {
     // Set up the selection listeners for the inbox and outbox tables
     inTable.getSelectionModel().selectedItemProperty().addListener((obs,
         oldSelection, newSelection) -> {
-      System.out.println("[MCC] inTable selection listener");
       if (newSelection != null) {
         showMailDetails(newSelection);
       }
@@ -129,7 +128,6 @@ public class MailContainerController {
 
     outTable.getSelectionModel().selectedItemProperty().addListener((obs,
         oldSelection, newSelection) -> {
-      System.out.println("[MCC] outTable selection listener");
       if (newSelection != null) {
         showMailDetails(newSelection);
       }
@@ -151,7 +149,7 @@ public class MailContainerController {
 
   @FXML
   public void forward() {
-    loginController.showSendMailDialog(new Mail(username,
+    loginController.showSendMailDialog(new Mail(this.userModel.getUsername(),
         "[FWD] " + selectedMail.getSubject(),
         " ",
         LocalDateTime.now(),
@@ -161,21 +159,13 @@ public class MailContainerController {
 
   @FXML
   public void reply() {
-    if (!selectedMail.getSender().equals(username)) {
-      loginController.showSendMailDialog(new Mail(username,
+//    if (!selectedMail.getSender().equals(username)) {
+      loginController.showSendMailDialog(new Mail(this.userModel.getUsername(),
           "[RE]" + selectedMail.getSubject(),
           selectedMail.getSender(),
           LocalDateTime.now(),
           "\n---\n" + selectedMail.getSender() + ":\n\n" + selectedMail.getMessage()),
           "Reply Email");
-    } else {
-      loginController.showSendMailDialog(new Mail(username,
-          "[RE]" + selectedMail.getSubject(),
-          selectedMail.getSender(),
-          LocalDateTime.now(),
-          "\n---\n" + selectedMail.getSender() + ":\n\n" + selectedMail.getMessage()),
-          "Reply Email");
-    }
   }
 
   @FXML
@@ -199,8 +189,8 @@ public class MailContainerController {
 
   @FXML
   private void delete() {
-    // new Thread(() -> ClientController.deleteMail(selectedMail,
-    // clientMain)).start();
+//     new Thread(() -> ClientController.deleteMail(selectedMail,
+//     clientMain)).start();
   }
 
   // public static List<Mail> convertLinesToMails(List<String> lines) {
