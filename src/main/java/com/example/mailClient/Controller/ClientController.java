@@ -71,6 +71,9 @@ public class ClientController implements Serializable {
     popup.show();
   }
 
+  /*
+    * @brief: send information to server through Communication object and socket
+   */
   private static Communication sendCommunicationToServer(Communication c) {
     System.out.println("sending communication to server: " + c.getAction() + " " + c.getBody());
     try {
@@ -93,8 +96,8 @@ public class ClientController implements Serializable {
       return null;
     }
   }
-/*
 
+  /*
   public String getMaxTimeStamp(List<Mail> inbox) {
     long maxTimeStamp = 0;
     for (Mail m : inbox) {
@@ -110,6 +113,10 @@ public class ClientController implements Serializable {
   // Platform.runLater(() -> loginController.noMailPopUp());
   // }
 
+  /*
+   * @brief: request inbox to server
+   * FIXME inbox is not updated
+   */
   public void requestInfo() {
     try {
       if (!connectToSocket()) {
@@ -133,11 +140,11 @@ public class ClientController implements Serializable {
 
       var res = (ArrayList<Email>) body;
 
-      System.out.println("res dimension is " + res.size());
-      System.out.println("request info returned: " + res);
+
+      System.out.println("[requestInfo] res dimension is " + res.size());
+      System.out.println("[requestInfo] request info returned: " + res);
 
 
-      System.out.println("request info returned: " + res);
 
       this.userModel.setInbox(res);
 
@@ -163,7 +170,7 @@ public class ClientController implements Serializable {
       System.out.println("communication request: " + request.getAction());
       System.out.println("communication request body: " + request.getBody());
 
-      Communication response = (Communication) sendCommunicationToServer(request);
+      Communication response = sendCommunicationToServer(request);
 
       System.out.println("communication response: " + response.getBody());
       System.out.println("communication response body: " + response.getAction());
@@ -173,7 +180,7 @@ public class ClientController implements Serializable {
       ArrayList<Email> inbox = arrayLists.getArrayLists().get(0);
       ArrayList<Email> outbox = arrayLists.getArrayLists().get(1);
 
-//      this.userModel.setInbox(inbox);
+      this.userModel.setInbox(inbox);
       this.userModel.setOutbox(outbox);
 
       closeSocketConnection();
@@ -183,6 +190,9 @@ public class ClientController implements Serializable {
     }
   }
 
+  /*
+   * @brief: send email to server
+   */
   public boolean sendMail(Email mail, LoginController clientMain) {
     try {
       if (!connectToSocket()) {
@@ -216,6 +226,10 @@ public class ClientController implements Serializable {
     return true;
   }
 
+  /*
+   * @brief: delete email from server
+   * FIXME mail are not deleted from server
+   */
   public void deleteMail(Mail mail) {
     try {
       if (!connectToSocket()) {

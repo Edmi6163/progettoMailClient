@@ -1,7 +1,6 @@
 package com.example.mailServer.Controller;
 
 import com.example.Transmission.Email;
-import com.example.mailClient.Model.Mail;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -124,15 +123,18 @@ public class MailHandler {
   }
 */
 
+  /*
+  FIXME inbox related problems
+   */
   public synchronized static ArrayList<Email> loadInBox(String user) {
-    System.out.println("[loadInBox] user: " + user);
+    System.out.println("[loadInBox] loading " + user + "'s inbox");
     ArrayList<Email> inbox = new ArrayList<>();
     try {
       File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "in");
       for (File f : Objects.requireNonNull(dir.listFiles())) {
         try (FileInputStream file = new FileInputStream(f);
              ObjectInputStream input = new ObjectInputStream(file)) {
-          inbox.add((Email) input.readObject());
+          inbox.add((Email)input.readObject());
         } catch (ClassNotFoundException | IOException e) {
           e.printStackTrace();
         }
@@ -147,7 +149,6 @@ public class MailHandler {
   /*
     @brief: delete the selected mail in MailContainerController from the file system both in and out folder of the user
     using a regex to remove the brackets from the username
-
    */
   public static synchronized void delete(String user,Email mail) {
     System.out.println("user arrive as: " + user);

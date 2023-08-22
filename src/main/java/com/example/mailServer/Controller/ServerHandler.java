@@ -136,7 +136,6 @@ public class ServerHandler implements Runnable {
 
   private void handleSendAction(UserList userList, Email mail) throws IOException, ClassNotFoundException {
     System.out.println("***handleSendAction***");
-    // log("***handleSendAction***");
 
     System.out.println("[handle send action] mail arrived to server:\n " + mail);
     System.out.println("[handle send action] receivers: " + mail.getReceivers());
