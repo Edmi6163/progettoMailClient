@@ -106,7 +106,10 @@ public class LoginController {
 		});
 	}
 
-	/**/
+	/*
+	* @brief: if server is offline notify user that server is offline when the server is online the
+	* pop up just stop to appears
+	*/
 	private void startServerCheckTimer() {
 		serverCheckExecutor = Executors.newSingleThreadScheduledExecutor();
 
@@ -114,7 +117,7 @@ public class LoginController {
 			if (!checkConnection()) {
 				Platform.runLater(this::showErrorPopUp);
 			}
-		}, 0, 30, TimeUnit.SECONDS);
+		}, 0, 120, TimeUnit.SECONDS);
 	}
 
 	public void showSendMailDialog(Mail mail, String title) {

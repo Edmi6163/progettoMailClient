@@ -37,4 +37,4 @@ build/
 ### Mac OS ###
 .DS_Store
 
-*.txt
+src/main/java/com/example/mailServer/file/*.txt

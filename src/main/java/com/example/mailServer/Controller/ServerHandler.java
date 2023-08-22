@@ -2,9 +2,7 @@ package com.example.mailServer.Controller;
 
 import com.example.Transmission.Communication;
 import com.example.Transmission.Email;
-import com.example.Transmission.InboxRequest;
 import com.example.Transmission.LoginRes;
-import com.example.Transmission.UserModel;
 import com.example.mailServer.Model.LoggerModel;
 import com.example.mailServer.Model.UserService;
 import com.example.mailServer.Model.Mail;
@@ -57,13 +55,15 @@ public class ServerHandler implements Runnable {
 
         try {
           Communication c = (Communication) in.readObject();
+          System.out.println("Body registered: " + c.getBody());
           System.out.println("Action registered: " + c.getAction());
           log.setLog("Action registered: " + c.getAction());
           switch (c.getAction()) {
             case "login" -> handleLoginAction((String) c.getBody());
             case "inbox" -> handleInboxAction((String) c.getBody());
             case "send" -> handleSendAction(userList, (Email) c.getBody());
-            case "delete" -> handleDeleteAction(userList, (Email) c.getBody());
+            case "delete" -> handleDeleteAction(c.getBody().toString(), (Email) c.getBody());
+            case "outbox" -> handleOutboxAction((String) c.getBody());
             default -> log.setLog("Unrecognized action");
           }
 
@@ -80,11 +80,11 @@ public class ServerHandler implements Runnable {
     }
   }
 
-  private void handleDeleteAction(UserList userList, Email body) {
+  private void handleDeleteAction(String user, Email body) {
     try {
       System.out.println("***handleDeleteAction***");
 
-      MailHandler.delete(body);
+      MailHandler.delete(user,body);
 
       Communication response = new Communication("delete_ok", body);
 
@@ -107,7 +107,6 @@ public class ServerHandler implements Runnable {
     log.setLog("User " + username + " logged in");
 
     ArrayList<Email> inbox = MailHandler.loadInBox(username);
-
     log.setLog(username + "'s inbox loaded, size is " + inbox.size());
     ArrayList<Email> outbox = MailHandler.loadOutBox(username);
     log.setLog(username + "'s outbox loaded, size is " + outbox.size());
@@ -124,11 +123,15 @@ public class ServerHandler implements Runnable {
   }
 
   private void handleInboxAction(String body) throws IOException, ClassNotFoundException {
-    System.out.println("***handleInboxAction***");
-
-    Communication response = new Communication("sent_email",
-        MailHandler.getUpdatedList(body));
+    System.out.println("[handleInboxAction] body arrived is: " + body);
+    Communication response = new Communication("inbox",MailHandler.loadInBox(body)); //FIXME here we should load the inbox note body is the username
     out.writeObject(response);
+  }
+
+  private void handleOutboxAction(String body) throws IOException, ClassNotFoundException {
+    System.out.println("[handleOutboxAction] body arrived is: " + body);
+    Communication response = new Communication("outbox",MailHandler.loadOutBox(body)); //FIXME here we should load the outbox, note body is the username
+
   }
 
   private void handleSendAction(UserList userList, Email mail) throws IOException, ClassNotFoundException {

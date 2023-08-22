@@ -82,9 +82,9 @@ public class ClientController implements Serializable {
       out.flush();
 
       Communication response = (Communication) in.readObject();
-      System.out.println(
-          "function sendCommunicationToServer returned: " + response.getClass().getSimpleName() + " " + response);
+      System.out.println("function sendCommunicationToServer returned: " + response.getClass().getSimpleName() + " " + response);
 
+      System.out.println("[sendCommunicationToServer] response: " + response.getAction() + " " + response.getBody()); //FIXME here the response is null, so inbox isn't updated
       return response;
 
     } catch (IOException | ClassNotFoundException e) {
@@ -93,6 +93,7 @@ public class ClientController implements Serializable {
       return null;
     }
   }
+/*
 
   public String getMaxTimeStamp(List<Mail> inbox) {
     long maxTimeStamp = 0;
@@ -103,6 +104,7 @@ public class ClientController implements Serializable {
     }
     return " " + maxTimeStamp;
   }
+*/
 
   // public void noMailPopUp() {
   // Platform.runLater(() -> loginController.noMailPopUp());
@@ -114,24 +116,38 @@ public class ClientController implements Serializable {
         showErrorPopUp();
         return;
       }
-
       Communication request = new Communication("inbox", username);
 
-      Communication response = (Communication) sendCommunicationToServer(request);
+      Communication response = sendCommunicationToServer(request);
 
-      ArrayList<Email> res = (ArrayList<Email>) response.getBody();
+      if (response == null) {
+        System.out.println("response is null");
+        return;
+      }
 
-      System.out.println("request info returned: " + res.toString());
+      Object body = response.getBody();
+      if (!(body instanceof ArrayList)) {
+        System.out.println("response body is not an ArrayList");
+        return;
+      }
+
+      var res = (ArrayList<Email>) body;
+
+      System.out.println("res dimension is " + res.size());
+      System.out.println("request info returned: " + res);
+
+
+      System.out.println("request info returned: " + res);
 
       this.userModel.setInbox(res);
 
       closeSocketConnection();
-
     } catch (IOException e) {
-      e.printStackTrace();
-    }
+			throw new RuntimeException(e);
+		}
 
-  }
+	}
+
 
   /*
    * @brief: send information to server through Communication object and socket
@@ -157,7 +173,7 @@ public class ClientController implements Serializable {
       ArrayList<Email> inbox = arrayLists.getArrayLists().get(0);
       ArrayList<Email> outbox = arrayLists.getArrayLists().get(1);
 
-      this.userModel.setInbox(inbox);
+//      this.userModel.setInbox(inbox);
       this.userModel.setOutbox(outbox);
 
       closeSocketConnection();

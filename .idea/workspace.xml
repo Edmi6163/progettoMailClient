@@ -4,10 +4,42 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2377a5de-9e43-4dcf-9ac1-a86384a20d0c" name="Changes" comment="corrected handleOk synchronized,">
+    <list default="true" id="2377a5de-9e43-4dcf-9ac1-a86384a20d0c" name="Changes" comment="solved thread synch problem">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/ClientMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/ClientMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/ClientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/LoginController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/MailContainerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/MailContainerController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/NewMessageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/NewMessageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/MailHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/MailHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/ServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/ServerHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/out/1687891219869.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/out/1687951507148.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/out/1687971866193.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/out/1687971907665.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/out/1687974938253.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/out/1687975129080.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/out/1687975445664.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/out/1688038256795.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/out/1688039068044.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/out/1688039281324.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/out/1688039758787.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/out/1688163730565.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/mauro@javamail.it/in/1687891219869.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/mauro@javamail.it/in/1687951507148.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/mauro@javamail.it/in/1687971866193.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/mauro@javamail.it/in/1687971907665.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/mauro@javamail.it/in/1687974938253.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/mauro@javamail.it/in/1687975129080.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/mauro@javamail.it/in/1687975445664.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/mauro@javamail.it/in/1688038256795.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/mauro@javamail.it/in/1688039068044.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/mauro@javamail.it/in/1688039281324.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/mauro@javamail.it/in/1688039758787.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/mauro@javamail.it/in/1688163730565.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/traccia.md" beforeDir="false" afterPath="$PROJECT_DIR$/traccia.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +59,10 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/LoginController.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/ServerHandler.java" root0="SKIP_INSPECTION" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -34,7 +70,6 @@
     <option name="generalSettings">
       <MavenGeneralSettings>
         <option name="mavenHome" value="Use Maven wrapper" />
-        <option name="useMavenConfig" value="true" />
       </MavenGeneralSettings>
     </option>
   </component>
@@ -45,34 +80,38 @@
     </hideBySeverity>
     <option name="selectedTabId" value="CurrentFile" />
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 1
+}]]></component>
   <component name="ProjectId" id="2Pe10alco3X0yyC8l2D34yxHRrT" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Downloaded.Files.Path.Enabled": "false",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "testing",
-    "last_opened_file_path": "/home/francesco/Documents/Università/3_Anno/Prog3/progetto_gdrive",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.09803921",
-    "project.structure.side.proportion": "0.43218392",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/francesco/Documents/Università/3_Anno/Prog3/progetto_gdrive&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.09803921&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.43218392&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources/com/example/mailClient/Controller" />
@@ -82,8 +121,22 @@
       <recent name="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/in" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Client">
-    <configuration name="Client" type="Application" factoryName="Application">
+  <component name="RunManager" selected="Application.Client 1">
+    <configuration name="Client 1" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.example.mailClient.ClientMain" />
+      <module name="progettoMailClient" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Client 2" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.example.mailClient.ClientMain" />
+      <module name="progettoMailClient" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Client 3" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.example.mailClient.ClientMain" />
       <module name="progettoMailClient" />
       <method v="2">
@@ -99,7 +152,9 @@
     </configuration>
     <list>
       <item itemvalue="Application.Server" />
-      <item itemvalue="Application.Client" />
+      <item itemvalue="Application.Client 1" />
+      <item itemvalue="Application.Client 2" />
+      <item itemvalue="Application.Client 3" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -172,6 +227,18 @@
       <workItem from="1688204379958" duration="6991000" />
       <workItem from="1688219509837" duration="17812000" />
       <workItem from="1688284447592" duration="3556000" />
+      <workItem from="1688339292910" duration="119000" />
+      <workItem from="1688340190115" duration="321000" />
+      <workItem from="1688340529011" duration="6000" />
+      <workItem from="1688363942380" duration="1749000" />
+      <workItem from="1692210166993" duration="222000" />
+      <workItem from="1692210400267" duration="1279000" />
+      <workItem from="1692415629785" duration="5031000" />
+      <workItem from="1692465372132" duration="2333000" />
+      <workItem from="1692467898419" duration="3000" />
+      <workItem from="1692468141220" duration="1201000" />
+      <workItem from="1692549122500" duration="4707000" />
+      <workItem from="1692689219832" duration="228000" />
     </task>
     <task id="LOCAL-00001" summary="very small changes">
       <created>1683894254514</created>

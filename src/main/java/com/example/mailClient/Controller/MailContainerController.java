@@ -140,16 +140,16 @@ public class MailContainerController {
     emails.add(0, newEmail);
     this.userModel.setOutbox(emails);
     this.updateOutboxEmails();
+    this.updateInboxEmails();
   }
 
   private void updateInboxEmails() {
     inTable.getItems().clear();
 
-    System.out.println("refresh inbox");
+    System.out.println("[upateInboxEmails] refresh inbox");
     this.userModel.getInbox().stream().forEach((inboxEmail) -> {
       emailUpdater.submit(() -> {
-        String receivers = inboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining(";"));
-
+        String receivers = inboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining("; "));
         Mail m = new Mail(inboxEmail.getSender(), inboxEmail.getSubject(), receivers, inboxEmail.getTimestamp(),
             inboxEmail.getText());
         synchronized (lock) {
@@ -181,8 +181,9 @@ public class MailContainerController {
 
     emailUpdater = Executors.newFixedThreadPool(10);
 
-    this.updateInboxEmails();
     this.updateOutboxEmails();
+    this.updateInboxEmails();
+
 
   }
 

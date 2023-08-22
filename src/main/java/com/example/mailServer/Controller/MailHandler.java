@@ -1,6 +1,7 @@
 package com.example.mailServer.Controller;
 
 import com.example.Transmission.Email;
+import com.example.mailClient.Model.Mail;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -54,73 +55,18 @@ public class MailHandler {
     return true;
   }
 
-  // public synchronized static List<Email> getUpdatedList(String user) {
-  // List<Email> updatedList = new ArrayList<>();
-  // File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/"
-  // + "in/");
-  // FileOutputStream files = null;
 
-  // for (File f : Objects.requireNonNull(dir.listFiles())) {
-  // try {
-  // files = new FileOutputStream(f);
 
-  // // Assuming the file contains Email data that can be read and deserialized
-  // Email email = null;
-  // try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(f)))
-  // {
-  // email = (Email) input.readObject();
-  // } catch (ClassNotFoundException e) {
-  // e.printStackTrace();
-  // }
 
-  // // If the email object was successfully deserialized, add it to the
-  // updatedList
-  // if (email != null) {
-  // updatedList.add(email);
-  // }
-
-  // files.close();
-  // } catch (IOException e) {
-  // e.printStackTrace();
-  // }
-  // }
-
-  // return updatedList;
-  // }
-
-  public synchronized static List<Email> getUpdatedList(String user) {
-
-    System.out.println("[loadOutBox] user: " + user);
-    ArrayList<Email> out = new ArrayList<>();
-    try {
-      File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/in/");
-      ObjectInputStream output = null;
-      FileInputStream files = null;
-      for (File f : Objects.requireNonNull(dir.listFiles())) {
-        files = new FileInputStream(f);
-        output = new ObjectInputStream(files);
-        out.add((Email) output.readObject());
-        output.close();
-        files.close();
-      }
-      if (files != null) {
-        output.close();
-        files.close();
-      }
-
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return out;
-  }
 
   public synchronized static ArrayList<Email> loadOutBox(String user) {
     System.out.println("[loadOutBox] user: " + user);
     ArrayList<Email> out = new ArrayList<>();
+    ObjectInputStream output = null;
+    FileInputStream files = null;
+    System.out.println("[loadOutBox] already raised exc");
     try {
       File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "out");
-      ObjectInputStream output = null;
-      FileInputStream files = null;
       for (File f : Objects.requireNonNull(dir.listFiles())) {
         files = new FileInputStream(f);
         output = new ObjectInputStream(files);
@@ -139,6 +85,7 @@ public class MailHandler {
     return out;
   }
 
+/*
   public synchronized static ArrayList<Email> loadInBox(String user) {
     System.out.println("[loadInBox] user: " + user);
     ArrayList<Email> inbox = new ArrayList<>();
@@ -146,30 +93,71 @@ public class MailHandler {
       File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "in");
       ObjectInputStream input = null;
       FileInputStream file = null;
-      for (File f : Objects.requireNonNull(dir.listFiles())) {
+      */
+/*for (File f : Objects.requireNonNull(dir.listFiles())) {
         file = new FileInputStream(f);
         input = new ObjectInputStream(file);
         inbox.add((Email) input.readObject());
         input.close();
         file.close();
+      }*//*
+
+      for (File f : Objects.requireNonNull(dir.listFiles())) {
+        try (FileInputStream file = new FileInputStream(f);
+             ObjectInputStream input = new ObjectInputStream(file)) {
+          inbox.add((Email) input.readObject());
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       }
+
       if (file != null) {
         input.close();
         file.close();
       }
 
     } catch (Exception e) {
+
+      e.printStackTrace();
+    }
+    return inbox;
+  }
+*/
+
+  public synchronized static ArrayList<Email> loadInBox(String user) {
+    System.out.println("[loadInBox] user: " + user);
+    ArrayList<Email> inbox = new ArrayList<>();
+    try {
+      File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "in");
+      for (File f : Objects.requireNonNull(dir.listFiles())) {
+        try (FileInputStream file = new FileInputStream(f);
+             ObjectInputStream input = new ObjectInputStream(file)) {
+          inbox.add((Email) input.readObject());
+        } catch (ClassNotFoundException | IOException e) {
+          e.printStackTrace();
+        }
+      }
+    } catch (Exception e) {
       e.printStackTrace();
     }
     return inbox;
   }
 
-  public static synchronized void delete(Email mail) {
+
+  /*
+    @brief: delete the selected mail in MailContainerController from the file system both in and out folder of the user
+    using a regex to remove the brackets from the username
+
+   */
+  public static synchronized void delete(String user,Email mail) {
+    System.out.println("user arrive as: " + user);
+
+    String userWithoutBracket = user.replace("\\[|\\]", "");
     try {
       Files.delete(Paths.get(
-          "src/main/java/com/example/mailServer/file/" + mail.getReceivers() + "/out/" + mail.getTimestamp() + ".txt"));
+          "src/main/java/com/example/mailServer/file/" + userWithoutBracket + "/out/" + mail.getTimestamp() + ".txt"));
       Files.delete(Paths.get(
-          "src/main/java/com/example/mailServer/file/" + mail.getSender() + "/in/" + mail.getTimestamp() + ".txt"));
+          "src/main/java/com/example/mailServer/file/" + userWithoutBracket + "/in/" + mail.getTimestamp() + ".txt"));
     } catch (Exception e) {
       e.printStackTrace();
     }

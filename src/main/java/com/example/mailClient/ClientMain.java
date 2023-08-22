@@ -1,5 +1,6 @@
 package com.example.mailClient;
 
+import com.example.mailServer.Controller.MailHandler;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +28,7 @@ public class ClientMain extends Application {
     sceneLogin.getWindow().addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, (WindowEvent e) -> System.exit(1));
 
     topStage.show();
+
   }
 
   public static void main(String[] args) {
