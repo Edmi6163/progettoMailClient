@@ -122,16 +122,28 @@ public class ServerHandler implements Runnable {
     System.out.println("Communication c: " + c.getAction() + " " + c.getBody().toString());
   }
 
-  private void handleInboxAction(String body) throws IOException, ClassNotFoundException {
+  /*private void handleInboxAction(String body) throws IOException, ClassNotFoundException {
     System.out.println("[handleInboxAction] body arrived is: " + body);
-    Communication response = new Communication("inbox",MailHandler.loadInBox(body)); //FIXME here we should load the inbox note body is the username
+    Communication response = new Communication("inbox",MailHandler.loadInBox(body)); //FIXME here we should load the inbox note body is the username, but response is empty []
+    out.writeObject(response);
+  }*/
+
+  private void handleInboxAction(String username) throws IOException, ClassNotFoundException {
+    System.out.println("[handleInboxAction] username received: " + username);
+    ArrayList<Email> inbox = MailHandler.loadInBox(username);
+    //print all the content in inbox
+    for (Email email : inbox) {
+      System.out.println("inbox contains: "  + email);
+    } //FIXME this isn't printed because in loadinbox it raise the exception
+    Communication response = new Communication("inbox", inbox);
     out.writeObject(response);
   }
 
-  private void handleOutboxAction(String body) throws IOException, ClassNotFoundException {
-    System.out.println("[handleOutboxAction] body arrived is: " + body);
-    Communication response = new Communication("outbox",MailHandler.loadOutBox(body)); //FIXME here we should load the outbox, note body is the username
-
+  private void handleOutboxAction(String username) throws IOException, ClassNotFoundException {
+    System.out.println("[handleOutboxAction] body arrived is: " + username);
+    ArrayList<Email> outbox = MailHandler.loadOutBox(username);
+    Communication response = new Communication("outbox",outbox); //FIXME here we should load the outbox, note body is the username
+    out.writeObject(response);
   }
 
   private void handleSendAction(UserList userList, Email mail) throws IOException, ClassNotFoundException {

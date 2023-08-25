@@ -81,8 +81,11 @@ public class Mail implements Serializable {
     receivers.set(FXCollections.observableArrayList(list));
   }
 
+
+  /*
+  *@brief: using a regex to identify a mail
+  */
   private boolean isValidEmail(String email) {
-    // regex to identify a mail
     Matcher m = Pattern.compile("[a-zA-Z0-9_.+-]+@[a-zA-Z0-9_.+-]+\\.[a-zA-Z0-9-.]+").matcher(email);
     return m.matches();
   }

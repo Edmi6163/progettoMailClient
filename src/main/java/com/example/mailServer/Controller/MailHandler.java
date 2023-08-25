@@ -99,7 +99,8 @@ public class MailHandler {
         inbox.add((Email) input.readObject());
         input.close();
         file.close();
-      }*//*
+      }*/
+/*
 
       for (File f : Objects.requireNonNull(dir.listFiles())) {
         try (FileInputStream file = new FileInputStream(f);
@@ -124,8 +125,9 @@ public class MailHandler {
 */
 
   /*
-  FIXME inbox related problems
+  FIXME inbox related problems, the inbox returned is always empty so the response for client is always empty
    */
+/*
   public synchronized static ArrayList<Email> loadInBox(String user) {
     System.out.println("[loadInBox] loading " + user + "'s inbox");
     ArrayList<Email> inbox = new ArrayList<>();
@@ -142,6 +144,103 @@ public class MailHandler {
     } catch (Exception e) {
       e.printStackTrace();
     }
+    return inbox;
+  }
+*/
+/*
+  public synchronized static ArrayList<Email> loadInBox(String user) {
+    System.out.println("[loadInBox] loading " + user + "'s inbox");
+    ArrayList<Email> inbox = new ArrayList<>();
+    System.out.println("just before try");
+    try {
+      System.out.println("just after try");
+      File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "in");
+      if (dir.exists() && dir.isDirectory()) {
+        System.out.println("Directory exists and is a directory: " + dir);
+        for (File f : Objects.requireNonNull(dir.listFiles())) {
+          try (FileInputStream file = new FileInputStream(f);
+               ObjectInputStream input = new ObjectInputStream(file)) {
+            Email email = (Email) input.readObject();
+            inbox.add(email);
+            System.out.println("[loadInBox] inbox with add " + inbox);
+          } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+          }
+        }
+      } else {
+        System.out.println("Directory does not exist or is not a directory: " + dir);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return inbox;
+  }
+*/
+
+ /* public synchronized static ArrayList<Email> loadInBox(String user) {
+    System.out.println("[loadInBox] loading " + user + "'s inbox");
+    ArrayList<Email> inbox = new ArrayList<>();
+    System.out.println("just before try");
+    try {
+      System.out.println("just after try");
+      File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "in");
+      if (dir.exists() && dir.isDirectory()) {
+        System.out.println("Directory exists and is a directory: " + dir);
+        for (File f : Objects.requireNonNull(dir.listFiles())) {
+          try (FileInputStream file = new FileInputStream(f);
+               ObjectInputStream input = new ObjectInputStream(file)) {
+            try {
+              Email email = (Email) input.readObject();
+              inbox.add(email);
+              System.out.println("[loadInBox] inbox with add " + inbox);
+            } catch (EOFException e) {
+              // Handle EOFException here (print, log, or take appropriate action)
+              System.out.println("[loadInBox] Reached end of file unexpectedly: " + e.getMessage());
+            } catch (ClassNotFoundException | IOException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+      } else {
+        System.out.println("Directory does not exist or is not a directory: " + dir);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return inbox;
+  }
+*/
+
+  public synchronized static ArrayList<Email> loadInBox(String user) {
+    System.out.println("[loadInBox] loading " + user + "'s inbox");
+    ArrayList<Email> inbox = new ArrayList<>();
+    File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "in");
+
+    if (dir.exists() && dir.isDirectory()) {
+      System.out.println("Directory exists and is a directory: " + dir);
+
+      for (File textFile : Objects.requireNonNull(dir.listFiles())) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(textFile))) {
+          String line;
+          StringBuilder content = new StringBuilder();
+
+          while ((line = reader.readLine()) != null) {
+            content.append(line);
+          }
+
+          Email email = (Email) new ObjectInputStream(new ByteArrayInputStream(content.toString().getBytes())).readObject();
+          System.out.println("[loadInBox] email: " + email);
+          inbox.add(email);
+        } catch (IOException e) {
+          e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+					throw new RuntimeException(e);
+				}
+			}
+    } else {
+      System.out.println("Directory does not exist or is not a directory: " + dir);
+    }
+
     return inbox;
   }
 

@@ -9,6 +9,8 @@ import com.example.Transmission.InboxRequest;
 import com.example.Transmission.LoginRes;
 import com.example.mailClient.Model.User;
 
+import java.awt.*;
+
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 
 public class ClientController implements Serializable {
   private String username;
+  private TrayIcon trayIcon;
   private transient boolean serverStatus = false;
   private static Socket socket;
 
@@ -113,6 +116,25 @@ public class ClientController implements Serializable {
   // Platform.runLater(() -> loginController.noMailPopUp());
   // }
 
+
+  /*
+    * @brief: using the notification manager of the os to notify the user when a new mail arrives
+   */
+
+  private void notificationManager(String title, String message){
+    if(SystemTray.isSupported()){
+     SystemTray tray = SystemTray.getSystemTray();
+     trayIcon = new TrayIcon(Toolkit.getDefaultToolkit().getImage(" "), "Mail client");
+     try {
+       tray.add(trayIcon);
+     } catch (Exception e) {
+       e.printStackTrace();
+     }
+
+     trayIcon.displayMessage(title, message, TrayIcon.MessageType.INFO);
+    }
+  }
+
   /*
    * @brief: request inbox to server
    * FIXME inbox is not updated
@@ -120,7 +142,7 @@ public class ClientController implements Serializable {
   public void requestInfo() {
     try {
       if (!connectToSocket()) {
-        showErrorPopUp();
+        loginController.showErrorPopUp();
         return;
       }
       Communication request = new Communication("inbox", username);
@@ -131,22 +153,28 @@ public class ClientController implements Serializable {
         System.out.println("response is null");
         return;
       }
-
+      System.out.println("[requestInfo] communication response: " + response.getAction() + " " + response.getBody()); //FIXME here the response is null, so inbox isn't updated
       Object body = response.getBody();
       if (!(body instanceof ArrayList)) {
         System.out.println("response body is not an ArrayList");
         return;
       }
 
-      var res = (ArrayList<Email>) body;
+      ArrayList<Email> res = (ArrayList<Email>) body;
 
+      if(!res.isEmpty()){
+        notificationManager("New mail arrived","You have new mail");
+      }
 
       System.out.println("[requestInfo] res dimension is " + res.size());
+      System.out.println("[requestInfo] res is " + res.getClass());
       System.out.println("[requestInfo] request info returned: " + res);
 
 
 
       this.userModel.setInbox(res);
+
+
 
       closeSocketConnection();
     } catch (IOException e) {
@@ -247,9 +275,12 @@ public class ClientController implements Serializable {
       Communication response = (Communication) sendCommunicationToServer(delete);
 
       System.out.println(response);
+      closeSocketConnection();
 
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
+
+
 }

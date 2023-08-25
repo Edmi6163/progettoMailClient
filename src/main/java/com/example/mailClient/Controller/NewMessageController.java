@@ -99,11 +99,10 @@ public class NewMessageController {
 
   public void mailSendedFeedback() {
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-    alert.setTitle("Mail sent");
-    alert.setHeaderText("Mail sent to " + receiversField.getText());
-    alert.setContentText("Mail sent to " + receiversField.getText());
+    alert.setTitle("Mail is going to be sent");
+    alert.setHeaderText("Mail will be sent to " + receiversField.getText());
+    alert.setContentText("Mail will be  sent to " + receiversField.getText());
     alert.showAndWait();
-
   }
 
 
