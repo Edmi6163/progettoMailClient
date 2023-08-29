@@ -97,7 +97,7 @@ public class ServerHandler implements Runnable {
 
   }
 
-  private void handleLoginAction(String username) throws IOException {
+  private void handleLoginAction(String username) throws IOException, ClassNotFoundException {
     System.out.println("handleLoginAction");
 
     Set<String> set = userService.getUsernamesFromDirectory(username);
@@ -106,7 +106,7 @@ public class ServerHandler implements Runnable {
 
     log.setLog("User " + username + " logged in");
 
-    ArrayList<Email> inbox = MailHandler.loadInBox(username);
+    ArrayList<Email> inbox = MailHandler.loadInBox(username,incoming);
     log.setLog(username + "'s inbox loaded, size is " + inbox.size());
     ArrayList<Email> outbox = MailHandler.loadOutBox(username);
     log.setLog(username + "'s outbox loaded, size is " + outbox.size());
@@ -130,7 +130,7 @@ public class ServerHandler implements Runnable {
 
   private void handleInboxAction(String username) throws IOException, ClassNotFoundException {
     System.out.println("[handleInboxAction] username received: " + username);
-    ArrayList<Email> inbox = MailHandler.loadInBox(username);
+    ArrayList<Email> inbox = MailHandler.loadInBox(username,incoming);
     //print all the content in inbox
     for (Email email : inbox) {
       System.out.println("inbox contains: "  + email);

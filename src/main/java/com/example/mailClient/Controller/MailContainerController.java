@@ -143,10 +143,13 @@ public class MailContainerController {
     this.updateInboxEmails();
   }
 
+  /*
+  FIXME try to use the parametes inboxMailList
+   */
   private void updateInboxEmails() {
+    System.out.println("[upateInboxEmails] refreshing inbox");
     inTable.getItems().clear();
 
-    System.out.println("[upateInboxEmails] refresh inbox");
     this.userModel.getInbox().stream().forEach((inboxEmail) -> {
       emailUpdater.submit(() -> {
         String receivers = inboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining("; "));

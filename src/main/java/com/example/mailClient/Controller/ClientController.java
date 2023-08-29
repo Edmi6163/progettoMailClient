@@ -11,6 +11,8 @@ import com.example.mailClient.Model.User;
 
 import java.awt.*;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
@@ -140,6 +142,7 @@ public class ClientController implements Serializable {
    * FIXME inbox is not updated
    */
   public void requestInfo() {
+    System.out.println("[requestInfo] request info called");
     try {
       if (!connectToSocket()) {
         loginController.showErrorPopUp();
@@ -147,6 +150,7 @@ public class ClientController implements Serializable {
       }
       Communication request = new Communication("inbox", username);
 
+      System.out.println("[requestInfo] communication request: " + request.getAction() + " " + request.getBody());
       Communication response = sendCommunicationToServer(request);
 
       if (response == null) {
@@ -161,6 +165,7 @@ public class ClientController implements Serializable {
       }
 
       ArrayList<Email> res = (ArrayList<Email>) body;
+      ObservableList<Email> resList = FXCollections.observableList(res);
 
       if(!res.isEmpty()){
         notificationManager("New mail arrived","You have new mail");
@@ -172,7 +177,7 @@ public class ClientController implements Serializable {
 
 
 
-      this.userModel.setInbox(res);
+      this.userModel.setInbox(resList);
 
 
 
@@ -205,7 +210,7 @@ public class ClientController implements Serializable {
 
       LoginRes arrayLists = (LoginRes) response.getBody();
 
-      ArrayList<Email> inbox = arrayLists.getArrayLists().get(0);
+      ObservableList<Email> inbox = FXCollections.observableArrayList(arrayLists.getArrayLists().get(0));
       ArrayList<Email> outbox = arrayLists.getArrayLists().get(1);
 
       this.userModel.setInbox(inbox);

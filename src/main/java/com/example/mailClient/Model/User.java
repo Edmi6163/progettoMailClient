@@ -1,18 +1,20 @@
 package com.example.mailClient.Model;
 
 import com.example.Transmission.Email;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class User {
   private String username;
-  private List<Email> inbox;
+  private ObservableList<Email> inbox;
   private List<Email> outbox;
 
   public User(String username) {
     this.username = username;
-    this.inbox = new ArrayList<Email>();
+    this.inbox = FXCollections.observableList(new ArrayList<>());
     this.outbox = new ArrayList<Email>();
   }
 
@@ -28,7 +30,7 @@ public class User {
     return inbox;
   }
 
-  public void setInbox(List<Email> inbox) {
+  public void setInbox(ObservableList<Email> inbox) {
     this.inbox = inbox;
   }
 

@@ -3,6 +3,7 @@ package com.example.mailServer.Controller;
 import com.example.Transmission.Email;
 
 import java.io.*;
+import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -63,7 +64,6 @@ public class MailHandler {
     ArrayList<Email> out = new ArrayList<>();
     ObjectInputStream output = null;
     FileInputStream files = null;
-    System.out.println("[loadOutBox] already raised exc");
     try {
       File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "out");
       for (File f : Objects.requireNonNull(dir.listFiles())) {
@@ -211,7 +211,7 @@ public class MailHandler {
   }
 */
 
-  public synchronized static ArrayList<Email> loadInBox(String user) {
+  /*public synchronized static ArrayList<Email> loadInBox(String user) {
     System.out.println("[loadInBox] loading " + user + "'s inbox");
     ArrayList<Email> inbox = new ArrayList<>();
     File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "in");
@@ -242,7 +242,102 @@ public class MailHandler {
     }
 
     return inbox;
+  }*/
+/*
+  public synchronized static ArrayList<Email> loadInBox(String user)  {
+    System.out.println("[loadInbox] loading all emails for user: " + user);
+    ArrayList<Email> allEmails = new ArrayList<>();
+    File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "in");
+
+    if (dir.exists() && dir.isDirectory()) {
+      System.out.println("Directory exists and is a directory: " + dir);
+
+      for (File textFile : Objects.requireNonNull(dir.listFiles())) {
+        System.out.println("[loadInbox] already raised exc");
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(textFile))) {
+          String line;
+          StringBuilder content = new StringBuilder();
+
+          while ((line = reader.readLine()) != null) {
+            content.append(line);
+          }
+
+          System.out.println("[loadInbox] content read from file: " + content.toString()); // Debug output
+          Email email = (Email) new ObjectInputStream(new ByteArrayInputStream(content.toString().getBytes())).readObject();
+          System.out.println("[loadInbox] email: " + email);
+          allEmails.add(email);
+        } catch (IOException e) {
+          e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+          throw new RuntimeException(e);
+        }
+      }
+    } else {
+      System.out.println("Directory does not exist or is not a directory: " + dir);
+    }
+    for (Email email : allEmails) {
+      System.out.println("allEmails contains: "  + email);
+    }
+    return allEmails;
   }
+*/
+
+  public synchronized static ArrayList<Email> loadInBox(String user,Socket socket) {
+    System.out.println("[loadInBoxAndSendOverSocket] loading all emails for user: " + user);
+    ArrayList<Email> allEmails = new ArrayList<>();
+    File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "in");
+
+    if (dir.exists() && dir.isDirectory()) {
+      System.out.println("Directory exists and is a directory: " + dir);
+
+      try {
+        ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+
+        for (File textFile : Objects.requireNonNull(dir.listFiles())) {
+          System.out.println("[loadInBoxAndSendOverSocket] processing file: " + textFile.getName());
+
+          try (BufferedReader reader = new BufferedReader(new FileReader(textFile))) {
+            String line;
+            StringBuilder content = new StringBuilder();
+
+            while ((line = reader.readLine()) != null) {
+              content.append(line);
+            }
+
+            Email email = (Email) new ObjectInputStream(new ByteArrayInputStream(content.toString().getBytes())).readObject();
+            System.out.println("[loadInBoxAndSendOverSocket] email: " + email);
+            allEmails.add(email);
+
+            // Serialize and send the content over the socket
+            outputStream.writeObject(content.toString());
+          } catch (IOException e) {
+            e.printStackTrace();
+          } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+          }
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    } else {
+      System.out.println("Directory does not exist or is not a directory: " + dir);
+    }
+
+    // Note: Sending completion signal, assuming Email objects are all that's sent
+    try {
+      ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+      outputStream.writeObject(null);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    for (Email email : allEmails) {
+      System.out.println("allEmails contains: " + email);
+    }
+    return allEmails;
+  }
+
 
 
   /*
