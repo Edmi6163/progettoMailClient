@@ -209,7 +209,7 @@ public class ClientController implements Serializable {
 
 
 
-      Communication response = (Communication) sendCommunicationToServer(request);
+      Communication response = sendCommunicationToServer(request);
 
       System.out.println("[login] communication response: " + response.getBody());
       System.out.println("[login] communication response body: " + response.getAction());
@@ -219,8 +219,8 @@ public class ClientController implements Serializable {
       ArrayList<Email> inbox = arrayLists.getArrayLists().get(0);
       ArrayList<Email> outbox = arrayLists.getArrayLists().get(1);
 
-//      this.userModel.setInbox(inbox);
-//      this.userModel.setOutbox(outbox);
+      this.userModel.setInbox(inbox);
+      this.userModel.setOutbox(outbox);
 
       closeSocketConnection();
 

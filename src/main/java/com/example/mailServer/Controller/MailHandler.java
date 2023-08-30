@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class MailHandler {
+
   public synchronized static boolean save(Email mail) {
-    Email newMail = null;
     try {
       Date date = new Date();
       long millis = date.getTime();
@@ -29,10 +29,10 @@ public class MailHandler {
       System.out.println("[save] file: " + file);
 
       FileOutputStream fileOutputStream = new FileOutputStream(file);
-      System.out.println("[save] fileOutputStream: " + fileOutputStream);
 
-      newMail = new Email(mail.getSender(), mail.getReceivers(), mail.getSubject(), mail.getText());
-      System.out.println("[save] newMail: " + newMail);
+      // Convert the email object to a string using toString() and write it to the file
+      String emailContent = mail.toString();
+      fileOutputStream.write(emailContent.getBytes());
 
       fileOutputStream.close();
 
@@ -45,6 +45,9 @@ public class MailHandler {
         file = new File(receiverDir, millis + ".txt");
 
         fileOutputStream = new FileOutputStream(file);
+
+        // Write the email content to the file
+        fileOutputStream.write(emailContent.getBytes());
 
         fileOutputStream.close();
       }
@@ -87,7 +90,7 @@ public class MailHandler {
 
 */
 public synchronized static ArrayList<Email> loadOutBox(String user, Socket socket) {
-  System.out.println("[loadOutBox] user: " + user);
+  /*System.out.println("[loadOutBox] user: " + user);
   ArrayList<Email> out = new ArrayList<>();
 
   File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/out");
@@ -127,14 +130,47 @@ public synchronized static ArrayList<Email> loadOutBox(String user, Socket socke
 		}
 	} else {
     System.out.println("Directory does not exist or is not a directory: " + dir);
-  }
+  }*/
 
   // Note: Sending completion signal, assuming Email objects are all that's sent
-  try {
+  /*try {
     ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
     outputStream.writeObject(null);
   } catch (IOException e) {
     e.printStackTrace();
+  }*/
+
+//  return out;
+  ArrayList<Email> out = new ArrayList<>();
+
+  File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/out");
+
+  if (dir.exists() && dir.isDirectory()) {
+    try {
+      ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+      ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+
+      for (File textFile : Objects.requireNonNull(dir.listFiles())) {
+        try (ObjectInputStream fileInputStream = new ObjectInputStream(new FileInputStream(textFile))) {
+          Email email = (Email) fileInputStream.readObject();
+          out.add(email);
+
+          // Send the email object over the socket
+          outputStream.writeObject(email);
+
+          // Receive any acknowledgement or response from the server
+          Object response = inputStream.readObject();
+          System.out.println("[loadOutBox] Server response: " + response);
+        } catch (IOException | ClassNotFoundException e) {
+          e.printStackTrace();
+        }
+      }
+
+      // Signal the end of data transmission
+      outputStream.writeObject(null);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   return out;
@@ -340,7 +376,7 @@ public synchronized static ArrayList<Email> loadOutBox(String user, Socket socke
 */
 
   public synchronized static ArrayList<Email> loadInBox(String user,Socket socket) {
-    System.out.println("[loadInBox] loading all emails for user: " + user);
+    /*System.out.println("[loadInBox] loading all emails for user: " + user);
     ArrayList<Email> allEmails = new ArrayList<>();
     File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "in");
 
@@ -372,7 +408,7 @@ public synchronized static ArrayList<Email> loadOutBox(String user, Socket socke
           } catch (EOFException e) {
             System.out.println("[loadInBox] Reached end of file unexpectedly: " + e.getMessage());
           } catch (ClassNotFoundException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
           }
         }
       } catch (IOException e) {
@@ -393,6 +429,38 @@ public synchronized static ArrayList<Email> loadOutBox(String user, Socket socke
     for (Email email : allEmails) {
       System.out.println("allEmails contains: " + email);
     }
+    return allEmails;*/
+    ArrayList<Email> allEmails = new ArrayList<>();
+    File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/in");
+
+    if (dir.exists() && dir.isDirectory()) {
+      try {
+        ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+        ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+
+        for (File textFile : Objects.requireNonNull(dir.listFiles())) {
+          try (ObjectInputStream fileInputStream = new ObjectInputStream(new FileInputStream(textFile))) {
+            Email email = (Email) fileInputStream.readObject();
+            allEmails.add(email);
+
+            // Send the email object over the socket
+            outputStream.writeObject(email);
+
+            // Receive any acknowledgement or response from the server
+            Object response = inputStream.readObject();
+            System.out.println("[loadInBox] Server response: " + response);
+          } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+          }
+        }
+
+        // Signal the end of data transmission
+        outputStream.writeObject(null);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
     return allEmails;
   }
 
@@ -403,17 +471,14 @@ public synchronized static ArrayList<Email> loadOutBox(String user, Socket socke
     using a regex to remove the brackets from the username
    */
   public static synchronized void delete(String user,Email mail) {
-    System.out.println("user arrive as: " + user);
-
-    String userWithoutBracket = user.replace("\\[|\\]", "");
+    String userWithoutBracket = user.replace("[", "").replace("]", "");
     try {
       Files.delete(Paths.get(
-          "src/main/java/com/example/mailServer/file/" + userWithoutBracket + "/out/" + mail.getTimestamp() + ".txt"));
+        "src/main/java/com/example/mailServer/file/" + userWithoutBracket + "/out/" + mail.getTimestamp() + ".txt"));
       Files.delete(Paths.get(
-          "src/main/java/com/example/mailServer/file/" + userWithoutBracket + "/in/" + mail.getTimestamp() + ".txt"));
+        "src/main/java/com/example/mailServer/file/" + userWithoutBracket + "/in/" + mail.getTimestamp() + ".txt"));
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
-
 }
