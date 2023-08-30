@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2377a5de-9e43-4dcf-9ac1-a86384a20d0c" name="Changes" comment="new function for notification ,new debug info for THE problem">
+    <list default="true" id="2377a5de-9e43-4dcf-9ac1-a86384a20d0c" name="Changes" comment="now the file in in folder are processed ,but it give some error here and there">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/ClientController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/MailContainerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/MailContainerController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Model/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/MailHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/MailHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/ServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/ServerHandler.java" afterDir="false" />
@@ -246,7 +245,8 @@
       <workItem from="1693142831372" duration="2448000" />
       <workItem from="1693219250404" duration="3198000" />
       <workItem from="1693247789358" duration="800000" />
-      <workItem from="1693301079241" duration="2573000" />
+      <workItem from="1693301079241" duration="12814000" />
+      <workItem from="1693385916065" duration="1340000" />
     </task>
     <task id="LOCAL-00001" summary="very small changes">
       <created>1683894254514</created>
@@ -479,7 +479,15 @@
       <option name="project" value="LOCAL" />
       <updated>1688315480089</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="now the file in in folder are processed ,but it give some error here and there">
+      <option name="closed" value="true" />
+      <created>1693303903271</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1693303903271</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -497,7 +505,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="small changes trying to send an email" />
     <MESSAGE value="log &quot;a mail is sent&quot; :DDD" />
     <MESSAGE value="added check if mail exist or not" />
     <MESSAGE value="pop up if server is offline working :)" />
@@ -522,7 +529,8 @@
     <MESSAGE value="button reply, forward and reply all now works" />
     <MESSAGE value=" clean up with prettier comment, implemented multiple receivers, mail are not appearing in other inbox" />
     <MESSAGE value="corrected handleOk synchronized," />
-    <option name="LAST_COMMIT_MESSAGE" value="corrected handleOk synchronized," />
+    <MESSAGE value="now the file in in folder are processed ,but it give some error here and there" />
+    <option name="LAST_COMMIT_MESSAGE" value="now the file in in folder are processed ,but it give some error here and there" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

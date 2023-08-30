@@ -59,6 +59,7 @@ public class MailHandler {
 
 
 
+/*
   public synchronized static ArrayList<Email> loadOutBox(String user) {
     System.out.println("[loadOutBox] user: " + user);
     ArrayList<Email> out = new ArrayList<>();
@@ -83,6 +84,61 @@ public class MailHandler {
     }
     return out;
   }
+
+*/
+public synchronized static ArrayList<Email> loadOutBox(String user, Socket socket) {
+  System.out.println("[loadOutBox] user: " + user);
+  ArrayList<Email> out = new ArrayList<>();
+
+  File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/out");
+
+  if (dir.exists() && dir.isDirectory()) {
+    System.out.println("Directory exists and is a directory: " + dir);
+
+    try {
+      ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+
+      for (File textFile : Objects.requireNonNull(dir.listFiles())) {
+        System.out.println("[loadOutBox] processing file: " + textFile.getName());
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(textFile))) {
+          String line;
+          StringBuilder content = new StringBuilder();
+
+          while ((line = reader.readLine()) != null) {
+            content.append(line);
+          }
+
+          System.out.println("[loadOutBox] file : " + content.toString()); // Debug output
+          Email email = (Email) new ObjectInputStream(new ByteArrayInputStream(content.toString().getBytes())).readObject();
+          System.out.println("[loadOutBox] email: " + email);
+          out.add(email);
+
+          // Serialize and send the content over the socket
+          outputStream.writeObject(content.toString());
+        } catch (IOException | ClassNotFoundException e) {
+          e.printStackTrace();
+        }
+      }
+    } catch (EOFException e) {
+      System.out.println("[loadOutBox] Reached end of file unexpectedly: " + e.getMessage());
+    } catch (IOException e) {
+			e.printStackTrace();
+		}
+	} else {
+    System.out.println("Directory does not exist or is not a directory: " + dir);
+  }
+
+  // Note: Sending completion signal, assuming Email objects are all that's sent
+  try {
+    ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+    outputStream.writeObject(null);
+  } catch (IOException e) {
+    e.printStackTrace();
+  }
+
+  return out;
+}
 
 /*
   public synchronized static ArrayList<Email> loadInBox(String user) {
@@ -284,7 +340,7 @@ public class MailHandler {
 */
 
   public synchronized static ArrayList<Email> loadInBox(String user,Socket socket) {
-    System.out.println("[loadInBoxAndSendOverSocket] loading all emails for user: " + user);
+    System.out.println("[loadInBox] loading all emails for user: " + user);
     ArrayList<Email> allEmails = new ArrayList<>();
     File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "in");
 
@@ -295,7 +351,7 @@ public class MailHandler {
         ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
 
         for (File textFile : Objects.requireNonNull(dir.listFiles())) {
-          System.out.println("[loadInBoxAndSendOverSocket] processing file: " + textFile.getName());
+          System.out.println("[loadInBox] processing file: " + textFile.getName());
 
           try (BufferedReader reader = new BufferedReader(new FileReader(textFile))) {
             String line;
@@ -303,17 +359,19 @@ public class MailHandler {
 
             while ((line = reader.readLine()) != null) {
               content.append(line);
+
+              System.out.println("[loadInBox] content read from file: " + content.toString()); // Debug output
             }
 
             Email email = (Email) new ObjectInputStream(new ByteArrayInputStream(content.toString().getBytes())).readObject();
-            System.out.println("[loadInBoxAndSendOverSocket] email: " + email);
+            System.out.println("[loadInBox] email: " + email);
             allEmails.add(email);
 
             // Serialize and send the content over the socket
             outputStream.writeObject(content.toString());
-          } catch (IOException e) {
-            e.printStackTrace();
-          } catch (ClassNotFoundException e) {
+          } catch (EOFException e) {
+            System.out.println("[loadInBox] Reached end of file unexpectedly: " + e.getMessage());
+          } catch (ClassNotFoundException | IOException e) {
             throw new RuntimeException(e);
           }
         }

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class User {
   private String username;
-  private ObservableList<Email> inbox;
+  private List<Email> inbox;
   private List<Email> outbox;
 
   public User(String username) {
@@ -30,7 +30,7 @@ public class User {
     return inbox;
   }
 
-  public void setInbox(ObservableList<Email> inbox) {
+  public void setInbox(List<Email> inbox) {
     this.inbox = inbox;
   }
 

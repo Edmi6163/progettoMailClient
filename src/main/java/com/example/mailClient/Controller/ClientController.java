@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class ClientController implements Serializable {
   private String username;
   private TrayIcon trayIcon;
-  private transient boolean serverStatus = false;
+  private  boolean serverStatus = false;
   private static Socket socket;
 
   private User userModel;
@@ -78,6 +78,7 @@ public class ClientController implements Serializable {
 
   /*
     * @brief: send information to server through Communication object and socket
+    * FIXME plz
    */
   private static Communication sendCommunicationToServer(Communication c) {
     System.out.println("sending communication to server: " + c.getAction() + " " + c.getBody());
@@ -89,7 +90,9 @@ public class ClientController implements Serializable {
       out.writeObject(c);
       out.flush();
 
+
       Communication response = (Communication) in.readObject();
+
       System.out.println("function sendCommunicationToServer returned: " + response.getClass().getSimpleName() + " " + response);
 
       System.out.println("[sendCommunicationToServer] response: " + response.getAction() + " " + response.getBody()); //FIXME here the response is null, so inbox isn't updated
@@ -100,7 +103,7 @@ public class ClientController implements Serializable {
       e.printStackTrace();
       return null;
     }
-  }
+	}
 
   /*
   public String getMaxTimeStamp(List<Mail> inbox) {
@@ -151,7 +154,7 @@ public class ClientController implements Serializable {
       Communication request = new Communication("inbox", username);
 
       System.out.println("[requestInfo] communication request: " + request.getAction() + " " + request.getBody());
-      Communication response = sendCommunicationToServer(request);
+      Communication response = (Communication) sendCommunicationToServer(request);
 
       if (response == null) {
         System.out.println("response is null");
@@ -177,7 +180,8 @@ public class ClientController implements Serializable {
 
 
 
-      this.userModel.setInbox(resList);
+//      this.userModel.setInbox(resList);
+
 
 
 
@@ -200,21 +204,23 @@ public class ClientController implements Serializable {
       }
 
       Communication request = new Communication("login", username);
-      System.out.println("communication request: " + request.getAction());
-      System.out.println("communication request body: " + request.getBody());
+      System.out.println("[login] communication request: " + request.getAction());
+      System.out.println("[login] communication request body: " + request.getBody());
 
-      Communication response = sendCommunicationToServer(request);
 
-      System.out.println("communication response: " + response.getBody());
-      System.out.println("communication response body: " + response.getAction());
+
+      Communication response = (Communication) sendCommunicationToServer(request);
+
+      System.out.println("[login] communication response: " + response.getBody());
+      System.out.println("[login] communication response body: " + response.getAction());
 
       LoginRes arrayLists = (LoginRes) response.getBody();
 
-      ObservableList<Email> inbox = FXCollections.observableArrayList(arrayLists.getArrayLists().get(0));
+      ArrayList<Email> inbox = arrayLists.getArrayLists().get(0);
       ArrayList<Email> outbox = arrayLists.getArrayLists().get(1);
 
-      this.userModel.setInbox(inbox);
-      this.userModel.setOutbox(outbox);
+//      this.userModel.setInbox(inbox);
+//      this.userModel.setOutbox(outbox);
 
       closeSocketConnection();
 
@@ -236,7 +242,7 @@ public class ClientController implements Serializable {
       System.out.println(mail);
 
       Communication sendMail = new Communication("send", mail);
-      Communication response = sendCommunicationToServer(sendMail);
+      Communication response = (Communication) sendCommunicationToServer(sendMail);
 
       System.out.println("[send mail CC] mail written to server\n" + mail.toString());
 
