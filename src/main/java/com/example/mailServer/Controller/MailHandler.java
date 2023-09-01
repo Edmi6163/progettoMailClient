@@ -39,14 +39,15 @@ public class MailHandler {
       ObjectOutputStream fileOutputStream = new ObjectOutputStream(new FileOutputStream(file));
 
       // Convert the email object to a string using toString() and write it to the file
-      String emailContent = mail.toString();
-      fileOutputStream.writeObject(emailContent.getBytes());
+//      String emailContent = mail.toString();
+//      fileOutputStream.writeObject(emailContent.getBytes());
 
+      fileOutputStream.writeObject(mail);
       fileOutputStream.close();
 
       for (String r : receivers) {
         // Create the directory for the receiver just in case it doesn't exist
-        File receiverDir = new File("src/main/java/com/example/mailServer/file/" + r + "/in/");
+        File receiverDir = new File("./src/main/java/com/example/mailServer/file/" + r + "/in/");
         System.out.println("[save] receiverDir: " + receiverDir);
         receiverDir.mkdirs();
 
@@ -55,7 +56,7 @@ public class MailHandler {
         fileOutputStream = new ObjectOutputStream(new FileOutputStream(file));
 
         // Write the email content to the file
-        fileOutputStream.writeObject(emailContent.getBytes());
+        fileOutputStream.writeObject(mail);
 
         fileOutputStream.close();
       }
@@ -97,7 +98,7 @@ public synchronized ArrayList<Email> loadOutBox(String user) {
       e.printStackTrace();
     }
   }
-  
+
   return out;
 }
 
@@ -112,18 +113,19 @@ public synchronized ArrayList<Email> loadOutBox(String user) {
 
     if (dir.exists() && dir.isDirectory()) {
       //try {
-
         for (File textFile : Objects.requireNonNull(dir.listFiles())) {
           try (ObjectInputStream fileInputStream = new ObjectInputStream(new FileInputStream(textFile))) {
             Email email = (Email) fileInputStream.readObject();
             allEmails.add(email);
 
-            // Send the email object over the socket
-            outputStream.writeObject(email);
+            // Following code not needed, we just assemble the ArrayList and the other method sends it
 
-            // Receive any acknowledgement or response from the server
-            Object response = inputStream.readObject();
-            System.out.println("[loadInBox] Server response: " + response);
+            // Send the email object over the socket
+            //outputStream.writeObject(email);
+
+            // Receive any acknowledgement or response from the client
+            //Object response = inputStream.readObject();
+            //System.out.println("[loadInBox] Server response: " + response);
           } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
           }
