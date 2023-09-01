@@ -1,1 +1,0 @@
-Email{id='848efd1e-24c4-47d4-9f0e-d9b6aa598472', sender='francesco@javamail.it', receivers=[francesco@javamail.it], subject='test', text='test', timestamp=2023-09-01T12:02:42.637450524, bin=true}

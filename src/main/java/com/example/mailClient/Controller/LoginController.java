@@ -59,6 +59,8 @@ public class LoginController {
 			cc = new ClientController(user);
 			cc.login();
 
+			// we should make a call to load mail from server after login
+
 			startServerCheckTimer();
 
 			showMailContainer();

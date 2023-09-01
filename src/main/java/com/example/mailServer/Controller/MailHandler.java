@@ -36,11 +36,11 @@ public class MailHandler {
       File file = new File(senderDir, millis + ".txt");
       System.out.println("[save] file: " + file);
 
-      FileOutputStream fileOutputStream = new FileOutputStream(file);
+      ObjectOutputStream fileOutputStream = new ObjectOutputStream(new FileOutputStream(file));
 
       // Convert the email object to a string using toString() and write it to the file
       String emailContent = mail.toString();
-      fileOutputStream.write(emailContent.getBytes());
+      fileOutputStream.writeObject(emailContent.getBytes());
 
       fileOutputStream.close();
 
@@ -52,10 +52,10 @@ public class MailHandler {
 
         file = new File(receiverDir, millis + ".txt");
 
-        fileOutputStream = new FileOutputStream(file);
+        fileOutputStream = new ObjectOutputStream(new FileOutputStream(file));
 
         // Write the email content to the file
-        fileOutputStream.write(emailContent.getBytes());
+        fileOutputStream.writeObject(emailContent.getBytes());
 
         fileOutputStream.close();
       }
@@ -440,7 +440,7 @@ public synchronized ArrayList<Email> loadOutBox(String user, Socket socket) {
     File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/in");
 
     if (dir.exists() && dir.isDirectory()) {
-      try {
+      //try {
 
         for (File textFile : Objects.requireNonNull(dir.listFiles())) {
           try (ObjectInputStream fileInputStream = new ObjectInputStream(new FileInputStream(textFile))) {
@@ -459,10 +459,12 @@ public synchronized ArrayList<Email> loadOutBox(String user, Socket socket) {
         }
 
         // Signal the end of data transmission
-        outputStream.writeObject(null);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+        // TODO: reimplement handling the exception client side
+        //outputStream.writeObject(null);
+
+//      } catch (IOException e) {
+//        e.printStackTrace();
+//      }
     }
 
     return allEmails;

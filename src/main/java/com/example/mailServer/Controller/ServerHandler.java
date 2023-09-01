@@ -8,6 +8,7 @@ import com.example.mailServer.Model.UserService;
 import com.example.mailServer.Model.Mail;
 import com.example.mailServer.Model.UserList;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -74,6 +75,8 @@ public class ServerHandler implements Runnable {
 
         } catch (ClassNotFoundException e) {
           throw new RuntimeException(e);
+        } catch (EOFException xcpt) {
+          System.out.println("NULL - end of requests");
         }
 
       } finally {
@@ -173,6 +176,7 @@ public class ServerHandler implements Runnable {
       // log(mail.getSender() + " sent an email to " + mail.getReceiversString());
       log.setLog(mail.getSender() + " sent an email to " + mail.getReceivers());
       System.out.println(mail.getSender() + " sent an email to " + mail.getReceivers());
+      //FIXME: mail.getReceivers() is empty after for loop
       mail.setBin(true);
 
       if (!mailHandler.save(mail)) {
