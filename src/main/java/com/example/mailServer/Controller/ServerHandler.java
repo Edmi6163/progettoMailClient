@@ -43,7 +43,7 @@ public class ServerHandler implements Runnable {
   public UserList getUserList() {
     UserList userList = new UserList();
     userList.addUser("francesco@javamail.it");
-    userList.addUser("mauro@javamail.it");
+    userList.addUser("paolo@javamail.it");
     userList.addUser("something@javamail.it");
     return userList;
   }

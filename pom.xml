@@ -39,10 +39,11 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>me.xdrop</groupId>
-			<artifactId>fuzzywuzzy</artifactId>
-			<version>1.4.0</version>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>5.8.0</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>

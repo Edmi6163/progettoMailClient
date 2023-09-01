@@ -1,8 +1,8 @@
 module com.example.progettomailclient {
   requires javafx.controls;
   requires javafx.fxml;
-  requires me.xdrop.fuzzywuzzy;
 	requires java.desktop;
+	requires com.sun.jna;
 
 	opens com.example.mailServer to javafx.fxml;
   opens com.example.mailServer.Controller to javafx.fxml;

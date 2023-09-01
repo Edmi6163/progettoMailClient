@@ -1,7 +1,10 @@
 package com.example.mailClient.Controller;
 
 import com.example.mailClient.Model.Mail;
+
 import javafx.application.Platform;
+import com.sun.jna.*;
+
 
 import com.example.Transmission.Communication;
 import com.example.Transmission.Email;
@@ -126,25 +129,13 @@ public class ClientController implements Serializable {
     * @brief: using the notification manager of the os to notify the user when a new mail arrives
    */
 
-  private void notificationManager(String title, String message){
-    if(SystemTray.isSupported()){
-     SystemTray tray = SystemTray.getSystemTray();
-     trayIcon = new TrayIcon(Toolkit.getDefaultToolkit().getImage(" "), "Mail client");
-     try {
-       tray.add(trayIcon);
-     } catch (Exception e) {
-       e.printStackTrace();
-     }
-
-     trayIcon.displayMessage(title, message, TrayIcon.MessageType.INFO);
-    }
-  }
-
   /*
    * @brief: request inbox to server
    * FIXME inbox is not updated
    */
   public void requestInfo() {
+
+    int previousResSize = userModel.getInbox().size();
     System.out.println("[requestInfo] request info called");
     try {
       if (!connectToSocket()) {
@@ -170,13 +161,14 @@ public class ClientController implements Serializable {
       ArrayList<Email> res = (ArrayList<Email>) body;
       ObservableList<Email> resList = FXCollections.observableList(res);
 
-      if(!res.isEmpty()){
-        notificationManager("New mail arrived","You have new mail");
+
+      System.out.println("[requestInfo] res size is " + res.size() + "\n previous res size is " + previousResSize);
+      if(res.size() > previousResSize) {
+        notificationManager();
       }
 
-      System.out.println("[requestInfo] res dimension is " + res.size());
-      System.out.println("[requestInfo] res is " + res.getClass());
-      System.out.println("[requestInfo] request info returned: " + res);
+
+//      System.out.println("[requestInfo] res is " + res.getClass());
 
       this.userModel.setInbox(resList);
 
@@ -187,7 +179,20 @@ public class ClientController implements Serializable {
 
 	}
 
+  /*
+  @brief: send a notification using jna library on linux
+   */
+  public void notificationManager(){
+    String[] command = {"notify-send", "new mail received", "check your inbox"};
 
+    try {
+      ProcessBuilder processBuilder = new ProcessBuilder(command);
+      Process process = processBuilder.start();
+      process.waitFor();
+    } catch (IOException | InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
   /*
    * @brief: send information to server through Communication object and socket
    */
