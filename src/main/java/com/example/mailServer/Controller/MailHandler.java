@@ -13,7 +13,15 @@ import java.util.Objects;
 
 public class MailHandler {
 
-  public synchronized static boolean save(Email mail) {
+  private ObjectOutputStream outputStream;
+  private ObjectInputStream inputStream;
+
+  public MailHandler(ObjectInputStream in, ObjectOutputStream out) {
+    inputStream = in;
+    outputStream = out;
+  }
+
+  public synchronized boolean save(Email mail) {
     try {
       Date date = new Date();
       long millis = date.getTime();
@@ -89,7 +97,7 @@ public class MailHandler {
   }
 
 */
-public synchronized static ArrayList<Email> loadOutBox(String user, Socket socket) {
+public synchronized ArrayList<Email> loadOutBox(String user, Socket socket) {
   /*System.out.println("[loadOutBox] user: " + user);
   ArrayList<Email> out = new ArrayList<>();
 
@@ -375,7 +383,7 @@ public synchronized static ArrayList<Email> loadOutBox(String user, Socket socke
   }
 */
 
-  public synchronized static ArrayList<Email> loadInBox(String user,Socket socket) {
+  public synchronized ArrayList<Email> loadInBox(String user,Socket socket) {
     /*System.out.println("[loadInBox] loading all emails for user: " + user);
     ArrayList<Email> allEmails = new ArrayList<>();
     File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/" + "in");
@@ -435,8 +443,6 @@ public synchronized static ArrayList<Email> loadOutBox(String user, Socket socke
 
     if (dir.exists() && dir.isDirectory()) {
       try {
-        ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-        ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 
         for (File textFile : Objects.requireNonNull(dir.listFiles())) {
           try (ObjectInputStream fileInputStream = new ObjectInputStream(new FileInputStream(textFile))) {
@@ -470,7 +476,7 @@ public synchronized static ArrayList<Email> loadOutBox(String user, Socket socke
     @brief: delete the selected mail in MailContainerController from the file system both in and out folder of the user
     using a regex to remove the brackets from the username
    */
-  public static synchronized void delete(String user,Email mail) {
+  public synchronized void delete(String user,Email mail) {
     String userWithoutBracket = user.replace("[", "").replace("]", "");
     try {
       Files.delete(Paths.get(

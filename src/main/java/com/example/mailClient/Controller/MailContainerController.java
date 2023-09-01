@@ -81,7 +81,7 @@ public class MailContainerController {
   ObservableList<Mail> outboxMailsList;
 
   private User userModel;
-  MailHandler mailHandler = new MailHandler();
+  //MailHandler mailHandler = new MailHandler();
 
   private ExecutorService mailUpdater;
 

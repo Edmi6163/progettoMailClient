@@ -88,7 +88,7 @@ public class ClientController implements Serializable {
         return null;
       }
       out.writeObject(c);
-      out.flush();
+//      out.flush();
 
 
       Communication response = (Communication) in.readObject();

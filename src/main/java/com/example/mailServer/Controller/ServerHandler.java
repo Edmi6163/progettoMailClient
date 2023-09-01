@@ -20,6 +20,7 @@ import java.util.Set;
 public class ServerHandler implements Runnable {
   private Socket incoming;
   public UserService userService;
+  private MailHandler mailHandler;
 
   LoggerModel log;
   ObjectOutputStream out;
@@ -29,6 +30,13 @@ public class ServerHandler implements Runnable {
     this.incoming = incoming;
     this.log = log;
     userService = new UserService();
+    try {
+      in = new ObjectInputStream(incoming.getInputStream());
+      out = new ObjectOutputStream(incoming.getOutputStream());
+      this.mailHandler = new MailHandler(in, out);
+    } catch (IOException xcpt) {
+      xcpt.printStackTrace();
+    }
   }
 
   public UserList getUserList() {
@@ -49,9 +57,6 @@ public class ServerHandler implements Runnable {
       try {
         UserList userList = this.getUserList();
         assert userList != null;
-
-        in = new ObjectInputStream(incoming.getInputStream());
-        out = new ObjectOutputStream(incoming.getOutputStream());
 
         try {
           Communication c = (Communication) in.readObject();
@@ -84,7 +89,7 @@ public class ServerHandler implements Runnable {
     try {
       System.out.println("***handleDeleteAction***");
 
-      MailHandler.delete(user,body);
+      mailHandler.delete(user,body);
 
       Communication response = new Communication("delete_ok", body);
 
@@ -133,7 +138,7 @@ public class ServerHandler implements Runnable {
 
   private void handleInboxAction(String username) throws IOException, ClassNotFoundException {
     System.out.println("[handleInboxAction] username received: " + username);
-    ArrayList<Email> inbox = MailHandler.loadInBox(username,incoming);
+    ArrayList<Email> inbox = mailHandler.loadInBox(username,incoming);
     //print all the content in inbox
     for (Email email : inbox) {
       System.out.println("inbox contains: "  + email);
@@ -144,7 +149,7 @@ public class ServerHandler implements Runnable {
 
   private void handleOutboxAction(String username) throws IOException, ClassNotFoundException {
     System.out.println("[handleOutboxAction] body arrived is: " + username);
-    ArrayList<Email> outbox = MailHandler.loadOutBox(username,incoming);
+    ArrayList<Email> outbox = mailHandler.loadOutBox(username,incoming);
     Communication response = new Communication("outbox",outbox); //FIXME here we should load the outbox, note body is the username
     out.writeObject(response);
   }
@@ -170,7 +175,7 @@ public class ServerHandler implements Runnable {
       System.out.println(mail.getSender() + " sent an email to " + mail.getReceivers());
       mail.setBin(true);
 
-      if (!MailHandler.save(mail)) {
+      if (!mailHandler.save(mail)) {
         Communication response = new Communication("send_not_ok", mail);
         out.writeObject(response);
         return;
