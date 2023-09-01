@@ -214,13 +214,13 @@ public class ClientController implements Serializable {
       System.out.println("[login] communication response: " + response.getBody());
       System.out.println("[login] communication response body: " + response.getAction());
 
-      LoginRes arrayLists = (LoginRes) response.getBody();
-
-      ArrayList<Email> inbox = arrayLists.getArrayLists().get(0);
-      ArrayList<Email> outbox = arrayLists.getArrayLists().get(1);
-
-      this.userModel.setInbox(inbox);
-      this.userModel.setOutbox(outbox);
+//      LoginRes arrayLists = (LoginRes) response.getBody();
+//
+//      ArrayList<Email> inbox = arrayLists.getArrayLists().get(0);
+//      ArrayList<Email> outbox = arrayLists.getArrayLists().get(1);
+//
+//      this.userModel.setInbox(inbox);
+//      this.userModel.setOutbox(outbox);
 
       closeSocketConnection();
 

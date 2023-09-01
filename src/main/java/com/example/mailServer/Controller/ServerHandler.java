@@ -106,20 +106,22 @@ public class ServerHandler implements Runnable {
 
     log.setLog("User " + username + " logged in");
 
-    ArrayList<Email> inbox = MailHandler.loadInBox(username,incoming);
-    log.setLog(username + "'s inbox loaded, size is " + inbox.size());
-    ArrayList<Email> outbox = MailHandler.loadOutBox(username,incoming);
-    log.setLog(username + "'s outbox loaded, size is " + outbox.size());
-    ArrayList<ArrayList<Email>> emails = new ArrayList<>();
-    emails.add(inbox);
-    emails.add(outbox);
+//    ArrayList<Email> inbox = MailHandler.loadInBox(username,incoming);
+//    log.setLog(username + "'s inbox loaded, size is " + inbox.size());
+//    ArrayList<Email> outbox = MailHandler.loadOutBox(username,incoming);
+//    log.setLog(username + "'s outbox loaded, size is " + outbox.size());
+//    ArrayList<ArrayList<Email>> emails = new ArrayList<>();
+//    emails.add(inbox);
+//    emails.add(outbox);
 
-    LoginRes responseBody = new LoginRes(emails);
-    Communication c = new Communication("loginRes", responseBody);
+//    LoginRes responseBody = new LoginRes(emails);
+//    Communication c = new Communication("loginRes", responseBody);
+
+    Communication c = new Communication("loginRes", new LoginRes());
 
     out.writeObject(c);
-    out.flush();
-    out.reset();
+//    out.flush();
+//    out.reset();
     System.out.println("Communication c: " + c.getAction() + " " + c.getBody().toString());
   }
 
