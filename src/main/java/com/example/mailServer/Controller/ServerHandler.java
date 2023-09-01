@@ -141,7 +141,7 @@ public class ServerHandler implements Runnable {
 
   private void handleInboxAction(String username) throws IOException, ClassNotFoundException {
     System.out.println("[handleInboxAction] username received: " + username);
-    ArrayList<Email> inbox = mailHandler.loadInBox(username,incoming);
+    ArrayList<Email> inbox = mailHandler.loadInBox(username);
     //print all the content in inbox
     for (Email email : inbox) {
       System.out.println("inbox contains: "  + email);
@@ -152,7 +152,7 @@ public class ServerHandler implements Runnable {
 
   private void handleOutboxAction(String username) throws IOException, ClassNotFoundException {
     System.out.println("[handleOutboxAction] body arrived is: " + username);
-    ArrayList<Email> outbox = mailHandler.loadOutBox(username,incoming);
+    ArrayList<Email> outbox = mailHandler.loadOutBox(username);
     Communication response = new Communication("outbox",outbox); //FIXME here we should load the outbox, note body is the username
     outputStream.writeObject(response);
   }
