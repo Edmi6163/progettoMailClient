@@ -16,9 +16,9 @@ public class MailHandler {
   private ObjectOutputStream outputStream;
   private ObjectInputStream inputStream;
 
-  public MailHandler(ObjectInputStream in, ObjectOutputStream out) {
-    inputStream = in;
-    outputStream = out;
+  public MailHandler(ObjectInputStream inputStream, ObjectOutputStream outputStream) {
+    this.inputStream = inputStream;
+    this.outputStream = outputStream;
   }
 
   public synchronized boolean save(Email mail) {
@@ -155,8 +155,6 @@ public synchronized ArrayList<Email> loadOutBox(String user, Socket socket) {
 
   if (dir.exists() && dir.isDirectory()) {
     try {
-      ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-      ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 
       for (File textFile : Objects.requireNonNull(dir.listFiles())) {
         try (ObjectInputStream fileInputStream = new ObjectInputStream(new FileInputStream(textFile))) {

@@ -23,17 +23,17 @@ public class ServerHandler implements Runnable {
   private MailHandler mailHandler;
 
   LoggerModel log;
-  ObjectOutputStream out;
-  ObjectInputStream in;
+  ObjectOutputStream outputStream;
+  ObjectInputStream inputStream;
 
   public ServerHandler(Socket incoming, LoggerModel log) {
     this.incoming = incoming;
     this.log = log;
     userService = new UserService();
     try {
-      in = new ObjectInputStream(incoming.getInputStream());
-      out = new ObjectOutputStream(incoming.getOutputStream());
-      this.mailHandler = new MailHandler(in, out);
+      inputStream = new ObjectInputStream(incoming.getInputStream());
+      outputStream = new ObjectOutputStream(incoming.getOutputStream());
+      this.mailHandler = new MailHandler(inputStream, outputStream);
     } catch (IOException xcpt) {
       xcpt.printStackTrace();
     }
@@ -59,7 +59,7 @@ public class ServerHandler implements Runnable {
         assert userList != null;
 
         try {
-          Communication c = (Communication) in.readObject();
+          Communication c = (Communication) inputStream.readObject();
           System.out.println("Body registered: " + c.getBody());
           System.out.println("Action registered: " + c.getAction());
           log.setLog("Action registered: " + c.getAction());
@@ -93,8 +93,8 @@ public class ServerHandler implements Runnable {
 
       Communication response = new Communication("delete_ok", body);
 
-      out.writeObject(response);
-      out.flush();
+      outputStream.writeObject(response);
+      outputStream.flush();
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -124,7 +124,7 @@ public class ServerHandler implements Runnable {
 
     Communication c = new Communication("loginRes", new LoginRes());
 
-    out.writeObject(c);
+    outputStream.writeObject(c);
 //    out.flush();
 //    out.reset();
     System.out.println("Communication c: " + c.getAction() + " " + c.getBody().toString());
@@ -144,14 +144,14 @@ public class ServerHandler implements Runnable {
       System.out.println("inbox contains: "  + email);
     } //FIXME this isn't printed because in loadinbox it raise the exception
     Communication response = new Communication("inbox", inbox);
-    out.writeObject(response);
+    outputStream.writeObject(response);
   }
 
   private void handleOutboxAction(String username) throws IOException, ClassNotFoundException {
     System.out.println("[handleOutboxAction] body arrived is: " + username);
     ArrayList<Email> outbox = mailHandler.loadOutBox(username,incoming);
     Communication response = new Communication("outbox",outbox); //FIXME here we should load the outbox, note body is the username
-    out.writeObject(response);
+    outputStream.writeObject(response);
   }
 
   private void handleSendAction(UserList userList, Email mail) throws IOException, ClassNotFoundException {
@@ -177,12 +177,12 @@ public class ServerHandler implements Runnable {
 
       if (!mailHandler.save(mail)) {
         Communication response = new Communication("send_not_ok", mail);
-        out.writeObject(response);
+        outputStream.writeObject(response);
         return;
       }
 
       Communication response = new Communication("send_ok", mail);
-      out.writeObject(response);
+      outputStream.writeObject(response);
     }
   }
 

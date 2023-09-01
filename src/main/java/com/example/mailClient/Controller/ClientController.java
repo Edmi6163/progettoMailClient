@@ -154,7 +154,7 @@ public class ClientController implements Serializable {
       Communication request = new Communication("inbox", username);
 
       System.out.println("[requestInfo] communication request: " + request.getAction() + " " + request.getBody());
-      Communication response = (Communication) sendCommunicationToServer(request);
+      Communication response = sendCommunicationToServer(request);
 
       if (response == null) {
         System.out.println("response is null");
@@ -178,12 +178,7 @@ public class ClientController implements Serializable {
       System.out.println("[requestInfo] res is " + res.getClass());
       System.out.println("[requestInfo] request info returned: " + res);
 
-
-
-//      this.userModel.setInbox(resList);
-
-
-
+      this.userModel.setInbox(resList);
 
       closeSocketConnection();
     } catch (IOException e) {
