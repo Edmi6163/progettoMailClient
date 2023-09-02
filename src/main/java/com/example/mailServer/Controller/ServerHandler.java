@@ -153,6 +153,9 @@ public class ServerHandler implements Runnable {
   private void handleOutboxAction(String username) throws IOException, ClassNotFoundException {
     System.out.println("[handleOutboxAction] body arrived is: " + username);
     ArrayList<Email> outbox = mailHandler.loadOutBox(username);
+    for (Email email : outbox) {
+      System.out.println("outbox contains: "  + email);
+    } //FIXME this isn't printed because in loadinbox it raise the exception
     Communication response = new Communication("outbox",outbox); //FIXME here we should load the outbox, note body is the username
     outputStream.writeObject(response);
   }

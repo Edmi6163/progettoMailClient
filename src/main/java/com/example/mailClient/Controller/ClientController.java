@@ -2,14 +2,9 @@ package com.example.mailClient.Controller;
 
 import com.example.mailClient.Model.Mail;
 
-import javafx.application.Platform;
-import com.sun.jna.*;
-
 
 import com.example.Transmission.Communication;
 import com.example.Transmission.Email;
-import com.example.Transmission.InboxRequest;
-import com.example.Transmission.LoginRes;
 import com.example.mailClient.Model.User;
 
 import java.awt.*;
@@ -22,7 +17,6 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class ClientController implements Serializable {
@@ -91,8 +85,6 @@ public class ClientController implements Serializable {
         return null;
       }
       out.writeObject(c);
-//      out.flush();
-
 
       Communication response = (Communication) in.readObject();
 
@@ -106,37 +98,12 @@ public class ClientController implements Serializable {
       e.printStackTrace();
       return null;
     }
-	}
-
-  /*
-  public String getMaxTimeStamp(List<Mail> inbox) {
-    long maxTimeStamp = 0;
-    for (Mail m : inbox) {
-      if (m.getMillis() > maxTimeStamp) {
-        maxTimeStamp = m.getMillis();
-      }
-    }
-    return " " + maxTimeStamp;
   }
-*/
 
-  // public void noMailPopUp() {
-  // Platform.runLater(() -> loginController.noMailPopUp());
-  // }
-
-
-  /*
-    * @brief: using the notification manager of the os to notify the user when a new mail arrives
-   */
-
-  /*
-   * @brief: request inbox to server
-   * FIXME inbox is not updated
-   */
-  public void requestInfo() {
+  public void requestInbox() {
 
     int previousResSize = userModel.getInbox().size();
-    System.out.println("[requestInfo] request info called");
+    System.out.println("[requestInbox] request inbox called");
     try {
       if (!connectToSocket()) {
         loginController.showErrorPopUp();
@@ -144,14 +111,14 @@ public class ClientController implements Serializable {
       }
       Communication request = new Communication("inbox", username);
 
-      System.out.println("[requestInfo] communication request: " + request.getAction() + " " + request.getBody());
+      System.out.println("[requestInbox] communication request: " + request.getAction() + " " + request.getBody());
       Communication response = sendCommunicationToServer(request);
 
       if (response == null) {
         System.out.println("response is null");
         return;
       }
-      System.out.println("[requestInfo] communication response: " + response.getAction() + " " + response.getBody()); //FIXME here the response is null, so inbox isn't updated
+      System.out.println("[requestInbox] communication response: " + response.getAction() + " " + response.getBody()); //FIXME here the response is null, so inbox isn't updated
       Object body = response.getBody();
       if (!(body instanceof ArrayList)) {
         System.out.println("response body is not an ArrayList");
@@ -161,23 +128,57 @@ public class ClientController implements Serializable {
       ArrayList<Email> res = (ArrayList<Email>) body;
       ObservableList<Email> resList = FXCollections.observableList(res);
 
-
-      System.out.println("[requestInfo] res size is " + res.size() + "\n previous res size is " + previousResSize);
+      System.out.println("[requestInbox] res size is " + res.size() + "\n previous res size is " + previousResSize);
       if(res.size() > previousResSize) {
         notificationManager();
       }
-
-
-//      System.out.println("[requestInfo] res is " + res.getClass());
 
       this.userModel.setInbox(resList);
 
       closeSocketConnection();
     } catch (IOException e) {
 			throw new RuntimeException(e);
-		}
+    }
+  }
 
-	}
+  public void requestOutbox() {
+
+    int previousResSize = userModel.getOutbox().size();
+    System.out.println("[requestInfo] request outbox called");
+    try {
+      if (!connectToSocket()) {
+        loginController.showErrorPopUp();
+        return;
+      }
+      Communication request = new Communication("outbox", username);
+
+      System.out.println("[requestOutbox] communication request: " + request.getAction() + " " + request.getBody());
+      Communication response = sendCommunicationToServer(request);
+
+      if (response == null) {
+        System.out.println("response is null");
+        return;
+      }
+      System.out.println("[requestOutbox] communication response: " + response.getAction() + " " + response.getBody()); //FIXME here the response is null, so inbox isn't updated
+      Object body = response.getBody();
+      if (!(body instanceof ArrayList)) {
+        System.out.println("response body is not an ArrayList");
+        return;
+      }
+
+      ArrayList<Email> res = (ArrayList<Email>) body;
+      ObservableList<Email> resList = FXCollections.observableList(res);
+
+//      System.out.println("[requestInfo] res is " + res.getClass());
+
+      this.userModel.setOutbox(resList);
+
+      closeSocketConnection();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+  }
 
   /*
   @brief: send a notification using jna library on linux
@@ -213,14 +214,6 @@ public class ClientController implements Serializable {
 
       System.out.println("[login] communication response: " + response.getBody());
       System.out.println("[login] communication response body: " + response.getAction());
-
-//      LoginRes arrayLists = (LoginRes) response.getBody();
-//
-//      ArrayList<Email> inbox = arrayLists.getArrayLists().get(0);
-//      ArrayList<Email> outbox = arrayLists.getArrayLists().get(1);
-//
-//      this.userModel.setInbox(inbox);
-//      this.userModel.setOutbox(outbox);
 
       closeSocketConnection();
 
@@ -292,6 +285,5 @@ public class ClientController implements Serializable {
       e.printStackTrace();
     }
   }
-
 
 }

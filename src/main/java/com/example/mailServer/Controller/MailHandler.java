@@ -74,7 +74,7 @@ public synchronized ArrayList<Email> loadOutBox(String user) {
   File dir = new File("src/main/java/com/example/mailServer/file/" + user + "/out");
 
   if (dir.exists() && dir.isDirectory()) {
-    try {
+//    try {
 
       for (File textFile : Objects.requireNonNull(dir.listFiles())) {
         try (ObjectInputStream fileInputStream = new ObjectInputStream(new FileInputStream(textFile))) {
@@ -82,30 +82,26 @@ public synchronized ArrayList<Email> loadOutBox(String user) {
           out.add(email);
 
           // Send the email object over the socket
-          outputStream.writeObject(email);
+//          outputStream.writeObject(email);
 
           // Receive any acknowledgement or response from the server
-          Object response = inputStream.readObject();
-          System.out.println("[loadOutBox] Server response: " + response);
+//          Object response = inputStream.readObject();
+//          System.out.println("[loadOutBox] Server response: " + response);
         } catch (IOException | ClassNotFoundException e) {
           e.printStackTrace();
         }
       }
 
       // Signal the end of data transmission
-      outputStream.writeObject(null);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+      // TODO: reimplement handling the exception client side
+//      outputStream.writeObject(null);
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//    }
   }
 
   return out;
 }
-
-  /*
-  FIXME inbox related problems, the inbox returned is always empty so the response for client is always empty
-   */
-
 
   public synchronized ArrayList<Email> loadInBox(String user) {
     ArrayList<Email> allEmails = new ArrayList<>();
@@ -118,14 +114,6 @@ public synchronized ArrayList<Email> loadOutBox(String user) {
             Email email = (Email) fileInputStream.readObject();
             allEmails.add(email);
 
-            // Following code not needed, we just assemble the ArrayList and the other method sends it
-
-            // Send the email object over the socket
-            //outputStream.writeObject(email);
-
-            // Receive any acknowledgement or response from the client
-            //Object response = inputStream.readObject();
-            //System.out.println("[loadInBox] Server response: " + response);
           } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
           }

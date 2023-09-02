@@ -2,7 +2,6 @@ package com.example.mailClient.Controller;
 
 import com.example.Transmission.Email;
 import com.example.mailClient.Model.User;
-import com.example.mailServer.Controller.MailHandler;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -109,8 +108,9 @@ public class MailContainerController {
       while (true) {
         try {
           Thread.sleep(5000);
-          Platform.runLater(() -> this.cc.requestInfo());
-          Platform.runLater(this::updateInboxEmails);
+//          Platform.runLater(() -> this.cc.requestInbox());
+//          Platform.runLater(() -> this.cc.requestOutbox());
+          Platform.runLater(this::updateAllEmails);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
@@ -163,12 +163,12 @@ public class MailContainerController {
   }
 
   private void updateOutboxEmails() {
-
+    System.out.println("[updateOutboxEmails] refreshing outbox");
     outTable.getItems().clear();
 
     this.userModel.getOutbox().stream().forEach((outboxEmail) -> {
       emailUpdater.submit(() -> {
-        String receivers = outboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining(";"));
+        String receivers = outboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining("; "));
 
         Mail m = new Mail(outboxEmail.getSender(), outboxEmail.getSubject(), receivers, outboxEmail.getTimestamp(),
             outboxEmail.getText());
@@ -179,10 +179,13 @@ public class MailContainerController {
     });
   }
 
-  private void updateAllEmails() {
+  public void updateAllEmails() {
     System.out.println("refreshing gui");
 
     emailUpdater = Executors.newFixedThreadPool(10);
+
+    this.cc.requestInbox();
+    this.cc.requestOutbox();
 
     this.updateOutboxEmails();
     this.updateInboxEmails();
