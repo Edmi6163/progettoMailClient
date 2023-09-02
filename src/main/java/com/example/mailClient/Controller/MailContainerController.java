@@ -278,5 +278,10 @@ public class MailContainerController {
   @FXML
   public void delete() {
     cc.deleteMail(selectedMail);
+    showMailDetails(new Mail("",
+                    "",
+                    "",
+                    LocalDateTime.now(),
+                    ""));
   }
 }

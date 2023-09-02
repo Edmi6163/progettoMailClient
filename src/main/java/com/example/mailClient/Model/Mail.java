@@ -30,7 +30,7 @@ public class Mail implements Serializable {
     this.receivers = new SimpleListProperty<>();
     if (receivers != null)
       setReceivers(receivers);
-    this.date = new SimpleObjectProperty<>(LocalDateTime.now());
+    this.date = new SimpleObjectProperty<>(localDateTime);
     this.message = new SimpleStringProperty(message);
     this.isSent = new SimpleBooleanProperty(false);
   }

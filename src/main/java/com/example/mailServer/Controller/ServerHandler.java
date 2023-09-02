@@ -7,6 +7,7 @@ import com.example.mailServer.Model.LoggerModel;
 import com.example.mailServer.Model.UserService;
 import com.example.mailServer.Model.Mail;
 import com.example.mailServer.Model.UserList;
+import javafx.util.Pair;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -68,7 +70,7 @@ public class ServerHandler implements Runnable {
             case "login" -> handleLoginAction((String) c.getBody());
             case "inbox" -> handleInboxAction((String) c.getBody());
             case "send" -> handleSendAction(userList, (Email) c.getBody());
-            case "delete" -> handleDeleteAction(c.getBody().toString(), (Email) c.getBody());
+            case "delete" -> handleDeleteAction((String) ((Pair) c.getBody()).getKey(), (Email) ((Pair) c.getBody()).getValue());
             case "outbox" -> handleOutboxAction((String) c.getBody());
             default -> log.setLog("Unrecognized action");
           }
@@ -168,9 +170,10 @@ public class ServerHandler implements Runnable {
     Set<String> receivers = new HashSet<>(mail.getReceivers());
     for (String receiver : receivers) {
       if (!userList.userExist(receiver)) {
+        long millis = new Date().getTime();
         Mail wrong = new Mail("System",
             "Wrong email address", mail.getSender(),
-            LocalDateTime.now(),
+            mail.getTimestamp(),
             "It wasn't possible to send this email to " + receiver + ", wrong email  address + " +
                 "\n***********************\n" + mail
                 + "\n***********************\nTHIS IS AN AUTOMATED MESSAGE, PLEASE, DO NOT REPLY.");

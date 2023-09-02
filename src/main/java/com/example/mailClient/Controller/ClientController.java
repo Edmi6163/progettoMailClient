@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.io.*;
 import java.net.*;
@@ -272,9 +273,10 @@ public class ClientController implements Serializable {
       ArrayList<String> receivers = (ArrayList<String>) mail.getReceivers().stream().map(receiver -> receiver)
           .collect(Collectors.toList());
 
-      Email e = new Email(mail.getSender(), receivers, mail.getSubject(), mail.getMessage());
+      Email e = new Email(mail.getSender(), receivers, mail.getSubject(), mail.getMessage(), mail.getDate());
 
-      Communication delete = new Communication("delete", e);
+      Pair<String, Email> pair = new Pair(this.username, e);
+      Communication delete = new Communication("delete", pair);
 
       Communication response = (Communication) sendCommunicationToServer(delete);
 

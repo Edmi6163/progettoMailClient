@@ -23,8 +23,6 @@ public class MailHandler {
 
   public synchronized boolean save(Email mail) {
     try {
-      Date date = new Date();
-      long millis = date.getTime();
       String sender = mail.getSender();
       List<String> receivers = mail.getReceivers();
 
@@ -33,7 +31,7 @@ public class MailHandler {
       File senderDir = new File("./src/main/java/com/example/mailServer/file/" + sender + "/out/");
       senderDir.mkdirs(); // Create directories recursively if they don't exist
 
-      File file = new File(senderDir, millis + ".txt");
+      File file = new File(senderDir, mail.getTimestamp() + ".txt");
       System.out.println("[save] file: " + file);
 
       ObjectOutputStream fileOutputStream = new ObjectOutputStream(new FileOutputStream(file));
@@ -51,7 +49,7 @@ public class MailHandler {
         System.out.println("[save] receiverDir: " + receiverDir);
         receiverDir.mkdirs();
 
-        file = new File(receiverDir, millis + ".txt");
+        file = new File(receiverDir, mail.getTimestamp() + ".txt");
 
         fileOutputStream = new ObjectOutputStream(new FileOutputStream(file));
 
@@ -136,14 +134,21 @@ public synchronized ArrayList<Email> loadOutBox(String user) {
     using a regex to remove the brackets from the username
    */
   public synchronized void delete(String user,Email mail) {
-    String userWithoutBracket = user.replace("[", "").replace("]", "");
+//    String userWithoutBracket = user.replace("[", "").replace("]", "");
     try {
       Files.delete(Paths.get(
-        "src/main/java/com/example/mailServer/file/" + userWithoutBracket + "/out/" + mail.getTimestamp() + ".txt"));
-      Files.delete(Paths.get(
-        "src/main/java/com/example/mailServer/file/" + userWithoutBracket + "/in/" + mail.getTimestamp() + ".txt"));
+        "src/main/java/com/example/mailServer/file/" + user + "/in/" + mail.getTimestamp() + ".txt"));
     } catch (Exception e) {
-      e.printStackTrace();
+//      e.printStackTrace();
+      System.out.println("Can't delete in");
+    }
+
+    try {
+      Files.delete(Paths.get(
+        "src/main/java/com/example/mailServer/file/" + user + "/out/" + mail.getTimestamp() + ".txt"));
+    } catch (Exception e) {
+//      e.printStackTrace();
+      System.out.println("Can't delete out");
     }
   }
 }

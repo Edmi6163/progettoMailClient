@@ -78,11 +78,13 @@ public class NewMessageController {
     mail.setMessage(messageBodyArea.getText());
     ArrayList<String> receivers = new ArrayList<>();
 
+    LocalDateTime now = LocalDateTime.now();
+
     receivers.addAll(Arrays.asList(receiversField.getText().split("/ ")));
-    Mail m = new Mail(sender, subjectField.getText(), receiversField.getText(), LocalDateTime.now(),
+    Mail m = new Mail(sender, subjectField.getText(), receiversField.getText(), now,
         messageBodyArea.getText());
     System.out.println("[NewMessageController] handleOk() m: " + m);
-    Email e = new Email(sender, receivers, subjectField.getText(), messageBodyArea.getText());
+    Email e = new Email(sender, receivers, subjectField.getText(), messageBodyArea.getText(), now);
 
     System.out.println("[NewMessageController] handleOk() e: " + e);
 
