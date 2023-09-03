@@ -107,19 +107,24 @@ public class NewMessageController {
     alert.showAndWait();
   }
 
-
   public boolean isInputOk(Mail mail) {
     String error = "";
     if (receiversField.getText() == null || receiversField.getText().length() == 0)
       error += "Missing receiver\n";
+
+    else if (!receiversField.getText().contains("@javamail.it"))
+      error += "Invalid receiver email format\n";
+
     if (mail.getReceivers().size() == 0)
       error += "Wrong email format\n";
+
     if (subjectField.getText() == null || subjectField.getText().length() == 0)
       error += "Missing subject\n";
-    if (receiversField.getText() == null || receiversField.getText().length() == 0)
-      error += "Empty message body\n";
-    if (error.length() == 0) {
 
+    if (messageBodyArea.getText() == null || messageBodyArea.getText().length() == 0)
+      error += "Empty message body\n";
+
+    if (error.length() == 0) {
       return true;
     } else {
       Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -128,8 +133,9 @@ public class NewMessageController {
       alert.setHeaderText("Errors detected in the following fields");
       alert.setContentText(error);
       alert.showAndWait();
-
       return false;
     }
   }
+
+
 }
