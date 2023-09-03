@@ -93,10 +93,14 @@ public class NewMessageController {
       // send mail
       mailSendedFeedback();
       boolean response = cc.sendMail(e, clientMain);
-      if (response)
+      if (response) {
         this.mailContainerController.updateOutboxEmails(e);
-      okClicked = true;
+        okClicked = true;
+
+      }
     }
+
+
   }
 
   public void mailSendedFeedback() {

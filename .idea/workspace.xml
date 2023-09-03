@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2377a5de-9e43-4dcf-9ac1-a86384a20d0c" name="Changes" comment="more debug info">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="2377a5de-9e43-4dcf-9ac1-a86384a20d0c" name="Changes" comment="no more mail to javamail.com :)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/LoginController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/NewMessageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/NewMessageController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Model/Mail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Model/Mail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/out/2023-09-02T17:04:16.837969294.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/ServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/ServerHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Model/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Model/UserService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +28,20 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Edmi6163"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="846773ed-80f4-459c-be5f-ade91c8ec72a" />
+        <option name="url" value="https://github.com/Edmi6163/progettoMailClient.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/LoginController.java" root0="FORCE_HIGHLIGHTING" />
@@ -253,7 +267,7 @@
       <workItem from="1693583340511" duration="5127000" />
       <workItem from="1693659475599" duration="7633000" />
       <workItem from="1693673120376" duration="2287000" />
-      <workItem from="1693733056658" duration="809000" />
+      <workItem from="1693733056658" duration="9132000" />
     </task>
     <task id="LOCAL-00001" summary="very small changes">
       <created>1683894254514</created>
@@ -502,7 +516,15 @@
       <option name="project" value="LOCAL" />
       <updated>1693388863880</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="no more mail to javamail.com :)">
+      <option name="closed" value="true" />
+      <created>1693733946443</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1693733946443</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -520,7 +542,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added check if mail exist or not" />
     <MESSAGE value="pop up if server is offline working :)" />
     <MESSAGE value="now the user that logged is shown in the RootLayout" />
     <MESSAGE value="set login to be not resizable" />
@@ -545,7 +566,8 @@
     <MESSAGE value="corrected handleOk synchronized," />
     <MESSAGE value="now the file in in folder are processed ,but it give some error here and there" />
     <MESSAGE value="file handling now should be correct,mailcontainer broken, file are processed but null :(" />
-    <option name="LAST_COMMIT_MESSAGE" value="file handling now should be correct,mailcontainer broken, file are processed but null :(" />
+    <MESSAGE value="no more mail to javamail.com :)" />
+    <option name="LAST_COMMIT_MESSAGE" value="no more mail to javamail.com :)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

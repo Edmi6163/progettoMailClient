@@ -117,7 +117,7 @@ public class LoginController {
 			if (!checkConnection()) {
 				Platform.runLater(this::showErrorPopUp);
 			}
-		}, 0, 120, TimeUnit.SECONDS);
+		}, 0, 1, TimeUnit.MINUTES);
 	}
 
 	public void showSendMailDialog(Mail mail, String title) {

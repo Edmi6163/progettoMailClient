@@ -29,6 +29,8 @@ public class ServerHandler implements Runnable {
   ObjectOutputStream outputStream;
   ObjectInputStream inputStream;
 
+
+  UserList userList = new UserList();
   public ServerHandler(Socket incoming, LoggerModel log) {
     this.incoming = incoming;
     this.log = log;
@@ -43,7 +45,6 @@ public class ServerHandler implements Runnable {
   }
 
   public UserList getUserList() {
-    UserList userList = new UserList();
     userList.addUser("francesco@javamail.it");
     userList.addUser("paolo@javamail.it");
     userList.addUser("something@javamail.it");
@@ -109,10 +110,13 @@ public class ServerHandler implements Runnable {
 
   private void handleLoginAction(String username) throws IOException, ClassNotFoundException {
     System.out.println("handleLoginAction");
-
-    Set<String> set = userService.getUsernamesFromDirectory(username);
-    if (set.isEmpty())
+    UserList userList = getUserList();
+    if(!userList.userExist(username)){
       userService.createUserFolders(username);
+      userList.addUser(username);
+    }
+    Set<String> set = userService.getUsernamesFromDirectory(username);
+
 
     log.setLog("User " + username + " logged in");
 
