@@ -12,15 +12,13 @@ import javafx.util.Pair;
 import java.io.*;
 import java.net.Socket;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class ServerHandler implements Runnable {
   private Socket incoming;
   public UserService userService;
   private MailHandler mailHandler;
+
 
   LoggerModel log;
   ObjectOutputStream outputStream;
@@ -39,6 +37,7 @@ public class ServerHandler implements Runnable {
     } catch (IOException xcpt) {
       xcpt.printStackTrace();
     }
+    System.out.println("serverhandler constructor called");
   }
 
   public UserList getUserList() {
@@ -78,10 +77,10 @@ public class ServerHandler implements Runnable {
           log.setLog("Action registered: " + c.getAction());
           switch (c.getAction()) {
             case "login" -> handleLoginAction((String) c.getBody());
-            case "inbox" -> handleInboxAction((String) c.getBody());
+            case "inbox" -> handleInboxAction((String)((Pair) c.getBody()).getKey(), (List<Email>) ((Pair) c.getBody()).getValue());
             case "send" -> handleSendAction(userList, (Email) c.getBody());
             case "delete" -> handleDeleteAction((String) ((Pair) c.getBody()).getKey(), (Email) ((Pair) c.getBody()).getValue());
-            case "outbox" -> handleOutboxAction((String) c.getBody());
+            case "outbox" -> handleOutboxAction((String)((Pair) c.getBody()).getKey(), (List<Email>) ((Pair) c.getBody()).getValue());
             default -> log.setLog("Unrecognized action");
           }
 
@@ -154,24 +153,34 @@ public class ServerHandler implements Runnable {
     out.writeObject(response);
   }*/
 
-  private void handleInboxAction(String username) throws IOException, ClassNotFoundException {
+  private void handleInboxAction(String username, List<Email> userInbox) throws IOException, ClassNotFoundException {
     System.out.println("[handleInboxAction] username received: " + username);
-    ArrayList<Email> inbox = mailHandler.loadInBox(username);
+    ArrayList<Email> loadedInbox = mailHandler.loadInBox(username);
+    ArrayList<Email> newEmails = new ArrayList<>();
     //print all the content in inbox
-    for (Email email : inbox) {
-      System.out.println("inbox contains: "  + email);
-    } //FIXME this isn't printed because in loadinbox it raise the exception
-    Communication response = new Communication("inbox", inbox);
+    for (Email email : loadedInbox) {
+      System.out.println("read inbox contains: "  + email);
+      if(!userInbox.contains(email)) {
+        newEmails.add(email);
+        System.out.println("email sent: " + email);
+      }
+    }
+    Communication response = new Communication("inbox", newEmails);
     outputStream.writeObject(response);
   }
 
-  private void handleOutboxAction(String username) throws IOException, ClassNotFoundException {
+  private void handleOutboxAction(String username, List<Email> userOutbox) throws IOException, ClassNotFoundException {
     System.out.println("[handleOutboxAction] body arrived is: " + username);
-    ArrayList<Email> outbox = mailHandler.loadOutBox(username);
-    for (Email email : outbox) {
+    ArrayList<Email> loadedOutbox = mailHandler.loadOutBox(username);
+    ArrayList<Email> newEmails = new ArrayList<>();
+    for (Email email : loadedOutbox) {
       System.out.println("outbox contains: "  + email);
-    } //FIXME this isn't printed because in loadinbox it raise the exception
-    Communication response = new Communication("outbox",outbox); //FIXME here we should load the outbox, note body is the username
+      if(!userOutbox.contains(email)) {
+        newEmails.add(email);
+        System.out.println("email sent: " + email);
+      }
+    }
+    Communication response = new Communication("outbox",newEmails);
     outputStream.writeObject(response);
   }
 
