@@ -110,7 +110,8 @@ public class MailContainerController {
           Thread.sleep(5000);
 //          Platform.runLater(() -> this.cc.requestInbox());
 //          Platform.runLater(() -> this.cc.requestOutbox());
-          Platform.runLater(this::updateAllEmails);
+//          Platform.runLater(this::updateAllEmails);
+          Platform.runLater(this::updateInbox);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
@@ -136,11 +137,11 @@ public class MailContainerController {
 
   public void updateOutboxEmails(Email newEmail) {
     // prendo la lista delle email e aggiungo quella nuova
-    List<Email> emails = this.userModel.getOutbox();
-    emails.add(0, newEmail);
-    this.userModel.setOutbox(emails);
-    this.updateOutboxEmails();
-    this.updateInboxEmails();
+//    List<Email> emails = this.userModel.getOutbox();
+//    emails.add(0, newEmail);
+//    this.userModel.setOutbox(emails);
+    this.updateOutbox();
+    this.updateInbox();
   }
 
   /*
@@ -184,15 +185,18 @@ public class MailContainerController {
 
     emailUpdater = Executors.newFixedThreadPool(10);
 
-    this.cc.requestInbox();
-    this.cc.requestOutbox();
-
-    this.updateOutboxEmails();
-    this.updateInboxEmails();
-
-
+    this.updateInbox();
+    this.updateOutbox();
   }
 
+  public void updateInbox() {
+    this.cc.requestInbox();
+    this.updateInboxEmails();
+  }
+  public void updateOutbox() {
+    this.cc.requestOutbox();
+    this.updateOutboxEmails();
+  }
   @FXML
   private void initialize() {
 

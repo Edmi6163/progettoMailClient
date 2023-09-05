@@ -109,4 +109,24 @@ public class Email implements Serializable {
                 ", bin=" + bin +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if(this == object)
+            return true;
+        if(object == null)
+            return false;
+        if(getClass() != object.getClass())
+            return false;
+        Email email = (Email) object;
+
+        if(this.id.equals(email.getId()))
+            return true;
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id.hashCode();
+    }
 }

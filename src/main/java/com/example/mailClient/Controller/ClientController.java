@@ -18,6 +18,7 @@ import javafx.util.Pair;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class ClientController implements Serializable {
@@ -110,7 +111,7 @@ public class ClientController implements Serializable {
         loginController.showErrorPopUp();
         return;
       }
-      Communication request = new Communication("inbox", username);
+      Communication request = new Communication("inbox", new Pair<>(username,(ArrayList)userModel.getInbox()));
 
       System.out.println("[requestInbox] communication request: " + request.getAction() + " " + request.getBody());
       Communication response = sendCommunicationToServer(request);
@@ -151,7 +152,7 @@ public class ClientController implements Serializable {
         loginController.showErrorPopUp();
         return;
       }
-      Communication request = new Communication("outbox", username);
+      Communication request = new Communication("outbox", new Pair<>(username,(ArrayList)userModel.getOutbox()));
 
       System.out.println("[requestOutbox] communication request: " + request.getAction() + " " + request.getBody());
       Communication response = sendCommunicationToServer(request);

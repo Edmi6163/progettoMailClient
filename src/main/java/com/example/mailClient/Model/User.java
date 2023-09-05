@@ -15,7 +15,7 @@ public class User {
   public User(String username) {
     this.username = username;
     this.inbox = FXCollections.observableList(new ArrayList<>());
-    this.outbox = new ArrayList<Email>();
+    this.outbox = new ArrayList<>();
   }
 
   public String getUsername() {
@@ -27,11 +27,12 @@ public class User {
   }
 
   public List<Email> getInbox() {
+    ArrayList<Email> inbox= new ArrayList<>(this.inbox);
     return inbox;
   }
 
   public void setInbox(List<Email> inbox) {
-    this.inbox = inbox;
+    this.inbox.addAll(inbox);
   }
 
   public List<Email> getOutbox() {
@@ -39,6 +40,6 @@ public class User {
   }
 
   public void setOutbox(List<Email> outbox) {
-    this.outbox = outbox;
+    this.outbox.addAll(outbox);
   }
 }
