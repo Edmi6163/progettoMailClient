@@ -192,14 +192,17 @@ public class ServerHandler implements Runnable {
     Set<String> receivers = new HashSet<>(mail.getReceivers());
     for (String receiver : receivers) {
       if (!userList.userExist(receiver)) {
-        long millis = new Date().getTime();
+/*        long millis = new Date().getTime();
         Mail wrong = new Mail("System",
             "Wrong email address", mail.getSender(),
             mail.getTimestamp(),
             "It wasn't possible to send this email to " + receiver + ", wrong email  address + " +
                 "\n***********************\n" + mail
                 + "\n***********************\nTHIS IS AN AUTOMATED MESSAGE, PLEASE, DO NOT REPLY.");
-        mail.getReceivers().remove(receiver);
+        mail.getReceivers().remove(receiver);*/
+        Communication response = new Communication("send_not_ok", mail);
+        outputStream.writeObject(response);
+        return;
       }
       // log(mail.getSender() + " sent an email to " + mail.getReceiversString());
       log.setLog(mail.getSender() + " sent an email to " + mail.getReceivers());

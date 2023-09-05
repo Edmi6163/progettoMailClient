@@ -75,7 +75,13 @@ public class ClientController implements Serializable {
     popup.setContentText("Server propably is offline or check your internet connection");
     popup.show();
   }
-
+  public void mailNotExist() {
+    Alert popup = new Alert(Alert.AlertType.ERROR);
+    popup.initOwner(topStage);
+    popup.setTitle("Mail error");
+    popup.setContentText("Mail doesn't exist :(");
+    popup.show();
+  }
   /*
     * @brief: send information to server through Communication object and socket
     * FIXME plz
@@ -246,7 +252,7 @@ public class ClientController implements Serializable {
       System.out.println("[send mail CC] mail written to server\n" + mail.toString());
 
       if (response.getAction().equals("send_not_ok")) {
-        showErrorPopUp();
+        mailNotExist();
         closeSocketConnection();
         return false;
       }
