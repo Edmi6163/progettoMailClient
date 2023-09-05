@@ -190,12 +190,18 @@ public class MailContainerController {
   }
 
   public void updateInbox() {
-    this.cc.requestInbox();
-    this.updateInboxEmails();
+    int size = this.cc.requestInbox();
+    if(size == -1)
+      System.out.println("Error requesting inbox");
+    if(size > 0)
+      this.updateInboxEmails();
   }
   public void updateOutbox() {
-    this.cc.requestOutbox();
-    this.updateOutboxEmails();
+    int size = this.cc.requestOutbox();
+    if(size == -1)
+      System.out.println("Error requesting outbox");
+    if(size > 0)
+      this.updateOutboxEmails();
   }
   @FXML
   private void initialize() {

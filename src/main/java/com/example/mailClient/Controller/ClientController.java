@@ -18,6 +18,7 @@ import javafx.util.Pair;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -102,14 +103,13 @@ public class ClientController implements Serializable {
     }
   }
 
-  public void requestInbox() {
+  public int requestInbox() {
 
-    int previousResSize = userModel.getInbox().size();
     System.out.println("[requestInbox] request inbox called");
     try {
       if (!connectToSocket()) {
         loginController.showErrorPopUp();
-        return;
+        return -1;
       }
       Communication request = new Communication("inbox", new Pair<>(username,(ArrayList)userModel.getInbox()));
 
@@ -118,39 +118,39 @@ public class ClientController implements Serializable {
 
       if (response == null) {
         System.out.println("response is null");
-        return;
+        return -1;
       }
       System.out.println("[requestInbox] communication response: " + response.getAction() + " " + response.getBody()); //FIXME here the response is null, so inbox isn't updated
       Object body = response.getBody();
       if (!(body instanceof ArrayList)) {
         System.out.println("response body is not an ArrayList");
-        return;
+        return -1;
       }
 
       ArrayList<Email> res = (ArrayList<Email>) body;
-      ObservableList<Email> resList = FXCollections.observableList(res);
 
-      System.out.println("[requestInbox] res size is " + res.size() + "\n previous res size is " + previousResSize);
-      if(res.size() > previousResSize) {
+      if(res.size() > 0) {
+        ObservableList<Email> resList = FXCollections.observableList(res);
+
         notificationManager();
+
+        this.userModel.setInbox(resList);
       }
 
-      this.userModel.setInbox(resList);
-
       closeSocketConnection();
+      return res.size();
     } catch (IOException e) {
-			throw new RuntimeException(e);
+        throw new RuntimeException(e);
     }
   }
 
-  public void requestOutbox() {
+  public int requestOutbox() {
 
-    int previousResSize = userModel.getOutbox().size();
     System.out.println("[requestInfo] request outbox called");
     try {
       if (!connectToSocket()) {
         loginController.showErrorPopUp();
-        return;
+        return -1;
       }
       Communication request = new Communication("outbox", new Pair<>(username,(ArrayList)userModel.getOutbox()));
 
@@ -159,27 +159,31 @@ public class ClientController implements Serializable {
 
       if (response == null) {
         System.out.println("response is null");
-        return;
+        return -1;
       }
       System.out.println("[requestOutbox] communication response: " + response.getAction() + " " + response.getBody()); //FIXME here the response is null, so inbox isn't updated
       Object body = response.getBody();
       if (!(body instanceof ArrayList)) {
         System.out.println("response body is not an ArrayList");
-        return;
+        return -1;
       }
 
       ArrayList<Email> res = (ArrayList<Email>) body;
-      ObservableList<Email> resList = FXCollections.observableList(res);
 
-//      System.out.println("[requestInfo] res is " + res.getClass());
+      if(res.size() >0) {
+        ObservableList<Email> resList = FXCollections.observableList(res);
 
-      this.userModel.setOutbox(resList);
+        //      System.out.println("[requestInfo] res is " + res.getClass());
+
+        this.userModel.setOutbox(resList);
+      }
 
       closeSocketConnection();
+
+      return res.size();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-
   }
 
   /*
