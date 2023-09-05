@@ -9,10 +9,7 @@ import com.example.mailServer.Model.Mail;
 import com.example.mailServer.Model.UserList;
 import javafx.util.Pair;
 
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -45,9 +42,18 @@ public class ServerHandler implements Runnable {
   }
 
   public UserList getUserList() {
-    userList.addUser("francesco@javamail.it");
-    userList.addUser("paolo@javamail.it");
-    userList.addUser("something@javamail.it");
+    File userFolder = new File("src/main/java/com/example/mailServer/file");
+    File[] userFolders = userFolder.listFiles();
+
+    if (userFolders != null) {
+      for (File folder : userFolders) {
+        if (folder.isDirectory()) {
+          String folderName = folder.getName();
+          userList.addUser(folderName);
+        }
+      }
+    }
+
     return userList;
   }
 
@@ -60,6 +66,9 @@ public class ServerHandler implements Runnable {
     try {
       try {
         UserList userList = this.getUserList();
+        for(String user : userList.getUsers()){
+          log.setLog("user list is " + user);
+        }
         assert userList != null;
 
         try {

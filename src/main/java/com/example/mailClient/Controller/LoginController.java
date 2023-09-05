@@ -108,7 +108,7 @@ public class LoginController {
 
 	/*
 	* @brief: if server is offline notify user that server is offline when the server is online the
-	* pop up just stop to appears
+	* pop-up just stop to appear
 	*/
 	private void startServerCheckTimer() {
 		serverCheckExecutor = Executors.newSingleThreadScheduledExecutor();
