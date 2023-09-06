@@ -10,7 +10,7 @@
       <children>
          <Label text="Type your mail" />
          <TextField fx:id="username" text="\@javamail.it" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="400.0"/>
-         <Button defaultButton="true" mnemonicParsing="false" onAction="#handleLogin" text="ACCEDI" styleClass="default-button"/>
+         <Button defaultButton="true" mnemonicParsing="false" onAction="#handleLogin" text="LOG IN" styleClass="default-button"/>
       </children>
    </VBox>
    </center>

@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 
 public class ClientController implements Serializable {
   private String username;
-  private TrayIcon trayIcon;
   private  boolean serverStatus = false;
   private static Socket socket;
 
@@ -82,7 +81,6 @@ public class ClientController implements Serializable {
   }
   /*
     * @brief: send information to server through Communication object and socket
-    * FIXME plz
    */
   private static Communication sendCommunicationToServer(Communication c) {
     System.out.println("sending communication to server: " + c.getAction() + " " + c.getBody());
@@ -133,7 +131,7 @@ public class ClientController implements Serializable {
 
       ArrayList<Email> res = (ArrayList<Email>) body;
 
-      if(res.size() > 0) {
+      if(!res.isEmpty()) {
         ObservableList<Email> resList = FXCollections.observableList(res);
 
         notificationManager();
@@ -174,10 +172,9 @@ public class ClientController implements Serializable {
 
       ArrayList<Email> res = (ArrayList<Email>) body;
 
-      if(res.size() >0) {
+      if(!res.isEmpty()) {
         ObservableList<Email> resList = FXCollections.observableList(res);
 
-        //      System.out.println("[requestInfo] res is " + res.getClass());
 
         this.userModel.addToOutbox(resList);
       }
@@ -191,7 +188,7 @@ public class ClientController implements Serializable {
   }
 
   /*
-  @brief: send a notification using jna library on linux
+   * @brief: send a notification using jna library to use notify-send command on linux
    */
   public void notificationManager(){
     String[] command = {"notify-send", "new mail received", "check your inbox"};
@@ -270,7 +267,6 @@ public class ClientController implements Serializable {
 
   /*
    * @brief: delete email from server
-   * FIXME mail are not deleted from server
    */
   public boolean deleteMail(Mail mail) {
     try {

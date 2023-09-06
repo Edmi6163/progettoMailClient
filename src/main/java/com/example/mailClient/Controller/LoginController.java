@@ -30,18 +30,12 @@ public class LoginController {
 	public BorderPane root;
 	private Stage topStage;
 	public String userMail;
-	private ObservableList<Mail> inbox = FXCollections.observableArrayList();
-	private ObservableList<Mail> outbox = FXCollections.observableArrayList();
 
 	public User user;
 	public ClientController cc;
 	public MailContainerController mailContainerController;
 
 	private ScheduledExecutorService serverCheckExecutor;
-
-	public void addOutbox(List<Mail> out) {
-		outbox.addAll(out);
-	}
 
 	/*
 	 * @brief this method is called when user clicks on login button, and kinda is
@@ -69,13 +63,6 @@ public class LoginController {
 
 	}
 
-	public ObservableList<Mail> getInbox() {
-		return inbox;
-	}
-
-	public ObservableList<Mail> getOutbox() {
-		return outbox;
-	}
 
 	/*
 	 * @brief: when server return some connection error, this method is called
@@ -146,12 +133,10 @@ public class LoginController {
 	public void initRootLayout() {
 		try {
 			topStage = (Stage) root.getScene().getWindow();
-			// loading root layout
 			FXMLLoader loaderRoot = new FXMLLoader(ClientMain.class.getResource("RootLayout.fxml"));
 			root.setTop(loaderRoot.load());
 
 			System.out.println(userMail);
-			// QUI
 			RootLayoutController controllerRoot = loaderRoot.getController();
 			controllerRoot.setClientMain(this, userMail);
 
@@ -162,7 +147,6 @@ public class LoginController {
 
 	public void showMailContainer() {
 		try {
-			// loading mail container
 			FXMLLoader loaderContainer = new FXMLLoader(ClientMain.class.getResource("MailContainer.fxml"));
 			root.setCenter(loaderContainer.load());
 

@@ -127,36 +127,18 @@ public class ServerHandler implements Runnable {
 
     log.setLog("User " + username + " logged in");
 
-//    ArrayList<Email> inbox = MailHandler.loadInBox(username,incoming);
-//    log.setLog(username + "'s inbox loaded, size is " + inbox.size());
-//    ArrayList<Email> outbox = MailHandler.loadOutBox(username,incoming);
-//    log.setLog(username + "'s outbox loaded, size is " + outbox.size());
-//    ArrayList<ArrayList<Email>> emails = new ArrayList<>();
-//    emails.add(inbox);
-//    emails.add(outbox);
-
-//    LoginRes responseBody = new LoginRes(emails);
-//    Communication c = new Communication("loginRes", responseBody);
 
     Communication c = new Communication("loginRes", new LoginRes());
 
     outputStream.writeObject(c);
-//    out.flush();
-//    out.reset();
+
     System.out.println("Communication c: " + c.getAction() + " " + c.getBody().toString());
   }
-
-  /*private void handleInboxAction(String body) throws IOException, ClassNotFoundException {
-    System.out.println("[handleInboxAction] body arrived is: " + body);
-    Communication response = new Communication("inbox",MailHandler.loadInBox(body)); //FIXME here we should load the inbox note body is the username, but response is empty []
-    out.writeObject(response);
-  }*/
 
   private void handleInboxAction(String username, List<Email> userInbox) throws IOException, ClassNotFoundException {
     System.out.println("[handleInboxAction] username received: " + username);
     ArrayList<Email> loadedInbox = mailHandler.loadInBox(username);
     ArrayList<Email> newEmails = new ArrayList<>();
-    //print all the content in inbox
     for (Email email : loadedInbox) {
       System.out.println("read inbox contains: "  + email);
       if(!userInbox.contains(email)) {
@@ -191,22 +173,12 @@ public class ServerHandler implements Runnable {
     Set<String> receivers = new HashSet<>(mail.getReceivers());
     for (String receiver : receivers) {
       if (!userList.userExist(receiver)) {
-/*        long millis = new Date().getTime();
-        Mail wrong = new Mail("System",
-            "Wrong email address", mail.getSender(),
-            mail.getTimestamp(),
-            "It wasn't possible to send this email to " + receiver + ", wrong email  address + " +
-                "\n***********************\n" + mail
-                + "\n***********************\nTHIS IS AN AUTOMATED MESSAGE, PLEASE, DO NOT REPLY.");
-        mail.getReceivers().remove(receiver);*/
         Communication response = new Communication("send_not_ok", mail);
         outputStream.writeObject(response);
         return;
       }
-      // log(mail.getSender() + " sent an email to " + mail.getReceiversString());
       log.setLog(mail.getSender() + " sent an email to " + mail.getReceivers());
       System.out.println(mail.getSender() + " sent an email to " + mail.getReceivers());
-      //FIXME: mail.getReceivers() is empty after for loop
       mail.setBin(true);
 
       if (!mailHandler.save(mail)) {

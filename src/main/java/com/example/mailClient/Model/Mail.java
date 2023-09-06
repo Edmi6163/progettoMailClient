@@ -73,10 +73,6 @@ public class Mail implements Serializable {
     return receivers.get();
   }
 
-  public ListProperty<String> receiversProperty() {
-    return receivers;
-  }
-
   /*
   * @brief: parser to use the receivers string as a list of receivers, use isValidEmail to check if the email is valid using regex
   * */
@@ -94,8 +90,10 @@ public class Mail implements Serializable {
     receivers.set(FXCollections.observableArrayList(list));
   }
 
+  /*
+  * @brief: check if the email is valid using regex
+   */
   private boolean isValidEmail(String email) {
-    // regex to identify a mail
     Matcher m = Pattern.compile("[a-zA-Z0-9_.+-]+@[a-zA-Z0-9_.+-]+\\.[a-zA-Z0-9-.]+").matcher(email);
     return m.matches();
   }
@@ -123,9 +121,7 @@ public class Mail implements Serializable {
     return date.get().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
   }
 
-  public ObjectProperty<LocalDateTime> dateProperty() {
-    return date;
-  }
+
 
   public void setDate(LocalDateTime date) {
     this.date.set(date);
@@ -135,58 +131,13 @@ public class Mail implements Serializable {
     return message.get();
   }
 
-  public StringProperty messageProperty() {
-    return message;
-  }
-
   public void setMessage(String message) {
     this.message.set(message);
   }
 
-  public long getMillis() {
-    return getDate().atZone(TimeZone.getDefault().toZoneId()).toInstant().toEpochMilli();
-  }
 
-  public boolean isIsSent() {
-    return isSent.get();
-  }
 
-  public BooleanProperty isSentProperty() {
-    return isSent;
-  }
 
-  public void setIsSent(boolean isSent) {
-    this.isSent.set(isSent);
-  }
-
-  public void init() {
-    this.sender = new SimpleStringProperty();
-    this.subject = new SimpleStringProperty();
-    this.receivers = new SimpleListProperty<>(FXCollections.observableArrayList());
-    this.date = new SimpleObjectProperty<>(LocalDateTime.now());
-    this.isSent = new SimpleBooleanProperty();
-  }
-
-  private void write(ObjectOutputStream s) throws IOException {
-    long millis = getDate().atZone(TimeZone.getDefault().toZoneId()).toInstant().toEpochMilli();
-    s.defaultWriteObject();
-    s.writeUTF(getSender());
-    s.writeUTF(getSubject());
-    s.writeUTF(getReceiversString());
-    s.writeLong(millis);
-    s.writeUTF(getMessage());
-    s.writeBoolean(isIsSent());
-  }
-
-  public void read(ObjectInputStream s) throws IOException, ClassNotFoundException {
-    init();
-    setSender(s.readUTF());
-    setSubject(s.readUTF());
-    setReceivers(s.readUTF());
-    setDate(LocalDateTime.ofInstant(Instant.ofEpochMilli(s.readLong()), TimeZone.getDefault().toZoneId()));
-    setMessage(s.readUTF());
-    setIsSent(s.readBoolean());
-  }
 
   @Override
   public String toString() {

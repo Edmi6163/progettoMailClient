@@ -4,31 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2377a5de-9e43-4dcf-9ac1-a86384a20d0c" name="Changes" comment="no more mail to javamail.com :)">
+    <list default="true" id="2377a5de-9e43-4dcf-9ac1-a86384a20d0c" name="Changes" comment="no more nonexistent email address">
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_8_30_23,_2_22_PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_8_30_23__2_22_PM__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Transmission/Email.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Transmission/Email.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Transmission/Communication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Transmission/Communication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Transmission/LoginRes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Transmission/LoginRes.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/ClientController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/MailContainerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/MailContainerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/NewMessageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/NewMessageController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/RootLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/RootLayoutController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/LoginController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Model/Mail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Model/Mail.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/MailHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/MailHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/ServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/ServerHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Model/Mail.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Model/UserList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Model/UserList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/in/2023-09-05T12:03:06.278290217.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/in/2023-09-05T12:05:20.190146862.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/in/2023-09-05T12:09:02.132541920.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/in/2023-09-05T12:10:21.246001016.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/in/2023-09-05T12:13:38.668428210.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/in/2023-09-05T14:11:15.108235440.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/out/2023-09-05T12:03:06.278290217.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/out/2023-09-05T12:05:20.190146862.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/out/2023-09-05T12:09:02.132541920.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/out/2023-09-05T12:10:21.246001016.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/out/2023-09-05T12:13:38.668428210.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/out/2023-09-05T14:11:15.108235440.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/ServerLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/ServerLayoutController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/in/2023-09-06T11:18:04.310847735.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/in/2023-09-06T11:20:13.629255913.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/in/2023-09-06T11:24:18.384984076.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/mailClient/Login.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/mailClient/Login.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,7 +116,7 @@
       <recent name="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/in" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Server">
+  <component name="RunManager" selected="Application.Client 1">
     <configuration name="Client 1" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.example.mailClient.ClientMain" />
       <module name="progettoMailClient" />
@@ -289,6 +281,7 @@
       <workItem from="1693733056658" duration="9523000" />
       <workItem from="1693903895555" duration="2095000" />
       <workItem from="1693928596881" duration="3520000" />
+      <workItem from="1694009071389" duration="3002000" />
     </task>
     <task id="LOCAL-00001" summary="very small changes">
       <created>1683894254514</created>
@@ -609,11 +602,6 @@
           <properties class="java.lang.RuntimeException" package="java.lang" />
           <option name="timeStamp" value="8" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/ServerHandler.java</url>
-          <line>193</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>

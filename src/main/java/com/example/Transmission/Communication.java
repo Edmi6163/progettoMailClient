@@ -22,15 +22,10 @@ public class Communication implements Serializable {
         return action;
     }
 
-    public void setAction(String action) {
-        this.action = action;
-    }
+
 
     public Object getBody() {
         return body;
     }
 
-    public void setBody(Object body) {
-        this.body = body;
-    }
 }

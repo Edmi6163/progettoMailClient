@@ -13,9 +13,5 @@ public class LoginRes implements Serializable {
 		this.arrayLists = arrayLists;
 	}
 
-	public ArrayList<ArrayList<Email>> getArrayLists() {
-		return arrayLists;
-	}
-
 
 }

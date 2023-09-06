@@ -11,10 +11,6 @@ public class UserService {
 	/*
 	 * @brief: using Set data structure for uniqueness of elements, avoiding the
 	 * need to check each files name
-	 *
-	 * @return: true if the username is in the directory, false otherwise
-	 *
-	 * @note: the directory is hardcoded, it should be changed to a relative path
 	 */
 	public Set<String> getUsernamesFromDirectory(String username) {
 		File directory = new File(PATH + username);
