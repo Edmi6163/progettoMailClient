@@ -17,6 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Mail implements Serializable {
+  private String id;
   private StringProperty sender;
   private StringProperty subject;
   private ListProperty<String> receivers;
@@ -24,7 +25,8 @@ public class Mail implements Serializable {
   private StringProperty message;
   private BooleanProperty isSent;
 
-  public Mail(String sender, String subject, String receivers, LocalDateTime localDateTime, String message) {
+  public Mail(String id, String sender, String subject, String receivers, LocalDateTime localDateTime, String message) {
+    this.id = id;
     this.sender = new SimpleStringProperty(sender);
     this.subject = new SimpleStringProperty(subject);
     this.receivers = new SimpleListProperty<>();
@@ -33,6 +35,14 @@ public class Mail implements Serializable {
     this.date = new SimpleObjectProperty<>(localDateTime);
     this.message = new SimpleStringProperty(message);
     this.isSent = new SimpleBooleanProperty(false);
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
   }
 
   public String getSender() {

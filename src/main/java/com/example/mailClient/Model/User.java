@@ -2,7 +2,6 @@ package com.example.mailClient.Model;
 
 import com.example.Transmission.Email;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +30,7 @@ public class User {
     return inbox;
   }
 
-  public void setInbox(List<Email> inbox) {
+  public void addToInbox(List<Email> inbox) {
     this.inbox.addAll(inbox);
   }
 
@@ -39,7 +38,15 @@ public class User {
     return outbox;
   }
 
-  public void setOutbox(List<Email> outbox) {
+  public void addToOutbox(List<Email> outbox) {
     this.outbox.addAll(outbox);
+  }
+
+  public void removeFromInbox(Email email) {
+    inbox.remove(email);
+  }
+
+  public void removeFromOutbox(Email email) {
+    outbox.remove(email);
   }
 }

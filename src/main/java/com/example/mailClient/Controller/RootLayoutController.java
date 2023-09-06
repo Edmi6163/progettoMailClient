@@ -20,7 +20,7 @@ public class RootLayoutController {
 
   @FXML
   private void handleNew() {
-    loginController.showSendMailDialog(new Mail(
+    loginController.showSendMailDialog(new Mail("",
         username,
         "",
         null,

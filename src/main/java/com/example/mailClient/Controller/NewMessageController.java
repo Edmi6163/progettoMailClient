@@ -49,7 +49,7 @@ public class NewMessageController {
     this.mail = mail;
 
     if (mail == null) {
-      this.mail = new Mail("", "", null, LocalDateTime.now(), "");
+      this.mail = new Mail("", "", "", null, LocalDateTime.now(), "");
     }
     receiversField.setText(this.mail.getReceiversString());
     subjectField.setText(this.mail.getSubject());
@@ -81,7 +81,7 @@ public class NewMessageController {
     LocalDateTime now = LocalDateTime.now();
 
     receivers.addAll(Arrays.asList(receiversField.getText().split("/ ")));
-    Mail m = new Mail(sender, subjectField.getText(), receiversField.getText(), now,
+    Mail m = new Mail("", sender, subjectField.getText(), receiversField.getText(), now,
         messageBodyArea.getText());
     System.out.println("[NewMessageController] handleOk() m: " + m);
     Email e = new Email(sender, receivers, subjectField.getText(), messageBodyArea.getText(), now);

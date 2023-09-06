@@ -1,5 +1,7 @@
 package com.example.Transmission;
 
+import com.example.mailClient.Model.Mail;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -32,6 +34,15 @@ public class Email implements Serializable {
 
     public Email(String sender, ArrayList<String> receivers, String subject, String text, LocalDateTime timestamp) {
         this.id = UUID.randomUUID().toString();
+        this.sender = sender;
+        this.subject = subject;
+        this.text = text;
+        this.receivers = new ArrayList<>(receivers);
+        this.timestamp = timestamp;
+    }
+
+    public Email(String id, String sender, ArrayList<String> receivers, String subject, String text, LocalDateTime timestamp) {
+        this.id = id;
         this.sender = sender;
         this.subject = subject;
         this.text = text;

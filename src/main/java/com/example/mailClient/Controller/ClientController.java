@@ -18,8 +18,6 @@ import javafx.util.Pair;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class ClientController implements Serializable {
@@ -140,7 +138,7 @@ public class ClientController implements Serializable {
 
         notificationManager();
 
-        this.userModel.setInbox(resList);
+        this.userModel.addToInbox(resList);
       }
 
       closeSocketConnection();
@@ -181,7 +179,7 @@ public class ClientController implements Serializable {
 
         //      System.out.println("[requestInfo] res is " + res.getClass());
 
-        this.userModel.setOutbox(resList);
+        this.userModel.addToOutbox(resList);
       }
 
       closeSocketConnection();
@@ -274,11 +272,11 @@ public class ClientController implements Serializable {
    * @brief: delete email from server
    * FIXME mail are not deleted from server
    */
-  public void deleteMail(Mail mail) {
+  public boolean deleteMail(Mail mail) {
     try {
       if (!connectToSocket()) {
         showErrorPopUp();
-        return;
+        return false;
       }
 
       ArrayList<String> receivers = (ArrayList<String>) mail.getReceivers().stream().map(receiver -> receiver)
@@ -297,6 +295,7 @@ public class ClientController implements Serializable {
     } catch (Exception e) {
       e.printStackTrace();
     }
+    return true;
   }
 
 }

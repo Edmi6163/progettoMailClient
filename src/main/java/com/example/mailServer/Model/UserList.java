@@ -30,16 +30,5 @@ public class UserList implements Serializable {
     return users;
   }
 
-  public List<Mail> getUserInbox(String u) {
-    List<Mail> inbox = new ArrayList<>();
-
-    return inbox;
-  }
-
-  public List<Mail> getUserOutBox(String u) {
-    List<Mail> outbox = new ArrayList<>();
-
-    return outbox;
-  }
 
 }

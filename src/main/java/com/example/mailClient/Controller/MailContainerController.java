@@ -11,6 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -154,7 +155,7 @@ public class MailContainerController {
     this.userModel.getInbox().stream().forEach((inboxEmail) -> {
       emailUpdater.submit(() -> {
         String receivers = inboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining("; "));
-        Mail m = new Mail(inboxEmail.getSender(), inboxEmail.getSubject(), receivers, inboxEmail.getTimestamp(),
+        Mail m = new Mail(inboxEmail.getId(), inboxEmail.getSender(), inboxEmail.getSubject(), receivers, inboxEmail.getTimestamp(),
             inboxEmail.getText());
         synchronized (lock) {
           Platform.runLater(() -> inTable.getItems().add(m));
@@ -171,7 +172,7 @@ public class MailContainerController {
       emailUpdater.submit(() -> {
         String receivers = outboxEmail.getReceivers().stream().map(Object::toString).collect(Collectors.joining("; "));
 
-        Mail m = new Mail(outboxEmail.getSender(), outboxEmail.getSubject(), receivers, outboxEmail.getTimestamp(),
+        Mail m = new Mail(outboxEmail.getId(), outboxEmail.getSender(), outboxEmail.getSubject(), receivers, outboxEmail.getTimestamp(),
             outboxEmail.getText());
         synchronized (lock) {
           Platform.runLater(() -> outTable.getItems().add(m));
@@ -247,7 +248,8 @@ public class MailContainerController {
 
   @FXML
   public void forward() {
-    loginController.showSendMailDialog(new Mail(this.userModel.getUsername(),
+    loginController.showSendMailDialog(new Mail(this.selectedMail.getId(),
+                    this.userModel.getUsername(),
         "[FWD] " + this.selectedMail.getSubject(),
         " ",
         LocalDateTime.now(),
@@ -258,7 +260,8 @@ public class MailContainerController {
   @FXML
   public void reply() {
     // if (!selectedMail.getSender().equals(username)) {
-    loginController.showSendMailDialog(new Mail(this.userModel.getUsername(),
+    loginController.showSendMailDialog(new Mail(this.selectedMail.getId(),
+                    this.userModel.getUsername(),
         "[RE]" + selectedMail.getSubject(),
         selectedMail.getSender().toString(),
         LocalDateTime.now(),
@@ -269,14 +272,16 @@ public class MailContainerController {
   @FXML
   public void replyAll() {
     if (!selectedMail.getSender().equals(username)) {
-      loginController.showSendMailDialog(new Mail(username,
+      loginController.showSendMailDialog(new Mail(this.selectedMail.getId(),
+                      username,
           "[RE]" + selectedMail.getSubject(),
           selectedMail.getSender(),
           LocalDateTime.now(),
           "\n---\n" + selectedMail.getSender() + ":\n\n" + selectedMail.getMessage()),
           "Reply Email");
     } else {
-      loginController.showSendMailDialog(new Mail(username,
+      loginController.showSendMailDialog(new Mail(this.selectedMail.getId(),
+                      username,
           "[RE]" + selectedMail.getSubject(),
           selectedMail.getSender(),
           LocalDateTime.now(),
@@ -287,11 +292,32 @@ public class MailContainerController {
 
   @FXML
   public void delete() {
-    cc.deleteMail(selectedMail);
+    boolean success = cc.deleteMail(selectedMail);
     showMailDetails(new Mail("",
+            "",
                     "",
                     "",
                     LocalDateTime.now(),
                     ""));
+    if(success) {
+      try {
+        ArrayList<String> receivers = new ArrayList<>();
+        for (String receiver : selectedMail.getReceivers())
+          receivers.add(receiver);
+        userModel.removeFromInbox(new Email(selectedMail.getId(), selectedMail.getSender(), receivers, selectedMail.getSubject(), selectedMail.getMessage(), selectedMail.getDate()));
+        this.updateInboxEmails();
+      } catch (Exception xcpt) {
+        System.out.println("Couldn't delete mail from inbox");
+      }
+      try {
+        ArrayList<String> receivers = new ArrayList<>();
+        for (String receiver : selectedMail.getReceivers())
+          receivers.add(receiver);
+        userModel.removeFromOutbox(new Email(selectedMail.getId(), selectedMail.getSender(), receivers, selectedMail.getSubject(), selectedMail.getMessage(), selectedMail.getDate()));
+        this.updateOutboxEmails();
+      } catch (Exception xcpt) {
+        System.out.println("Couldn't delete mail from outbox");
+      }
+    }
   }
 }

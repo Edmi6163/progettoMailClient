@@ -5,7 +5,6 @@ import com.example.Transmission.Email;
 import com.example.Transmission.LoginRes;
 import com.example.mailServer.Model.LoggerModel;
 import com.example.mailServer.Model.UserService;
-import com.example.mailServer.Model.Mail;
 import com.example.mailServer.Model.UserList;
 import javafx.util.Pair;
 
