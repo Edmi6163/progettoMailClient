@@ -6,10 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="2377a5de-9e43-4dcf-9ac1-a86384a20d0c" name="Changes" comment="no more nonexistent email address">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/ClientController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/LoginController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/RootLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/RootLayoutController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/mailClient/RootLayout.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/mailClient/RootLayout.fxml" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/MailContainerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/MailContainerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Model/Mail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Model/Mail.java" afterDir="false" />
+>>>>>>> 061799235cb06139e2eaa2e3fa6a22c16a029d3e
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,7 +110,7 @@
       <recent name="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/in" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Client 2">
+  <component name="RunManager" selected="Application.Client 1">
     <configuration name="Client 1" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.example.mailClient.ClientMain" />
       <module name="progettoMailClient" />
