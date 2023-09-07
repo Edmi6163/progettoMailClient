@@ -79,7 +79,7 @@ public class Mail implements Serializable {
   public void setReceivers(String r) {
     ArrayList<String> list = new ArrayList<>();
 
-    String[] receiverArray = r.split("; ");
+    String[] receiverArray = r.split("/ ");
     for (String receiver : receiverArray) {
       String trimmedReceiver = receiver.trim();
       if (isValidEmail(trimmedReceiver)) {
