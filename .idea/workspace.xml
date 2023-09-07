@@ -7,7 +7,22 @@
     <list default="true" id="2377a5de-9e43-4dcf-9ac1-a86384a20d0c" name="Changes" comment="no more nonexistent email address">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/MailContainerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/MailContainerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Model/Mail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Model/Mail.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/in/2023-09-07T18:11:29.238034224.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/in/2023-09-07T18:16:15.384855906.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/in/2023-09-07T18:40:58.575224591.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/out/2023-09-07T18:40:58.575224591.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/in/2023-09-06T11:17:43.072052185.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/in/2023-09-07T16:59:18.525858978.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/in/2023-09-07T17:04:08.999437412.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/in/2023-09-07T17:09:11.203678917.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/in/2023-09-07T17:12:51.933480124.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/in/2023-09-07T18:40:58.575224591.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/out/2023-09-06T11:17:43.072052185.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/out/2023-09-07T18:11:29.238034224.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/paolo@javamail.it/out/2023-09-07T18:16:15.384855906.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/something@javamail.it/in/2023-09-07T18:11:29.238034224.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/something@javamail.it/in/2023-09-07T18:16:15.384855906.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/something@javamail.it/in/2023-09-07T18:40:58.575224591.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +118,7 @@
       <recent name="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/in" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Client 1">
+  <component name="RunManager" selected="Application.Client 2">
     <configuration name="Client 1" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.example.mailClient.ClientMain" />
       <module name="progettoMailClient" />
@@ -270,6 +285,7 @@
       <workItem from="1693928596881" duration="3520000" />
       <workItem from="1694009071389" duration="3002000" />
       <workItem from="1694093458655" duration="4716000" />
+      <workItem from="1694104995280" duration="388000" />
     </task>
     <task id="LOCAL-00001" summary="very small changes">
       <created>1683894254514</created>

@@ -296,7 +296,8 @@ public class MailContainerController {
 
   @FXML
   public void replyAll() {
-    String sender = selectedMail.getReceiversString() + selectedMail.getSender();
+    String sender = selectedMail.getSender() + "; " + selectedMail.getReceiversString();
+    sender.replace(username + "; ", "");
     String subject = "[RE]" + selectedMail.getSubject();
     String message = "\n---\n" + sender + ":\n\n" + selectedMail.getMessage();
     LocalDateTime now = LocalDateTime.now();
