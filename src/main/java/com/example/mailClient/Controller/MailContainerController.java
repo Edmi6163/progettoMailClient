@@ -259,6 +259,7 @@ public class MailContainerController {
 
   @FXML
   public void reply() {
+    // if (!selectedMail.getSender().equals(username)) {
     loginController.showSendMailDialog(new Mail(this.selectedMail.getId(),
                     this.userModel.getUsername(),
         "[RE]" + selectedMail.getSubject(),
@@ -268,11 +269,11 @@ public class MailContainerController {
         "Reply Email");
   }
 
-/*  @FXML
+  @FXML
   public void replyAll() {
     if (!selectedMail.getSender().equals(username)) {
       loginController.showSendMailDialog(new Mail(this.selectedMail.getId(),
-					username,
+                      username,
           "[RE]" + selectedMail.getSubject(),
           selectedMail.getSender(),
           LocalDateTime.now(),
@@ -287,21 +288,7 @@ public class MailContainerController {
           "\n---\n" + selectedMail.getSender() + ":\n\n" + selectedMail.getMessage()),
           "Reply Email");
     }
-  }*/
-@FXML
-public void replyAll() {
-  String sender = selectedMail.getReceiversString() + selectedMail.getSender();
-  String subject = "[REA]" + selectedMail.getSubject();
-  String message = "\n---\n" + sender + "\n\n" + selectedMail.getMessage();
-  LocalDateTime now = LocalDateTime.now();
-
-  Mail replyMail = new Mail(selectedMail.getId(), sender, subject, sender, now, message);
-
-  loginController.showSendMailDialog(replyMail, "Reply Email");
-}
-
-
-
+  }
 
   @FXML
   public void delete() {
