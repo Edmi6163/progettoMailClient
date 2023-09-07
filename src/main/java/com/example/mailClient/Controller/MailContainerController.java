@@ -269,26 +269,30 @@ public class MailContainerController {
         "Reply Email");
   }
 
-/*  @FXML
-  public void replyAll() {
-    if (!selectedMail.getSender().equals(username)) {
-      loginController.showSendMailDialog(new Mail(this.selectedMail.getId(),
-                      username,
-          "[RE]" + selectedMail.getSubject(),
-          selectedMail.getSender(),
-          LocalDateTime.now(),
-          "\n---\n" + selectedMail.getSender() + ":\n\n" + selectedMail.getMessage()),
-          "Reply Email");
-    } else {
-      loginController.showSendMailDialog(new Mail(this.selectedMail.getId(),
-                      username,
-          "[RE]" + selectedMail.getSubject(),
-          selectedMail.getSender(),
-          LocalDateTime.now(),
-          "\n---\n" + selectedMail.getSender() + ":\n\n" + selectedMail.getMessage()),
-          "Reply Email");
-    }
-  }*/
+//  @FXML
+//  public void replyAll() {
+//    if (!selectedMail.getSender().equals(username)) {
+//      String temp;
+////      temp = selectedMail.getReceiversString().replace(username + "; ", username);
+//      temp = selectedMail.getReceiversString().replace(username, "");
+//      temp.replace(username, "");
+//      loginController.showSendMailDialog(new Mail(this.selectedMail.getId(),
+//                      username,
+//          "[RE]" + selectedMail.getSubject(),
+//          selectedMail.getSender() + "; " + temp,
+//          LocalDateTime.now(),
+//          "\n---\n" + selectedMail.getSender() + ":\n\n" + selectedMail.getMessage()),
+//          "Reply Email");
+//    } else {
+//      loginController.showSendMailDialog(new Mail(this.selectedMail.getId(),
+//                      username,
+//          "[RE]" + selectedMail.getSubject(),
+//          selectedMail.getSender(),
+//          LocalDateTime.now(),
+//          "\n---\n" + selectedMail.getSender() + ":\n\n" + selectedMail.getMessage()),
+//          "Reply Email");
+//    }
+//  }
 
   @FXML
   public void replyAll() {

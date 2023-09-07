@@ -104,7 +104,7 @@ public class Mail implements Serializable {
     }
     StringBuilder str = new StringBuilder();
     for (String s : receivers) {
-      str.append(s).append(";");
+      str.append(s).append("; ");
     }
     return new SimpleStringProperty(str.toString());
   }
