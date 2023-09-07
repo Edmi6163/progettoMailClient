@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2377a5de-9e43-4dcf-9ac1-a86384a20d0c" name="Changes" comment="no more nonexistent email address">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Transmission/Email.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/Transmission/Email.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/ClientController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/MailContainerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Controller/MailContainerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/ServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailServer/Controller/ServerHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Transmission/InboxRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/Transmission/UserModel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Model/Mail.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/mailClient/Model/Mail.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,7 +105,7 @@
       <recent name="$PROJECT_DIR$/src/main/java/com/example/mailServer/file/francesco@javamail.it/in" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Client 1">
+  <component name="RunManager" selected="Application.Client 2">
     <configuration name="Client 1" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.example.mailClient.ClientMain" />
       <module name="progettoMailClient" />
@@ -271,6 +271,7 @@
       <workItem from="1693903895555" duration="2095000" />
       <workItem from="1693928596881" duration="3520000" />
       <workItem from="1694009071389" duration="3002000" />
+      <workItem from="1694093458655" duration="1964000" />
     </task>
     <task id="LOCAL-00001" summary="very small changes">
       <created>1683894254514</created>
