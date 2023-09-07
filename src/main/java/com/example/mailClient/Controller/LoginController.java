@@ -44,7 +44,7 @@ public class LoginController {
 	 * it sends to server the username, that has to check
 	 */
 	@FXML
-	private void handleLogin() throws IOException {
+	private void handleLogin() {
 		try {
 			userMail = username.getText();
 			user = new User(userMail);
@@ -70,12 +70,9 @@ public class LoginController {
 	 * @brief: when server return some connection error, this method is called
 	 */
 	private void checkConnection() {
-//		if (!cc.checkConnection()) {
-//			showErrorPopUp();
-//			return false;
-//		}
-//		return true;
-		controllerRoot.setServerStatusLabel(cc.checkConnection());
+		boolean connected = controllerRoot.setServerStatusLabel(cc.checkConnection());
+		if(connected)
+			cc.showServerUpNotification();
 	}
 
 
@@ -84,13 +81,6 @@ public class LoginController {
 	* pop-up just stop to appear
 	*/
 	private void startServerCheckTimer() {
-//		serverCheckExecutor = Executors.newSingleThreadScheduledExecutor();
-//
-//		serverCheckExecutor.scheduleAtFixedRate(() -> {
-//			if (!checkConnection()) {
-//				Platform.runLater(this::showErrorPopUp);
-//			}
-//		}, 0, 1, TimeUnit.MINUTES);
 		serverStatusUpdater = Executors.newSingleThreadExecutor();
 		serverStatusUpdater.execute(() -> {
 			while (true) {

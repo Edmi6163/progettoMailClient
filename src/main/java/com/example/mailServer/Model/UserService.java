@@ -22,7 +22,6 @@ public class UserService {
 			usernames.add(file.getName());
 		}
 
-
 		return usernames;
 	}
 

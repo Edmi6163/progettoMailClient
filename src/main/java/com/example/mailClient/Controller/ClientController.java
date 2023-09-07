@@ -55,6 +55,8 @@ public class ClientController implements Serializable {
       in = new ObjectInputStream(socket.getInputStream());
       this.serverStatus = true;
     } catch (IOException e) {
+      if(serverStatus)
+        showServerDownNotification();
       this.serverStatus = false;
     }
     return serverStatus;
@@ -72,11 +74,11 @@ public class ClientController implements Serializable {
     Alert popup = new Alert(Alert.AlertType.INFORMATION);
     popup.initOwner(topStage);
     popup.setTitle("Server error");
-    popup.setContentText("Server propably is offline or check your internet connection");
+    popup.setContentText("Server unreachable, check your internet connection");
     popup.show();
   }
 
-  private void showServerUpNotification() {
+  public void showServerUpNotification() {
     Platform.runLater(() -> {
       Alert alert = new Alert(Alert.AlertType.INFORMATION);
       alert.setTitle("Server is up!");
@@ -124,7 +126,6 @@ public class ClientController implements Serializable {
 //    System.out.println("[requestInbox] request inbox called");
     try {
       if (!connectToSocket()) {
-//        loginController.showErrorPopUp();
         return -1;
       }
       Communication request = new Communication("inbox", new Pair<>(username,(ArrayList)userModel.getInbox()));
@@ -165,7 +166,7 @@ public class ClientController implements Serializable {
 //    System.out.println("[requestInfo] request outbox called");
     try {
       if (!connectToSocket()) {
-//        loginController.showErrorPopUp();
+        showServerDownNotification();
         return -1;
       }
       Communication request = new Communication("outbox", new Pair<>(username,(ArrayList)userModel.getOutbox()));
@@ -221,7 +222,7 @@ public class ClientController implements Serializable {
   public void login() {
     try {
       if (!connectToSocket()) {
-//        loginController.showErrorPopUp();
+        showServerDownNotification();
         return;
       }
 
@@ -249,7 +250,7 @@ public class ClientController implements Serializable {
   public boolean sendMail(Email mail, LoginController clientMain) {
     try {
       if (!connectToSocket()) {
-//        loginController.showErrorPopUp();
+        showServerDownNotification();
         return false;
       }
 //      System.out.println("action send written to server");
@@ -285,7 +286,7 @@ public class ClientController implements Serializable {
   public boolean deleteMail(Mail mail) {
     try {
       if (!connectToSocket()) {
-//        showErrorPopUp();
+        showServerDownNotification();
         return false;
       }
 

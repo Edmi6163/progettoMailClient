@@ -13,13 +13,8 @@ import java.util.Objects;
 
 public class MailHandler {
 
-  private ObjectOutputStream outputStream;
-  private ObjectInputStream inputStream;
 
-  public MailHandler(ObjectInputStream inputStream, ObjectOutputStream outputStream) {
-    this.inputStream = inputStream;
-    this.outputStream = outputStream;
-  }
+  public MailHandler() {}
 
   public synchronized boolean save(Email mail) {
     try {

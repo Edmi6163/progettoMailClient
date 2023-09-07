@@ -1,12 +1,9 @@
 package com.example.Transmission;
 
-import com.example.mailClient.Model.Mail;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
 /*
@@ -42,8 +39,6 @@ public class Email implements Serializable {
         this.receivers = new ArrayList<>(receivers);
         this.timestamp = timestamp;
     }
-
-
 
 	public String getSender() {
         return sender;

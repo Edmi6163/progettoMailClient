@@ -77,11 +77,8 @@ public class MailContainerController {
   public Mail selectedMail;
   private String username;
   LoginController loginController = new LoginController();
-  ObservableList<Mail> inboxMailsList;
-  ObservableList<Mail> outboxMailsList;
 
   private User userModel;
-  //MailHandler mailHandler = new MailHandler();
 
   private ExecutorService mailUpdater;
 
@@ -108,11 +105,8 @@ public class MailContainerController {
     mailUpdater.execute(() -> {
       while (true) {
         try {
-          Thread.sleep(5000);
-//          Platform.runLater(() -> this.cc.requestInbox());
-//          Platform.runLater(() -> this.cc.requestOutbox());
-//          Platform.runLater(this::updateAllEmails);
           Platform.runLater(this::updateInbox);
+          Thread.sleep(5000);
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
@@ -121,35 +115,12 @@ public class MailContainerController {
 
   }
 
-  public void showNewMailPopUp(int mailCount) {
-    Platform.runLater(() -> {
-      Alert popup = new Alert(Alert.AlertType.INFORMATION);
-      popup.initOwner(topStage);
-      popup.setTitle("Notifications");
-
-      if (mailCount > 1)
-        popup.setContentText("You received " + mailCount + " new messages");
-      else
-        popup.setContentText("You received a new message");
-
-      popup.show();
-    });
-  }
-
   public void updateOutboxEmails(Email newEmail) {
-    // prendo la lista delle email e aggiungo quella nuova
-//    List<Email> emails = this.userModel.getOutbox();
-//    emails.add(0, newEmail);
-//    this.userModel.setOutbox(emails);
     this.updateOutbox();
     this.updateInbox();
   }
 
-  /*
-  FIXME try to use the parametes inboxMailList
-   */
   private void updateInboxEmails() {
-//    System.out.println("[upateInboxEmails] refreshing inbox");
     inTable.getItems().clear();
 
     this.userModel.getInbox().stream().forEach((inboxEmail) -> {
@@ -165,7 +136,6 @@ public class MailContainerController {
   }
 
   private void updateOutboxEmails() {
-//    System.out.println("[updateOutboxEmails] refreshing outbox");
     outTable.getItems().clear();
 
     this.userModel.getOutbox().stream().forEach((outboxEmail) -> {
@@ -182,7 +152,6 @@ public class MailContainerController {
   }
 
   public void updateAllEmails() {
-//    System.out.println("refreshing gui");
 
     emailUpdater = Executors.newFixedThreadPool(10);
 
@@ -234,7 +203,6 @@ public class MailContainerController {
   }
 
   private void showMailDetails(Mail mail) {
-//    System.out.println("[MCC] showMailDetails");
     subjectLabel.setText(mail.getSubject());
     senderLabel.setText("From: " + mail.getSender());
     dateLabel.setText("Date: " + mail.getFormattedDate());
@@ -259,7 +227,6 @@ public class MailContainerController {
 
   @FXML
   public void reply() {
-    // if (!selectedMail.getSender().equals(username)) {
     loginController.showSendMailDialog(new Mail(this.selectedMail.getId(),
                     this.userModel.getUsername(),
         "[RE]" + selectedMail.getSubject(),
@@ -268,31 +235,6 @@ public class MailContainerController {
         "\n---\n" + selectedMail.getSender() + ":\n\n" + selectedMail.getMessage()),
         "Reply Email");
   }
-
-//  @FXML
-//  public void replyAll() {
-//    if (!selectedMail.getSender().equals(username)) {
-//      String temp;
-////      temp = selectedMail.getReceiversString().replace(username + "; ", username);
-//      temp = selectedMail.getReceiversString().replace(username, "");
-//      temp.replace(username, "");
-//      loginController.showSendMailDialog(new Mail(this.selectedMail.getId(),
-//                      username,
-//          "[RE]" + selectedMail.getSubject(),
-//          selectedMail.getSender() + "; " + temp,
-//          LocalDateTime.now(),
-//          "\n---\n" + selectedMail.getSender() + ":\n\n" + selectedMail.getMessage()),
-//          "Reply Email");
-//    } else {
-//      loginController.showSendMailDialog(new Mail(this.selectedMail.getId(),
-//                      username,
-//          "[RE]" + selectedMail.getSubject(),
-//          selectedMail.getSender(),
-//          LocalDateTime.now(),
-//          "\n---\n" + selectedMail.getSender() + ":\n\n" + selectedMail.getMessage()),
-//          "Reply Email");
-//    }
-//  }
 
   @FXML
   public void replyAll() {

@@ -121,8 +121,6 @@ public class Mail implements Serializable {
     return date.get().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
   }
 
-
-
   public void setDate(LocalDateTime date) {
     this.date.set(date);
   }
@@ -134,10 +132,6 @@ public class Mail implements Serializable {
   public void setMessage(String message) {
     this.message.set(message);
   }
-
-
-
-
 
   @Override
   public String toString() {

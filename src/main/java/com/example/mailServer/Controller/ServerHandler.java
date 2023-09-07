@@ -32,7 +32,7 @@ public class ServerHandler implements Runnable {
     try {
       inputStream = new ObjectInputStream(incoming.getInputStream());
       outputStream = new ObjectOutputStream(incoming.getOutputStream());
-      this.mailHandler = new MailHandler(inputStream, outputStream);
+      this.mailHandler = new MailHandler();
     } catch (IOException xcpt) {
       xcpt.printStackTrace();
     }
@@ -71,8 +71,6 @@ public class ServerHandler implements Runnable {
 
         try {
           Communication c = (Communication) inputStream.readObject();
-//          System.out.println("Body registered: " + c.getBody());
-//          System.out.println("Action registered: " + c.getAction());
           log.setLog("Action registered: " + c.getAction());
           switch (c.getAction()) {
             case "login" -> handleLoginAction((String) c.getBody());
@@ -100,7 +98,6 @@ public class ServerHandler implements Runnable {
 
   private void handleDeleteAction(String user, Email body) {
     try {
-//      System.out.println("***handleDeleteAction***");
 
       mailHandler.delete(user,body);
 
@@ -116,7 +113,6 @@ public class ServerHandler implements Runnable {
   }
 
   private void handleLoginAction(String username) throws IOException, ClassNotFoundException {
-//    System.out.println("handleLoginAction");
     UserList userList = getUserList();
     if(!userList.userExist(username)){
       userService.createUserFolders(username);
@@ -132,18 +128,14 @@ public class ServerHandler implements Runnable {
 
     outputStream.writeObject(c);
 
-//    System.out.println("Communication c: " + c.getAction() + " " + c.getBody().toString());
   }
 
   private void handleInboxAction(String username, List<Email> userInbox) throws IOException, ClassNotFoundException {
-//    System.out.println("[handleInboxAction] username received: " + username);
     ArrayList<Email> loadedInbox = mailHandler.loadInBox(username);
     ArrayList<Email> newEmails = new ArrayList<>();
     for (Email email : loadedInbox) {
-//      System.out.println("read inbox contains: "  + email);
       if(!userInbox.contains(email)) {
         newEmails.add(email);
-//        System.out.println("email sent: " + email);
       }
     }
     Communication response = new Communication("inbox", newEmails);
@@ -151,14 +143,11 @@ public class ServerHandler implements Runnable {
   }
 
   private void handleOutboxAction(String username, List<Email> userOutbox) throws IOException, ClassNotFoundException {
-//    System.out.println("[handleOutboxAction] body arrived is: " + username);
     ArrayList<Email> loadedOutbox = mailHandler.loadOutBox(username);
     ArrayList<Email> newEmails = new ArrayList<>();
     for (Email email : loadedOutbox) {
-//      System.out.println("outbox contains: "  + email);
       if(!userOutbox.contains(email)) {
         newEmails.add(email);
-//        System.out.println("email sent: " + email);
       }
     }
     Communication response = new Communication("outbox",newEmails);
@@ -166,10 +155,6 @@ public class ServerHandler implements Runnable {
   }
 
   private void handleSendAction(UserList userList, Email mail) throws IOException, ClassNotFoundException {
-//    System.out.println("***handleSendAction***");
-
-//    System.out.println("[handle send action] mail arrived to server:\n " + mail);
-//    System.out.println("[handle send action] receivers: " + mail.getReceivers());
     Set<String> receivers = new HashSet<>(mail.getReceivers());
     for (String receiver : receivers) {
       if (!userList.userExist(receiver)) {
@@ -178,7 +163,6 @@ public class ServerHandler implements Runnable {
         return;
       }
       log.setLog(mail.getSender() + " sent an email to " + mail.getReceivers());
-//      System.out.println(mail.getSender() + " sent an email to " + mail.getReceivers());
       mail.setBin(true);
 
       if (!mailHandler.save(mail)) {

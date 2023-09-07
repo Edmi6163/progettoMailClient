@@ -88,7 +88,6 @@ public class NewMessageController {
 
     System.out.println("[NewMessageController] handleOk() e: " + e);
 
-
     if (isInputOk(m)) {
       // send mail
       mailSendedFeedback();

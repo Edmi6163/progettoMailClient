@@ -22,8 +22,6 @@ public class Communication implements Serializable {
         return action;
     }
 
-
-
     public Object getBody() {
         return body;
     }

@@ -22,15 +22,17 @@ public class RootLayoutController {
     userNameLabel.setText(username);
   }
 
-  public void setServerStatusLabel(boolean status) {
-    if(status != serverStatus)
+  public boolean setServerStatusLabel(boolean status) {
+    if(status != serverStatus) {
       serverStatus = status;
-      if(status) {
+      if (status) {
         serverStatusLabel.setText("Connected to server");
-
+        return true;
       } else {
         serverStatusLabel.setText("Connection lost");
       }
+    }
+    return false;
   }
 
   @FXML
