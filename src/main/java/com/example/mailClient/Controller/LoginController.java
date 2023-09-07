@@ -95,8 +95,8 @@ public class LoginController {
 		serverStatusUpdater.execute(() -> {
 			while (true) {
 				try {
-					Thread.sleep(500);
 					Platform.runLater(this::checkConnection);
+					Thread.sleep(500);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
