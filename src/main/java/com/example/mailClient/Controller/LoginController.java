@@ -18,6 +18,7 @@ import com.example.mailClient.Model.User;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -34,8 +35,8 @@ public class LoginController {
 	public User user;
 	public ClientController cc;
 	public MailContainerController mailContainerController;
-
-	private ScheduledExecutorService serverCheckExecutor;
+	private RootLayoutController controllerRoot;
+	private ExecutorService serverStatusUpdater;
 
 	/*
 	 * @brief this method is called when user clicks on login button, and kinda is
@@ -48,9 +49,10 @@ public class LoginController {
 			userMail = username.getText();
 			user = new User(userMail);
 
+			cc = new ClientController(user);
+
 			initRootLayout();
 
-			cc = new ClientController(user);
 			cc.login();
 
 			startServerCheckTimer();
@@ -67,44 +69,40 @@ public class LoginController {
 	/*
 	 * @brief: when server return some connection error, this method is called
 	 */
-	public void showErrorPopUp() {
-		Alert popup = new Alert(Alert.AlertType.INFORMATION);
-		popup.initOwner(topStage);
-		popup.setTitle("Server error");
-		popup.setContentText("Server propably is offline or check your internet connection");
-		popup.show();
+	private void checkConnection() {
+//		if (!cc.checkConnection()) {
+//			showErrorPopUp();
+//			return false;
+//		}
+//		return true;
+		controllerRoot.setServerStatusLabel(cc.checkConnection());
 	}
 
-	private boolean checkConnection() {
-		if (!cc.checkConnection()) {
-			showErrorPopUp();
-			return false;
-		}
-		return true;
-	}
-
-	private void showServerUpNotification() {
-		Platform.runLater(() -> {
-			Alert alert = new Alert(Alert.AlertType.INFORMATION);
-			alert.setTitle("Server is up!");
-			alert.setHeaderText("Server is up!");
-			alert.setContentText("Server is up!");
-			alert.show();
-		});
-	}
 
 	/*
 	* @brief: if server is offline notify user that server is offline when the server is online the
 	* pop-up just stop to appear
 	*/
 	private void startServerCheckTimer() {
-		serverCheckExecutor = Executors.newSingleThreadScheduledExecutor();
-
-		serverCheckExecutor.scheduleAtFixedRate(() -> {
-			if (!checkConnection()) {
-				Platform.runLater(this::showErrorPopUp);
+//		serverCheckExecutor = Executors.newSingleThreadScheduledExecutor();
+//
+//		serverCheckExecutor.scheduleAtFixedRate(() -> {
+//			if (!checkConnection()) {
+//				Platform.runLater(this::showErrorPopUp);
+//			}
+//		}, 0, 1, TimeUnit.MINUTES);
+		serverStatusUpdater = Executors.newSingleThreadExecutor();
+		serverStatusUpdater.execute(() -> {
+			while (true) {
+				try {
+					Thread.sleep(500);
+					Platform.runLater(this::checkConnection);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-		}, 0, 1, TimeUnit.MINUTES);
+		});
+
 	}
 
 	public void showSendMailDialog(Mail mail, String title) {
@@ -137,8 +135,8 @@ public class LoginController {
 			root.setTop(loaderRoot.load());
 
 			System.out.println(userMail);
-			RootLayoutController controllerRoot = loaderRoot.getController();
-			controllerRoot.setClientMain(this, userMail);
+			controllerRoot = loaderRoot.getController();
+			controllerRoot.setClientMain(this, cc.checkConnection(), userMail);
 
 		} catch (Exception e) {
 			e.printStackTrace();
