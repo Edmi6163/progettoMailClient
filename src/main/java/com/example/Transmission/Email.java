@@ -23,14 +23,7 @@ public class Email implements Serializable {
     private LocalDateTime timestamp;
     private boolean bin;
 
-//    public Email(String sender, ArrayList<String> receivers, String subject, String text) {
-//        this.id = UUID.randomUUID().toString();
-//        this.sender = sender;
-//        this.subject = subject;
-//        this.text = text;
-//        this.receivers = new ArrayList<>(receivers);
-//        this.timestamp = LocalDateTime.now();
-//    }
+
 
     public Email(String sender, ArrayList<String> receivers, String subject, String text, LocalDateTime timestamp) {
         this.id = UUID.randomUUID().toString();

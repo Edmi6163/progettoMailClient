@@ -149,7 +149,7 @@ public class MailContainerController {
   FIXME try to use the parametes inboxMailList
    */
   private void updateInboxEmails() {
-    System.out.println("[upateInboxEmails] refreshing inbox");
+//    System.out.println("[upateInboxEmails] refreshing inbox");
     inTable.getItems().clear();
 
     this.userModel.getInbox().stream().forEach((inboxEmail) -> {
@@ -165,7 +165,7 @@ public class MailContainerController {
   }
 
   private void updateOutboxEmails() {
-    System.out.println("[updateOutboxEmails] refreshing outbox");
+//    System.out.println("[updateOutboxEmails] refreshing outbox");
     outTable.getItems().clear();
 
     this.userModel.getOutbox().stream().forEach((outboxEmail) -> {
@@ -182,7 +182,7 @@ public class MailContainerController {
   }
 
   public void updateAllEmails() {
-    System.out.println("refreshing gui");
+//    System.out.println("refreshing gui");
 
     emailUpdater = Executors.newFixedThreadPool(10);
 
@@ -234,7 +234,7 @@ public class MailContainerController {
   }
 
   private void showMailDetails(Mail mail) {
-    System.out.println("[MCC] showMailDetails");
+//    System.out.println("[MCC] showMailDetails");
     subjectLabel.setText(mail.getSubject());
     senderLabel.setText("From: " + mail.getSender());
     dateLabel.setText("Date: " + mail.getFormattedDate());
@@ -307,7 +307,7 @@ public class MailContainerController {
         userModel.removeFromInbox(new Email(selectedMail.getId(), selectedMail.getSender(), receivers, selectedMail.getSubject(), selectedMail.getMessage(), selectedMail.getDate()));
         this.updateInboxEmails();
       } catch (Exception xcpt) {
-        System.out.println("Couldn't delete mail from inbox");
+//        System.out.println("Couldn't delete mail from inbox");
       }
       try {
         ArrayList<String> receivers = new ArrayList<>();
@@ -316,7 +316,7 @@ public class MailContainerController {
         userModel.removeFromOutbox(new Email(selectedMail.getId(), selectedMail.getSender(), receivers, selectedMail.getSubject(), selectedMail.getMessage(), selectedMail.getDate()));
         this.updateOutboxEmails();
       } catch (Exception xcpt) {
-        System.out.println("Couldn't delete mail from outbox");
+//        System.out.println("Couldn't delete mail from outbox");
       }
     }
   }
