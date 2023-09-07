@@ -9,6 +9,7 @@ import com.example.mailClient.Model.User;
 
 import java.awt.*;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
@@ -40,6 +41,8 @@ public class ClientController implements Serializable {
    * @brief: This method checks if the server is online
    */
   public boolean checkConnection() {
+    if(serverStatus)
+      return true;
     return connectToSocket();
   }
 
@@ -65,13 +68,24 @@ public class ClientController implements Serializable {
     }
   }
 
-  public void showErrorPopUp() {
+  public void showServerDownNotification() {
     Alert popup = new Alert(Alert.AlertType.INFORMATION);
     popup.initOwner(topStage);
     popup.setTitle("Server error");
     popup.setContentText("Server propably is offline or check your internet connection");
     popup.show();
   }
+
+  private void showServerUpNotification() {
+    Platform.runLater(() -> {
+      Alert alert = new Alert(Alert.AlertType.INFORMATION);
+      alert.setTitle("Server is up!");
+      alert.setHeaderText("Server is up!");
+      alert.setContentText("Server is up!");
+      alert.show();
+    });
+  }
+
   public void mailNotExist() {
     Alert popup = new Alert(Alert.AlertType.ERROR);
     popup.initOwner(topStage);
@@ -110,7 +124,7 @@ public class ClientController implements Serializable {
 //    System.out.println("[requestInbox] request inbox called");
     try {
       if (!connectToSocket()) {
-        loginController.showErrorPopUp();
+//        loginController.showErrorPopUp();
         return -1;
       }
       Communication request = new Communication("inbox", new Pair<>(username,(ArrayList)userModel.getInbox()));
@@ -151,7 +165,7 @@ public class ClientController implements Serializable {
 //    System.out.println("[requestInfo] request outbox called");
     try {
       if (!connectToSocket()) {
-        loginController.showErrorPopUp();
+//        loginController.showErrorPopUp();
         return -1;
       }
       Communication request = new Communication("outbox", new Pair<>(username,(ArrayList)userModel.getOutbox()));
@@ -207,7 +221,7 @@ public class ClientController implements Serializable {
   public void login() {
     try {
       if (!connectToSocket()) {
-        loginController.showErrorPopUp();
+//        loginController.showErrorPopUp();
         return;
       }
 
@@ -235,7 +249,7 @@ public class ClientController implements Serializable {
   public boolean sendMail(Email mail, LoginController clientMain) {
     try {
       if (!connectToSocket()) {
-        loginController.showErrorPopUp();
+//        loginController.showErrorPopUp();
         return false;
       }
 //      System.out.println("action send written to server");
@@ -271,7 +285,7 @@ public class ClientController implements Serializable {
   public boolean deleteMail(Mail mail) {
     try {
       if (!connectToSocket()) {
-        showErrorPopUp();
+//        showErrorPopUp();
         return false;
       }
 
