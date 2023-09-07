@@ -80,7 +80,7 @@ public class NewMessageController {
 
     LocalDateTime now = LocalDateTime.now();
 
-    receivers.addAll(Arrays.asList(receiversField.getText().split("/ ")));
+    receivers.addAll(Arrays.asList(receiversField.getText().split("; ")));
     Mail m = new Mail("", sender, subjectField.getText(), receiversField.getText(), now,
         messageBodyArea.getText());
     System.out.println("[NewMessageController] handleOk() m: " + m);
