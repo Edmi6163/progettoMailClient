@@ -99,23 +99,18 @@ public class ClientController implements Serializable {
     * @brief: send information to server through Communication object and socket
    */
   private static Communication sendCommunicationToServer(Communication c) {
-//    System.out.println("sending communication to server: " + c.getAction() + " " + c.getBody());
     try {
       if (out == null || in == null) {
-//        System.out.println("out or in is null");
         return null;
       }
       out.writeObject(c);
 
       Communication response = (Communication) in.readObject();
 
-//      System.out.println("function sendCommunicationToServer returned: " + response.getClass().getSimpleName() + " " + response);
 
-//      System.out.println("[sendCommunicationToServer] response: " + response.getAction() + " " + response.getBody()); //FIXME here the response is null, so inbox isn't updated
       return response;
 
     } catch (IOException | ClassNotFoundException e) {
-//      System.out.println("error in sendCommunicationToServer");
       e.printStackTrace();
       return null;
     }
@@ -123,24 +118,19 @@ public class ClientController implements Serializable {
 
   public int requestInbox() {
 
-//    System.out.println("[requestInbox] request inbox called");
     try {
       if (!connectToSocket()) {
         return -1;
       }
       Communication request = new Communication("inbox", new Pair<>(username,(ArrayList)userModel.getInbox()));
 
-//      System.out.println("[requestInbox] communication request: " + request.getAction() + " " + request.getBody());
       Communication response = sendCommunicationToServer(request);
 
       if (response == null) {
-//        System.out.println("response is null");
         return -1;
       }
-//      System.out.println("[requestInbox] communication response: " + response.getAction() + " " + response.getBody()); //FIXME here the response is null, so inbox isn't updated
       Object body = response.getBody();
       if (!(body instanceof ArrayList)) {
-//        System.out.println("response body is not an ArrayList");
         return -1;
       }
 
@@ -163,7 +153,6 @@ public class ClientController implements Serializable {
 
   public int requestOutbox() {
 
-//    System.out.println("[requestInfo] request outbox called");
     try {
       if (!connectToSocket()) {
         showServerDownNotification();
@@ -171,17 +160,13 @@ public class ClientController implements Serializable {
       }
       Communication request = new Communication("outbox", new Pair<>(username,(ArrayList)userModel.getOutbox()));
 
-//      System.out.println("[requestOutbox] communication request: " + request.getAction() + " " + request.getBody());
       Communication response = sendCommunicationToServer(request);
 
       if (response == null) {
-//        System.out.println("response is null");
         return -1;
       }
-//      System.out.println("[requestOutbox] communication response: " + response.getAction() + " " + response.getBody()); //FIXME here the response is null, so inbox isn't updated
       Object body = response.getBody();
       if (!(body instanceof ArrayList)) {
-//        System.out.println("response body is not an ArrayList");
         return -1;
       }
 
@@ -227,15 +212,8 @@ public class ClientController implements Serializable {
       }
 
       Communication request = new Communication("login", username);
-//      System.out.println("[login] communication request: " + request.getAction());
-//      System.out.println("[login] communication request body: " + request.getBody());
-
-
 
       Communication response = sendCommunicationToServer(request);
-
-//      System.out.println("[login] communication response: " + response.getBody());
-//      System.out.println("[login] communication response body: " + response.getAction());
 
       closeSocketConnection();
 
@@ -253,22 +231,15 @@ public class ClientController implements Serializable {
         showServerDownNotification();
         return false;
       }
-//      System.out.println("action send written to server");
-//      System.out.println(mail);
-
       Communication sendMail = new Communication("send", mail);
       Communication response = (Communication) sendCommunicationToServer(sendMail);
 
-//      System.out.println("[send mail CC] mail written to server\n" + mail.toString());
 
       if (response.getAction().equals("send_not_ok")) {
         mailNotExist();
         closeSocketConnection();
         return false;
       }
-
-//      System.out.println("Received response action: " + response.getAction());
-//      System.out.println("Received response body: " + response.getBody());
 
       closeSocketConnection();
 
@@ -298,9 +269,8 @@ public class ClientController implements Serializable {
       Pair<String, Email> pair = new Pair(this.username, e);
       Communication delete = new Communication("delete", pair);
 
-      Communication response = (Communication) sendCommunicationToServer(delete);
+      Communication response = sendCommunicationToServer(delete);
 
-//      System.out.println(response);
       closeSocketConnection();
 
     } catch (Exception e) {
